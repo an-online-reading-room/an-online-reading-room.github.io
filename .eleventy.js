@@ -43,6 +43,7 @@ module.exports = function (eleventyConfig) {
   
 
   return {
+    pathPrefix: '/reading-room-platform',
     dir: {
       input: 'src',
       includes: '_includes',
