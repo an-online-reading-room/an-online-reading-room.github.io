@@ -1,0 +1,46 @@
+
+<div x-data="searchData" 
+      class="flex flex-col align-items-center gap-y-4 h-full">
+
+  <div x-text="getStories">
+
+  </div>
+  {# <div x-text="idx.search('')">
+
+  </div> #}
+
+  <div class="flex flex-row justify-between 
+              w-full gap-x-base divide-x
+              border">
+    <input type="text" name="search-query" placeholder="Search for a story"
+          class="flex-1 py-1 bg-primary text-sm px-2 focus:outline-none" x-model="query">
+    <button class="w-1/10 bg-primary focus:outline-none" >
+      search
+    </button>
+  </div>
+  
+  <div class="list-container overflow-y-scroll pb-4
+            flex flex-col gap-y-4">
+    <template
+        x-for="item in lunrData.filteredItems" :key="item.id">
+      <div class="px-3 py-3
+                border border-black border-1
+                text-center font-text
+                inline-flex flex-col gap-y-1">
+        <div class="text-base font-display"  x-text="item.title">
+          <h1>{{ item.title }}</h1>
+        </div>
+        <div class="text-sm" x-text="item.author">
+          <p> {{ item.author }} </p>
+        </div>
+        <div class="text-sm" x-text="item.location">
+          <p> {{ item.location }} </p>
+        </div>
+        <div class="text-sm" x-text="item.description">
+          <p> {{ item.description }} </p>
+        </div>
+      </div>
+    </template>
+  </div>
+  
+</div>

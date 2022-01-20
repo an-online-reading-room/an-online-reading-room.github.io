@@ -1,0 +1,39 @@
+
+{% extends "default.njk" %}
+
+{% block content %}
+  <div class="flex flex-col align-items-center
+              w-screen h-screen bg-primary
+              px-12 
+              text-center">
+    <div class="h-1/6 flex flex-col justify-center
+                font-display">
+      <h1 class="text-2xl">The Reading Room</h1>
+    </div>
+
+    <div class="w-full h-1/5 my-4 bg-accent">
+    </div>
+
+    <div class="h-1/5
+                font-text text-xs leading-5">
+      <p class="pt-2">We suggest you choose the</p>
+      <a href="{{ '/landing' | url }}">
+        <button class="font-display px-4 py-2 bg-black text-white">
+          Lite Version
+        </button>
+      </a>
+      <p class="pt-2">if you have low bandwidth for a smoother experience.</p>
+    </div>
+
+    <div class="py-8
+                font-display text-xxs">
+      <p class="bg-accent w-full">a</p>
+      <p>For best experience use the adventure version</p>
+    </div>
+
+    <div class="mt-auto pb-6
+                font-display text-xs">
+      <p>Turn on sound for a more immersive experience</p>
+    </div>
+  </div>
+{% endblock %}

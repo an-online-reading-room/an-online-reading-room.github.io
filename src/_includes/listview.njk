@@ -1,0 +1,75 @@
+{% extends "default.njk" %}
+
+{% block content %}
+  <div class="flex flex-col align-items-center gap-y-4
+              w-screen h-screen bg-primary
+              px-4
+              text-center">
+
+    
+    <div>{% include "header.njk" %}</div>
+
+    {{ content | safe }}
+    
+    <div class="flex flex-col divide-y" x-data="{ open: false }">
+      <div class="absolute inset-x-0 bottom-6
+                  flex flex-col gap-y-6
+                  w-full h-2/5 px-6 py-6
+                  bg-accent"
+          x-show="open" x-transition>
+        <div class="flex flex-row justify-between
+                    divide-x divide-primary w-full border border-primary
+                    bg-accent gap-x-base">
+          <input type="text" name="search-query" placeholder="Enter a location"
+                class="flex-1 py-1 bg-accent text-sm px-2 text-primary
+                        placeholder:text-primary focus:outline-none" >
+          <button class="w-1/6 text-primary focus:outline-none" >
+            ok
+          </button>
+        </div>
+
+        <div class="flex flex-row justify-between
+                    divide-x divide-primary w-full border border-primary
+                    bg-accent gap-x-base">
+          <input type="text" name="search-query" placeholder="Enter a tag/topic"
+                class="flex-1 py-1 bg-accent text-sm px-2 text-primary
+                      placeholder:text-primary focus:outline-none " >
+          <button class="w-1/6 text-primary focus:outline-none" >
+            ok
+          </button>
+        </div>
+
+        <div class="flex flex-row flex-wrap gap-y-4 gap-x-6
+                    text-sm text-primary">
+          <div class="border border-primary py-1 px-2">
+            Bangalore
+          </div>
+          <div class="border border-primary py-1 px-2">
+            Delhi
+          </div>
+          <div class="border border-primary py-1 px-2">
+            Hyderabad
+          </div>
+          <div class="border border-primary py-1 px-2">
+            Playgrounds
+          </div>
+          <div class="border border-primary py-1 px-2">
+            Monsoon
+          </div>
+          <div class="border border-primary py-1 px-2">
+            Love
+          </div>
+        </div>
+
+      </div>
+      <button class="absolute inset-x-0 bottom-0
+                    w-full focus:outline-none
+                    bg-primary"
+              x-on:click="open = !open"
+              x-bind:class="open ? 'bg-accent text-primary' : 'bg-primary'">
+        Filters
+      </button>
+    </div>
+
+  </div>
+{% endblock %}
