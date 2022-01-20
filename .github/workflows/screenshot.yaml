@@ -17,11 +17,9 @@ jobs:
         url: https://an-online-reading-room.github.io/reading-room-platform/
         devices: iPhone 6,iPhone 6 landscape
         noDesktop: true
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Download-mobile-screenshots
-        path: screenshots
-    - run: rm ./screenshots/*
+      env:
+        TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
+        TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
 
     - name: screenshots-mobile-facebook
       uses: flameddd/screenshots-ci-action@v1.1.1
@@ -29,8 +27,6 @@ jobs:
         url: https://an-online-reading-room.github.io/reading-room-platform/stories
         devices: iPhone 6,iPhone 6 landscape
         noDesktop: true
-    - uses: actions/upload-artifact@v2
-      with:
-        path: screenshots
-        name: Download-mobile-screenshots
-    - run: rm ./screenshots/*
+      env:
+        TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
+        TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
