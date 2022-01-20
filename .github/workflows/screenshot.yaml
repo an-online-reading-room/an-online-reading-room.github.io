@@ -17,9 +17,6 @@ jobs:
         url: https://an-online-reading-room.github.io/reading-room-platform
         devices: iPhone 6, Nexus 10
         noDesktop: true
-      env:
-        TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
-        TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
     - uses: actions/upload-artifact@v2
       with:
         path: screenshots
@@ -31,9 +28,6 @@ jobs:
         url: https://an-online-reading-room.github.io/reading-room-platform/stories
         devices: iPhone 6, Nexus 10
         noDesktop: true
-      env:
-        TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
-        TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
     - uses: actions/upload-artifact@v2
       with:
         path: screenshots
