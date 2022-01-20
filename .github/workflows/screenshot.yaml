@@ -1,6 +1,7 @@
 name: screenshots ci actions
 on:
   page_build:
+  workflow_dispatch:
 
 jobs:
   screenshots:
@@ -17,11 +18,9 @@ jobs:
         url: https://an-online-reading-room.github.io/reading-room-platform
         devices: iPhone 6, Nexus 10
         noDesktop: true
-    - uses: actions/upload-artifact@v2
-      with:
-        path: screenshots
-        name: Download-screenshots
-    - run: rm ./screenshots/*
+      env:
+        TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
+        TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
 
     - name: screenshots-ci-action
       uses: flameddd/screenshots-ci-action@v1.1.1
@@ -29,8 +28,6 @@ jobs:
         url: https://an-online-reading-room.github.io/reading-room-platform/stories
         devices: iPhone 6, Nexus 10
         noDesktop: true
-    - uses: actions/upload-artifact@v2
-      with:
-        path: screenshots
-        name: Download-screenshots
-    - run: rm ./screenshots/*
+      env:
+        TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
+        TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
