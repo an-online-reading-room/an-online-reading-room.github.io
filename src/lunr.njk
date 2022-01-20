@@ -1,0 +1,17 @@
+---
+
+permalink: /index.json
+---
+
+[
+{% for story in _stories %}
+{
+  "id": "{{story.id}}",
+  "title": "{{story.title}}",
+  "description": "{{story.description}}"
+} 
+{% if loop.last === false %}
+  ,
+{% endif %}
+{% endfor %}
+]

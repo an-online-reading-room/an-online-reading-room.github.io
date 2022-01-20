@@ -1,0 +1,9 @@
+---
+layout: listview
+pagination:
+  data: _stories
+  size: 20
+---
+
+{% set listItems = pagination.items %}
+{% include "list.njk" %}

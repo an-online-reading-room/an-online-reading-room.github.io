@@ -1,21 +1,17 @@
-# eleventy-tailwindcss-alpinejs-starter by [Greg Wolanski](https://gregwolanski.com)
-
-A starter repository showing how to build a website with the [Eleventy](https://www.11ty.dev), [Tailwind CSS](https://tailwindcss.com), and [Alpine.js](https://alpinejs.dev).
-
-Learn more on CSS-Tricks: [An Eleventy Starter with Tailwind CSS and Alpine.js](https://css-tricks.com/eleventy-starter-with-tailwind-css-alpine-js/)
+# reading room platform for [C3](https://www.goethe.de/ins/in/en/sta/mum/ueb/c3.html)
 
 ## Getting Started
 
 ### 1. Clone this repository
 
 ```
-git clone https://github.com/gregwolanski/eleventy-tailwindcss-alpinejs-starter.git my-website-name
+git clone https://github.com/an-online-reading-room/reading-room-platform.git 
 ```
 
 ### 2. Navigate to the directory
 
 ```
-cd my-website-name
+cd reading-room-platform
 ```
 
 ### 3. Install the dependencies
@@ -30,16 +26,9 @@ npm install
 npm run start
 ```
 
-## Author
+## TODOS
 
-[Greg Wolanski](https://gregwolanski.com)
-
-## Troubleshooting
-
-[Windows](https://github.com/gregwolanski/eleventy-tailwindcss-alpinejs-starter/issues/3)
-
-## License
-
-MIT
-
-See `LICENSE` for more information.
+  - [ ] logo - favicon
+  - [ ] netlify function - search
+  - [ ] story page
+  - [ ] annotations
