@@ -1,0 +1,36 @@
+name: screenshots ci actions
+on:
+  page_build:
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install puppeteer-headful
+      uses: mujo-code/puppeteer-headful@master
+      env:
+        CI: 'true'
+    - name: screenshots-desktop-facebook
+      uses: flameddd/screenshots-ci-action@v1.1.1
+      with:
+        url: https://an-online-reading-room.github.io/reading-room-platform/
+        devices: iPhone 6,iPhone 6 landscape
+        noDesktop: true
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Download-mobile-screenshots
+        path: screenshots
+    - run: rm ./screenshots/*
+
+    - name: screenshots-mobile-facebook
+      uses: flameddd/screenshots-ci-action@v1.1.1
+      with:
+        url: https://an-online-reading-room.github.io/reading-room-platform/stories
+        devices: iPhone 6,iPhone 6 landscape
+        noDesktop: true
+    - uses: actions/upload-artifact@v2
+      with:
+        path: screenshots
+        name: Download-mobile-screenshots
+    - run: rm ./screenshots/*
