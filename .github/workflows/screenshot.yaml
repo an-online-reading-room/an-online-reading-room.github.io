@@ -21,6 +21,7 @@ jobs:
       with:
         path: screenshots
         name: Download-screenshots
+    - run: rm ./screenshots/*
 
     - name: screenshots-ci-action
       uses: flameddd/screenshots-ci-action@v1.1.1
@@ -32,3 +33,4 @@ jobs:
       with:
         path: screenshots
         name: Download-screenshots
+    - run: rm ./screenshots/*
