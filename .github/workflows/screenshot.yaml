@@ -20,6 +20,10 @@ jobs:
       env:
         TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
         TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
+    - uses: actions/upload-artifact@v2
+      with:
+        path: screenshots
+        name: Download-screenshots
 
     - name: screenshots-ci-action
       uses: flameddd/screenshots-ci-action@v1.1.1
@@ -30,3 +34,7 @@ jobs:
       env:
         TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
         TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
+    - uses: actions/upload-artifact@v2
+      with:
+        path: screenshots
+        name: Download-screenshots
