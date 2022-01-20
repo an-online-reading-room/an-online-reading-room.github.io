@@ -11,21 +11,21 @@ jobs:
       uses: mujo-code/puppeteer-headful@master
       env:
         CI: 'true'
-    - name: screenshots-desktop-facebook
+    - name: screenshots-ci-action
       uses: flameddd/screenshots-ci-action@v1.1.1
       with:
-        url: https://an-online-reading-room.github.io/reading-room-platform/
-        devices: iPhone 6,iPhone 6 landscape
+        url: https://an-online-reading-room.github.io/reading-room-platform
+        devices: iPhone 6, Nexus 10
         noDesktop: true
       env:
         TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
         TELE_BOT_TOKEN: ${{ secrets.TELE_BOT_TOKEN }}
 
-    - name: screenshots-mobile-facebook
+    - name: screenshots-ci-action
       uses: flameddd/screenshots-ci-action@v1.1.1
       with:
         url: https://an-online-reading-room.github.io/reading-room-platform/stories
-        devices: iPhone 6,iPhone 6 landscape
+        devices: iPhone 6, Nexus 10
         noDesktop: true
       env:
         TELE_CHAT_ID: ${{ secrets.TELE_CHAT_ID }}
