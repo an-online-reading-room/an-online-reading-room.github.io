@@ -1,4 +1,5 @@
 const htmlmin = require('html-minifier')
+const svgContents = require("eleventy-plugin-svg-contents")
 
 const now = String(Date.now())
 
@@ -16,6 +17,7 @@ module.exports = function (eleventyConfig) {
     './src/assets/img/*': './assets/img/',
     './node_modules/alpinejs/dist/cdn.js': './assets/js/alpine.js',
     './node_modules/lunr/lunr.js': './assets/js/lunr.js',
+    './node_modules/@aha-app/netlify-flexsearch/index.js': './assets/js/flexsearch.js',
     './src/styles/extra.css': './extra.css'
   })
 
@@ -40,10 +42,10 @@ module.exports = function (eleventyConfig) {
     return content
   })
   
-  
+  eleventyConfig.addPlugin(svgContents)
 
   return {
-    pathPrefix: '/reading-room-platform',
+    // pathPrefix: '/reading-room-platform',
     dir: {
       input: 'src',
       includes: '_includes',

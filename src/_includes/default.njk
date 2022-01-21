@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="{{ '/extra.css' | url }}"/>
     {% block head %}{% endblock %}
     <script defer src="/assets/js/lunr.js?v={% version %}"></script>
-    <script defer src="/assets/js/lunridx.js?v={% version %}"></script>
     <script defer src="/assets/js/alpine.js?v={% version %}"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,5 +24,6 @@
     {% block content %}
       {{ content | safe }}
     {% endblock %}
+    <script defer type="module" src="/assets/js/search.mjs?v={% version %}"></script>
   </body>
 </html>
