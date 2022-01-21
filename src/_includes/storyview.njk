@@ -1,0 +1,31 @@
+{% extends "default.njk" %}
+
+{% block content %}
+  <div class="flex flex-col align-items-center gap-y-4
+              w-screen h-screen bg-primary
+              
+              text-center">
+
+    
+    {% include "header.njk" %}
+
+    {{ content | safe }}
+    
+    <div class="flex flex-row justify-between py-2 px-4"
+          style="border-top: black 1.5px solid;">
+      <div class="w-4 h-4">
+        {{ "/src/assets/img/icons/Back Icon - Black.svg" | svgContents | safe }}
+      </div>
+      <div class="w-4 h-4">
+        {{ "/src/assets/img/icons/Info Icon - Black.svg" | svgContents | safe }}
+      </div>
+      <div class="w-4 h-4">
+        {{ "/src/assets/img/icons/Share Icon - Black.svg" | svgContents | safe }}
+      </div>
+      <div class="w-4 h-4">
+        {{ "/src/assets/img/icons/Back Icon - Black.svg" | svgContents | safe }}
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

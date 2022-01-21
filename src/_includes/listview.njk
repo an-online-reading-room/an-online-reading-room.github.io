@@ -3,11 +3,11 @@
 {% block content %}
   <div class="flex flex-col align-items-center gap-y-4
               w-screen h-screen bg-primary
-              px-4
+              
               text-center">
 
     
-    <div>{% include "header.njk" %}</div>
+    {% include "header.njk" %}
 
     {{ content | safe }}
     

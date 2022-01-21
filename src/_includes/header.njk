@@ -1,10 +1,15 @@
 <header>
   <div>
     <div class="flex flex-row justify-between gap-x-2
-                pt-4"
-          x-data="{ openMenu: true, openAboutMenu: false, openFAQMenu: false }">
+                pt-4 px-4"
+          x-data="{ openMenu: false, 
+                    openAboutMenu: false, 
+                    openFAQMenu: false,
+                    openTermsMenu: false,
+                    openWorldbuildersMenu: false,
+                  }">
 
-      {# menu card #}
+      {# menu card start #}
       <div class="absolute inset-0 w-screen h-screen
                   bg-accent text-primary
                   pt-4 px-4 z-10"
@@ -35,25 +40,25 @@
           <div class="w-full h-16 pb-6 pt-4">
             <div class="w-8 h-8 mx-auto">
               <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9.9165 15.5625V27.4167C9.9165 28.3595 9.9165 28.8309 10.2094 29.1238C10.5023 29.4167 10.9737 29.4167 11.9165 29.4167H26.8748C27.8176 29.4167 28.289 29.4167 28.5819 29.1238C28.8748 28.8309 28.8748 28.3595 28.8748 27.4167V15.5625" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M31.7917 17.75L19.9725 9.40707C19.6268 9.16303 19.1649 9.16303 18.8192 9.40707L7 17.75" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M23.0417 28.6875V21.9375C23.0417 20.8329 22.1462 19.9375 21.0417 19.9375H17.75C16.6454 19.9375 15.75 20.8329 15.75 21.9375V28.6875" stroke="#EEE2D2" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M27.4165 14.1042V9" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M20 38.5C9.78273 38.5 1.5 30.2173 1.5 20H-1.5C-1.5 31.8741 8.12588 41.5 20 41.5V38.5ZM38.5 20C38.5 30.2173 30.2173 38.5 20 38.5V41.5C31.8741 41.5 41.5 31.8741 41.5 20H38.5ZM20 1.5C30.2173 1.5 38.5 9.78273 38.5 20H41.5C41.5 8.12588 31.8741 -1.5 20 -1.5V1.5ZM20 -1.5C8.12588 -1.5 -1.5 8.12588 -1.5 20H1.5C1.5 9.78273 9.78273 1.5 20 1.5V-1.5Z" fill="#EEE2D2"/>
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M23.5417 28.6875V21.9375C23.5417 20.8329 22.6462 19.9375 21.5417 19.9375H18.25C17.1454 19.9375 16.25 20.8329 16.25 21.9375V28.6875" stroke="#EEE2D2" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M27.9165 14.1042V9" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </div>
           </div>
 
-          <div class="py-3" x-on:click="openAboutMenu = !openAboutMenu">
+          <div class="py-3 cursor-pointer" x-on:click="openAboutMenu = !openAboutMenu">
             About
           </div>
-          <div class="py-3" x-on:click="openFAQMenu = !openFAQMenu">
+          <div class="py-3 cursor-pointer" x-on:click="openFAQMenu = !openFAQMenu">
             FAQ
           </div>
-          <div class="py-3">
+          <div class="py-3 cursor-pointer">
             Adventure Version
           </div>
-          <div class="py-3">
+          <div class="py-3 cursor-pointer">
             Storyteller
           </div>
           <div class="w-full h-16 pb-6 pt-4">
@@ -65,7 +70,7 @@
           </div>
         </div>
 
-        {# About Menu Card #}
+        {# About Menu Card Start #}
         <div class="absolute inset-0 w-screen h-screen
                   bg-accent text-primary
                   py-4 px-4 z-20 overflow-y-scroll"
@@ -114,12 +119,16 @@
               <p>While The Reading Room promotes outdoor interaction, please be aware that with the ongoing pandemic everyone must be careful while doing so or use our web version. </p>
             </div>
             <div>
-              <a href="" class="underline">Terms and Conditions</a>
+              <p x-on:click="openTermsMenu = !openTermsMenu" class="underline cursor-pointer">Terms and Conditions</p>
+            </div>
+            <div>
+              <p x-on:click="openWorldbuildersMenu = !openWorldbuildersMenu" class="underline cursor-pointer">Worldbuilders</p>
             </div>
           </div>
         </div>
+        {# About Menu Card End #}
 
-        {# FAQ Menu Card #}
+        {# FAQ Menu Card Start #}
         <div class="absolute inset-0 w-screen h-screen
                   bg-accent text-primary
                   py-4 px-4 z-20 overflow-y-scroll"
@@ -168,8 +177,105 @@
             </div>
           </div>
         </div>
+        {# FAQ Menu Card End #}
+
+        {# Worldbuilders Menu Card Start #}
+        <div class="absolute inset-0 w-screen h-screen
+                bg-accent text-primary
+                py-4 px-4 z-20 overflow-y-scroll"
+          x-show="openWorldbuildersMenu" x-transition>
+
+          <div class="flex flex-row justify-between gap-x-2">
+            <button class="w-8 h-8 focus:outline-none" 
+                    x-on:click="openWorldbuildersMenu = !openWorldbuildersMenu">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+
+            </button>
+
+            <button class="w-8 h-8 ml-auto focus:outline-none">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+              </svg>
+            </button>
+            <button class="w-8 h-8 focus:outline-none"
+                    x-on:click="openMenu = !openMenu">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col gap-y-4
+                      text-center font-display text-sm">
+            <h1 class="font-medium text-base">Worldbuilders</h1>
+            <div class="flex flex-col gap-y-3">
+              <p>The Reading Room is a team of diverse individuals who can’t wait to deep dive into your stories.</p>
+              <p>You can contact us at anonlinereadingroom@gmail.com</p>
+              <p>It is currently being developed under the C3: Codes, Creativity, Communities Grant from the Goethe-Institut Pune.</p>
+              <div>
+                <h2>Core Team</h2>
+                <p>Neeti, Shreya, Arindam, Anushka, George, Sudeepto, Ishwari, Karen, Pritha, Barnamala</p>
+              </div>
+              <h2>Collaborators</h2>
+            </div>
+          </div>
+
+        </div>
+        {# Worldbuilders Menu Card End #}
+
+        {# Terms Menu Card Start #}
+        <div class="absolute inset-0 w-screen h-screen
+                bg-accent text-primary
+                py-4 px-4 z-20 overflow-y-scroll"
+          x-show="openTermsMenu" x-transition>
+
+          <div class="flex flex-row justify-between gap-x-2">
+            <button class="w-8 h-8 focus:outline-none" 
+                    x-on:click="openTermsMenu = !openTermsMenu">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+
+            </button>
+
+            <button class="w-8 h-8 ml-auto focus:outline-none">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+              </svg>
+            </button>
+            <button class="w-8 h-8 focus:outline-none"
+                    x-on:click="openMenu = !openMenu">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col gap-y-4
+                      text-center font-display text-sm">
+            <h1 class="font-medium text-base">Terms and Conditions</h1>
+            <div class="flex flex-col gap-y-3">
+              <p>Coming soon...</p>
+            </div>
+          </div>
+
+        </div>
+        {# Terms Menu Card End #}
 
       </div>
+      {# menu card end #}
       
       <h1 class="text-2xl">The Reading Room</h1>
       
@@ -179,7 +285,11 @@
         </svg>
       </button>
       <button class="w-8 h-8 focus:outline-none"
-              x-on:click="openMenu = !openMenu; openAboutMenu = false; openFAQMenu = false;">
+              x-on:click="openMenu = !openMenu; 
+                          openAboutMenu = false; 
+                          openFAQMenu = false;
+                          openTermsMenu = false;
+                          openWorldbuildersMenu = false;">
         <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="20" cy="20" r="19.25" stroke="black" stroke-width="1.5"/>
           <path d="M12 13H28" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
