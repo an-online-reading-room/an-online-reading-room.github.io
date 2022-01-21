@@ -4,7 +4,10 @@
 {
   "id": "1",
   "title": "Title1",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna."
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna.",
+  "location": "Location",
+  "author": "Author",
+  "url": "title1"
 } 
 
   ,
@@ -13,7 +16,10 @@
 {
   "id": "2",
   "title": "title2",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna."
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna.",
+  "location": "Location",
+  "author": "Author",
+  "url": "title2"
 } 
 
   ,
@@ -22,7 +28,10 @@
 {
   "id": "3",
   "title": "Title3",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna."
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna.",
+  "location": "Location",
+  "author": "Author",
+  "url": "title3"
 } 
 
   ,
@@ -31,7 +40,10 @@
 {
   "id": "4",
   "title": "Title4",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna."
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna.",
+  "location": "Location",
+  "author": "Author",
+  "url": "title4"
 } 
 
   ,
@@ -40,7 +52,10 @@
 {
   "id": "5",
   "title": "Title5",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna."
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna.",
+  "location": "Location",
+  "author": "Author",
+  "url": "title5"
 } 
 
   ,
@@ -49,7 +64,10 @@
 {
   "id": "6",
   "title": "anushka",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna."
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat iaculis urna.",
+  "location": "Location",
+  "author": "Author",
+  "url": "anushka"
 } 
 
 
