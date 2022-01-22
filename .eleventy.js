@@ -18,7 +18,13 @@ module.exports = function (eleventyConfig) {
     './node_modules/alpinejs/dist/cdn.js': './assets/js/alpine.js',
     './node_modules/lunr/lunr.js': './assets/js/lunr.js',
     './node_modules/@aha-app/netlify-flexsearch/index.js': './assets/js/flexsearch.js',
-    './src/styles/extra.css': './extra.css'
+    './src/styles/extra.css': './extra.css',
+    './src/styles/annotator.min.css': './annotator.min.css',
+    './src/styles/annotator.touch.css': './annotator.touch.css',
+    './src/styles/richText-annotator.css': './richText-annotator.css',
+    './src/assets/js/skins/lightgray/content.min.css': './content.min.css',
+    './src/assets/js/skins/lightgray/skin.min.css': './skin.min.css',
+
   })
 
   eleventyConfig.addShortcode('version', function () {

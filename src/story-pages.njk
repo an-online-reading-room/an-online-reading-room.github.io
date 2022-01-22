@@ -8,22 +8,52 @@ permalink: "/stories/{{ story.url }}/"
 ---
 
 <div class="flex flex-col align-items-center gap-y-2 
-            h-full font-display
-            px-4">
-  <div class="px-1 text-base border text-left">
+            h-full font-display text-left
+            px-4 relative">
+  <div class="px-1 text-base border">
     {{ story.title }}
   </div>
 
-  <div class="text-sm border text-left 
-              flex-1
-              flex flex-col">
-    <div class="flex-1 px-1">{{ story.description }}</div>
-
-    
-    <div class="mt-auto self-end w-10 h-10">
+  <div id="content" class="flex-1 px-1 text-sm border">{{ story.description }}</div>
+  <div class="absolute bottom-0 right-4">
+    <div class="w-10 h-10">
       {{ "/src/assets/img/icons/Comment Icon - Black.svg" | svgContents | safe }}
     </div>
     
   </div>
 
 </div>
+
+<script>
+  jQuery(function ($) {
+    var content = $('#content').annotator();
+    content.annotator('addPlugin', 'Store', {
+      // The endpoint of the store on your server.
+      prefix: 'https://reading-room-backend.herokuapp.com/api',
+
+      // Attach the uri of the current page to all annotations to allow search.
+      annotationData: {
+        'uri': window.location.href
+      },
+
+      // This will perform a "search" action when the plugin loads. Will
+      // request the last 20 annotations for the current url.
+      // eg. /store/endpoint/search?limit=20&uri=http://this/document/only
+      loadFromSearch: {
+        'limit': 20,
+        'uri': window.location.href
+      }
+    });
+    content.annotator("addPlugin", "Touch");
+    content.annotator("addPlugin", "RichText", {
+      selector: "li.annotator-item textarea",
+      plugins: "media image insertdatetime link code",
+      menubar: false,
+      toolbar_items_size: 'small',
+      extended_valid_elements : "iframe[src|frameborder|style|scrolling|class|width|height|name|align|id]",
+      toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media rubric | code ",
+    });
+
+  });
+  
+</script>

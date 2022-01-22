@@ -4,7 +4,6 @@
 {% block content %}
   <div class="flex flex-col align-items-center gap-y-4
               w-screen h-screen bg-base
-              px-4
               text-center">
     {% include "header.njk" %}
 
@@ -12,13 +11,13 @@
       {{ "/src/assets/img/icons/Home Illustration.svg" | svgContents | safe }}
     </div>
 
-    <div class="h-1/5 py-6 flex flex-col gap-y-2
+    <div class="h-1/5 py-6 px-4 flex flex-col gap-y-2
                 font-display text-sm leading-4">
       <p>The Reading Room is an online platform for location-based storytelling.</p>
       <p>Our contributors come from across the world.  Join us and tell us your story, or go forth and discover stories that could make you fall in love with where you live. </p>  
     </div>
 
-    <div class="py-8
+    <div class="py-8 px-4
                 font-display text-xs">
       <p class="font-text">Are you a listener or a storyteller?</p>
       <div class="flex justify-evenly px-8 py-2">
