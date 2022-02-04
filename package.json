@@ -1,17 +1,20 @@
 {
   "scripts": {
-    "start": "node buildSearchIndex.js & DEBUG=Eleventy* eleventy --serve & npx tailwindcss -i src/styles/tailwind.css -c src/styles/tailwind.config.js -o _site/style.css --watch",
+    "start": "node buildSearchIndex.js & eleventy --serve & npx tailwindcss -i src/styles/tailwind.css -c src/styles/tailwind.config.js -o _site/style.css --watch",
     "build": "node buildSearchIndex.js & ELEVENTY_PRODUCTION=true eleventy && NODE_ENV=production npx tailwindcss -i src/styles/tailwind.css -c src/styles/tailwind.config.js -o _site/style.css --minify"
   },
   "devDependencies": {
     "@11ty/eleventy": "^1.0.0",
     "@aha-app/netlify-flexsearch": "^0.1.9",
     "alpinejs": "^3.7.0",
+    "axios": "^0.25.0",
+    "dotenv": "^16.0.0",
     "eleventy-plugin-svg-contents": "^0.7.0",
     "flexsearch": "^0.7.21",
     "html-minifier": "^4.0.0",
     "lunr": "^2.3.9",
     "node-fetch": "^2.6.7",
+    "qs": "^6.10.3",
     "tailwindcss": "^3.0.0"
   }
 }

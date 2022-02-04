@@ -1,7 +1,7 @@
 ---
 layout: storyview
 pagination:
-  data: _stories
+  data: stories
   size: 1
   alias: story
 permalink: "/stories/{{ story.url }}/"
@@ -14,7 +14,9 @@ permalink: "/stories/{{ story.url }}/"
     {{ story.title }}
   </div>
 
-  <div id="content" class="flex-1 px-1 text-sm border">{{ story.description }}</div>
+  <div id="content" class="flex-1 px-1 text-sm border">
+    {{ story.submission | safe }}
+  </div>
   <div class="absolute bottom-0 right-4">
     <div class="w-10 h-10">
       {{ "/src/assets/img/icons/Comment Icon - Black.svg" | svgContents | safe }}
@@ -27,7 +29,7 @@ permalink: "/stories/{{ story.url }}/"
 <script>
   jQuery(function ($) {
     var content = $('#content').annotator();
-    content.annotator('addPlugin', 'Store', {
+    {# content.annotator('addPlugin', 'Store', {
       // The endpoint of the store on your server.
       prefix: 'https://reading-room-backend.herokuapp.com/api',
 
@@ -43,16 +45,8 @@ permalink: "/stories/{{ story.url }}/"
         'limit': 20,
         'uri': window.location.href
       }
-    });
+    }); #}
     content.annotator("addPlugin", "Touch");
-    content.annotator("addPlugin", "RichText", {
-      selector: "li.annotator-item textarea",
-      plugins: "media image insertdatetime link code",
-      menubar: false,
-      toolbar_items_size: 'small',
-      extended_valid_elements : "iframe[src|frameborder|style|scrolling|class|width|height|name|align|id]",
-      toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media rubric | code ",
-    });
 
   });
   

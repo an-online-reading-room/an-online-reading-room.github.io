@@ -19,7 +19,7 @@
     
       <div v-for="item in results">
 				<a :href="'/stories/'+item.url" >
-					<div class="px-3 py-3
+					<div class="px-3 py-3 w-full
 										border border-black border-1
 										text-center font-text
 										inline-flex flex-col gap-y-1">
@@ -27,14 +27,14 @@
 							<h1>{% raw %}{{ item.title }}{% endraw %}</h1>
 						</div>
 						<div class="text-sm" >
-							<p> {% raw %}{{ item.author }}{% endraw %} </p>
+							<p> {% raw %}{{ item.author_name }}{% endraw %} </p>
 						</div>
 						<div class="text-sm">
 							<p> {% raw %}{{ item.location }}{% endraw %} </p>
 						</div>
-						<div class="text-sm">
-							<p> {% raw %}{{ item.description }}{% endraw %} </p>
-						</div>
+						{# <div class="text-sm">
+							<p> {% raw %}{{ item.submission }}{% endraw %} </p>
+						</div> #}
 						
 					</div>
 				</a>
@@ -62,7 +62,7 @@ const app = new Vue({
 		this.idx = lunr(function () {
 			this.ref('id');
 			this.field('title');
-			this.field('description');
+			this.field('submission');
 			docs.forEach(function (doc, idx) {
 				doc.id = idx;
 				this.add(doc); 
@@ -83,9 +83,9 @@ const app = new Vue({
 			// we need to add title, url from ref
 			results.forEach(r => {
 				r.title = this.docs[r.ref].title
-				r.author = this.docs[r.ref].author
+				r.author_name = this.docs[r.ref].author_name
 				r.location = this.docs[r.ref].location
-				r.description = this.docs[r.ref].description
+				r.submission = this.docs[r.ref].submission
 				r.url = this.docs[r.ref].url
 			});
 			this.results = results;

@@ -7,3 +7,5 @@ node_modules/
 
 # netlify search function
 src/functions/search*
+
+.env

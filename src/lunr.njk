@@ -4,13 +4,13 @@ permalink: /index.json
 ---
 
 [
-{% for story in _stories %}
+{% for story in stories %}
 {
   "id": "{{story.id}}",
   "title": "{{story.title}}",
-  "description": "{{story.description}}",
+  "submission": "{{story.submission}}",
   "location": "{{story.location}}",
-  "author": "{{story.author}}",
+  "author_name": "{{story.author_name}}",
   "url": "{{story.url}}"
 } 
 {% if loop.last === false %}
