@@ -1,5 +1,6 @@
 const htmlmin = require('html-minifier')
 const svgContents = require("eleventy-plugin-svg-contents")
+const svelte = require('./src/shortcodes/svelte')
 
 const now = String(Date.now())
 
@@ -7,10 +8,12 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addNunjucksFilter("str", function(value) {
     return JSON.stringify(value)
   })
+  eleventyConfig.addNunjucksAsyncShortcode('svelte', svelte)
 
   eleventyConfig.addWatchTarget('./src/styles/tailwind.config.js')
   eleventyConfig.addWatchTarget('./src/styles/tailwind.css')
   eleventyConfig.addWatchTarget('./src/styles/extra.css')
+  eleventyConfig.addWatchTarget('./src/svelte/**/*.(js|svelte)')
 
   eleventyConfig.addPassthroughCopy({
     './src/assets/js/*': './assets/js/',
