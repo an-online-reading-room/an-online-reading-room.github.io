@@ -32,5 +32,4 @@ async function getStories() {
   }
 }
 
-getStories()
 module.exports = getStories
