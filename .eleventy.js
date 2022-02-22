@@ -19,6 +19,7 @@ module.exports = function (eleventyConfig) {
     './src/assets/js/*': './assets/js/',
     './src/assets/img/*': './assets/img/',
     './node_modules/alpinejs/dist/cdn.js': './assets/js/alpine.js',
+    './node_modules/@editorjs/editorjs/dist/editor.js': './assets/js/editor.js',
     './node_modules/lunr/lunr.js': './assets/js/lunr.js',
     './node_modules/@aha-app/netlify-flexsearch/index.js': './assets/js/flexsearch.js',
     './src/styles/extra.css': './extra.css',

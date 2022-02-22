@@ -1,4 +1,5 @@
 import List from './components/List.svelte'
+import Form from './components/Form.svelte'
 
 function registerComponent (component, name) {
   document.querySelectorAll(`.${CSS.escape(name)}`).forEach($el => {
@@ -14,3 +15,4 @@ function registerComponent (component, name) {
 }
 
 registerComponent(List, 'svelte--List')
+registerComponent(Form, 'svelte--Form')

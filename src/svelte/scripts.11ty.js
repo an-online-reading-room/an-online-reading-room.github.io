@@ -3,7 +3,6 @@ const svelte = require('rollup-plugin-svelte');
 const nodeResolve = require('@rollup/plugin-node-resolve');
 const path = require('path')
 
-
 module.exports = class Scripts {
   data () {
     return {
@@ -14,6 +13,7 @@ module.exports = class Scripts {
 
   async render () {
     const build = await rollup.rollup({
+      external: ['@editorjs/editorjs', 'dotenv'],
       input: path.join(process.cwd(), 'src', 'svelte', 'index.js'),
       plugins: [
         svelte({

@@ -1,8 +1,11 @@
 <script>
+	// import dotenv from 'dotenv'
+	// dotenv.config()
 	import { onMount } from "svelte";
 
-	let query = '', stories = [], listItems = []
+	const API_URL = 'https://reading-room-backend.herokuapp.com/api'
 
+	let query = '', stories = [], listItems = []
 	const slugify = (str) => {
 		str = str.replace(/^\s+|\s+$/g, ''); // trim
 		str = str.toLowerCase();
@@ -22,7 +25,7 @@
 	};
 
 	onMount(async () => {
-		const res = await fetch('https://reading-room-backend.herokuapp.com/api/stories?populate=author,categories')
+		const res = await fetch(`${API_URL}/stories?populate=author,categories`)
 		stories = await res.json()
 		stories = stories.data
 		stories = stories.map(story => {
@@ -56,9 +59,12 @@
 			<input type="search" name="search-query" placeholder="Search for a story"
 						class="flex-1 py-1 bg-primary text-sm px-2 focus:outline-none"
 						bind:value={query}>
-			<button class="w-1/10 bg-primary focus:outline-none" 
+			<button class="w-8 h-8 bg-primary focus:outline-none" 
 							on:click={search}>
-				search
+				<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<circle cx="19" cy="19" r="7" stroke="#000002" stroke-width="1.5"/>
+				<path d="M28 28L25 25" stroke="#000002" stroke-width="1.5" stroke-linecap="round"/>
+				</svg>
 			</button>
 		</div>
 		
