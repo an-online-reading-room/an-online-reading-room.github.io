@@ -1,11 +1,8 @@
-_site/
 .DS_Store
-node_modules/
-
-# Local Netlify folder
-.netlify
-
-# netlify search function
-src/functions/search*
-
+node_modules
+/build
+/.svelte-kit
+/package
 .env
+.env.*
+!.env.example
