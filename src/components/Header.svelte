@@ -1,0 +1,314 @@
+<script>
+  let openMenu = false
+  let openAboutMenu = false
+  let openFAQMenu = false
+  let openTermsMenu = false
+  let openWorldbuildersMenu = false
+</script>
+
+<header>
+  <div>
+    <div class="flex-initial flex flex-row justify-between gap-x-2
+                pt-4 px-4">
+
+      <!-- menu card start -->
+      {#if openMenu}
+      <div class="absolute inset-0 w-screen h-screen
+                  bg-accent text-primary
+                  pt-4 px-4 z-10">
+
+        <div class="flex flex-row justify-end gap-x-2">
+          <button class="w-8 h-8 focus:outline-none">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+            </svg>
+          </button>
+          <button class="w-8 h-8 focus:outline-none"
+                  on:click={() => openMenu = !openMenu}>
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+            <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+
+        <div class="flex flex-col justify-center
+                    h-3/4
+                    divide-y divide-primary
+                    text-display text-base">
+          <div class="w-full h-16 pb-6 pt-4">
+            <div class="w-8 h-8 mx-auto">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M23.5417 28.6875V21.9375C23.5417 20.8329 22.6462 19.9375 21.5417 19.9375H18.25C17.1454 19.9375 16.25 20.8329 16.25 21.9375V28.6875" stroke="#EEE2D2" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M27.9165 14.1042V9" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="py-3 cursor-pointer" on:click={() => openAboutMenu = !openAboutMenu}>
+            About
+          </div>
+          <div class="py-3 cursor-pointer" on:click={() => openFAQMenu = !openFAQMenu}>
+            FAQ
+          </div>
+          <div class="py-3 cursor-pointer">
+            Adventure Version
+          </div>
+          <div class="py-3 cursor-pointer">
+            Storyteller
+          </div>
+          <div class="w-full h-16 pb-6 pt-4">
+            <div class="w-8 h-8 mx-auto">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="none" stroke="#EEE2D2" stroke-width="1.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Menu Card Start  -->
+        {#if openAboutMenu}
+        <div class="absolute inset-0 w-screen h-screen
+                  bg-accent text-primary
+                  py-4 px-4 z-20 overflow-y-scroll">
+
+          <div class="flex flex-row justify-between gap-x-2">
+            <button class="w-8 h-8 focus:outline-none" 
+                    on:click={() => openAboutMenu = !openAboutMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+
+            </button>
+
+            <button class="w-8 h-8 ml-auto focus:outline-none">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+              </svg>
+            </button>
+            <button class="w-8 h-8 focus:outline-none"
+                    on:click={() => openMenu = !openMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col gap-y-4
+                      text-center font-display text-sm">
+            <h1 class="font-medium text-base">About</h1>
+            <div>
+              <p>The Reading Room is a collaborative placemaking and location-based project developed by our contributors. We hope these stories make you feel connected through time and place. You can view these stories using our lite version, adventure version, or AR version.</p>
+              <p class="text-xxs">◆</p>
+              <h2 class="font-bold">Lite Version</h2>
+              <p>This version ensures you can smoothly view stories on a low-bandwidth. Unfortunately, some stories may not be accessible or can take a few minutes to load based on your internet speed. </p>
+              <h2 class="font-bold">Adventure Version</h2>
+              <p>This version is a Choose Your Own Adventure experience where you choose which stories or streets you’d like to walk down in order to read more stories. To navigate smoothly, please check our infographic on navigating.</p>
+              <h2 class="font-bold">AR Version</h2>
+              <p>This version is best experienced while walking around your neighbourhood. It is an augmented reality retelling that allows you to view stories through your phone screen. These stories can be played at physical locations in your neighbourhood.</p>
+              <p class="text-xxs">◆</p>
+              <p>While The Reading Room promotes outdoor interaction, please be aware that with the ongoing pandemic everyone must be careful while doing so or use our web version. </p>
+            </div>
+            <div>
+              <p on:click={() => openTermsMenu = !openTermsMenu} class="underline cursor-pointer">Terms and Conditions</p>
+            </div>
+            <div>
+              <p on:click={() => openWorldbuildersMenu = !openWorldbuildersMenu} class="underline cursor-pointer">Worldbuilders</p>
+            </div>
+          </div>
+        </div>
+        {/if}
+        <!-- About Menu Card End -->
+
+        <!-- FAQ Menu Card Start -->
+        {#if openFAQMenu}
+        <div class="absolute inset-0 w-screen h-screen
+                  bg-accent text-primary
+                  py-4 px-4 z-20 overflow-y-scroll">
+
+          <div class="flex flex-row justify-between gap-x-2">
+            <button class="w-8 h-8 focus:outline-none" 
+                    on:click={() => openFAQMenu = !openFAQMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+
+            </button>
+
+            <button class="w-8 h-8 ml-auto focus:outline-none">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+              </svg>
+            </button>
+            <button class="w-8 h-8 focus:outline-none"
+                    on:click={() => openMenu = !openMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col gap-y-4
+                      text-center font-display text-sm">
+            <h1 class="font-medium text-base">FAQ</h1>
+            <div>
+              <h2 class="font-bold">How can I be a part of The Reading Room?</h2>
+              <p>We welcome all to contribute as storytellers. We look specifically for stories that are rooted in a place. Every story is important as they add on to how your neighbourhood is seen and experienced by others. It is important to remember to be kind and responsible while sharing, and receive permission if sharing stories that are not your own. If you aren’t sure of what to say, here are our prompts to get you started. </p>
+              <p class="text-xxs">◆</p>
+              <h2 class="font-bold">How do I use the Storybuilder?</h2>
+              <p>The storybuilder is a tool you can use to tell your story. <a href="" class="underline">Here is a link to a tutorial.</a></p>
+              <p class="text-xxs">◆</p>
+              <h2 class="font-bold">Can I share these stories?</h2>
+              <p>Yes, please do! We hope sharing will gather more storytellers to share with us. Please ensure you credit the authors appropriately. Go through our terms and conditions for a further grasp on what can be shared. </p>
+              <p class="text-xxs">◆</p>
+            </div>
+          </div>
+        </div>
+        {/if}
+        <!-- FAQ Menu Card End -->
+
+        <!-- Worldbuilders Menu Card Start -->
+        {#if openWorldbuildersMenu}
+        <div class="absolute inset-0 w-screen h-screen
+                bg-accent text-primary
+                py-4 px-4 z-20 overflow-y-scroll">
+
+          <div class="flex flex-row justify-between gap-x-2">
+            <button class="w-8 h-8 focus:outline-none" 
+                    on:click={() => openWorldbuildersMenu = !openWorldbuildersMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+
+            </button>
+
+            <button class="w-8 h-8 ml-auto focus:outline-none">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+              </svg>
+            </button>
+            <button class="w-8 h-8 focus:outline-none"
+                    on:click={() => openMenu = !openMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col gap-y-4
+                      text-center font-display text-sm">
+            <h1 class="font-medium text-base">Worldbuilders</h1>
+            <div class="flex flex-col gap-y-3">
+              <p>The Reading Room is a team of diverse individuals who can’t wait to deep dive into your stories.</p>
+              <p>You can contact us at anonlinereadingroom@gmail.com</p>
+              <p>It is currently being developed under the C3: Codes, Creativity, Communities Grant from the Goethe-Institut Pune.</p>
+              <div>
+                <h2>Core Team</h2>
+                <p>Neeti, Shreya, Arindam, Anushka, George, Sudeepto, Ishwari, Karen, Pritha, Barnamala</p>
+              </div>
+              <h2>Collaborators</h2>
+            </div>
+          </div>
+
+        </div>
+        {/if}
+        <!-- Worldbuilders Menu Card End -->
+
+        <!-- Terms Menu Card Start -->
+        {#if openTermsMenu}
+        <div class="absolute inset-0 w-screen h-screen
+                bg-accent text-primary
+                py-4 px-4 z-20 overflow-y-scroll">
+
+          <div class="flex flex-row justify-between gap-x-2">
+            <button class="w-8 h-8 focus:outline-none" 
+                    on:click={() => openTermsMenu = !openTermsMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+
+            </button>
+
+            <button class="w-8 h-8 ml-auto focus:outline-none">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+              </svg>
+            </button>
+            <button class="w-8 h-8 focus:outline-none"
+                    on:click={() => openMenu = !openMenu}>
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col gap-y-4
+                      text-center font-display text-sm">
+            <h1 class="font-medium text-base">Terms and Conditions</h1>
+            <div class="flex flex-col gap-y-3">
+              <p>Coming soon...</p>
+            </div>
+          </div>
+
+        </div>
+        {/if}
+        <!-- Terms Menu Card End -->
+
+      </div>
+      {/if}
+      <!-- menu card end -->
+      
+      <a href="/">
+        <h1 class="text-2xl">The Reading Room</h1>
+      </a>
+      
+      <button class="w-8 h-8 focus:outline-none ml-auto">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+        </svg>
+      </button>
+      <button class="w-8 h-8 focus:outline-none"
+              on:click={() => {
+                openMenu = !openMenu; 
+                openAboutMenu = false; 
+                openFAQMenu = false;
+                openTermsMenu = false;
+                openWorldbuildersMenu = false; 
+              }}>
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="19.25" stroke="black" stroke-width="1.5"/>
+          <path d="M12 13H28" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M12 20H28" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M12 27H28" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      
+    </div>
+  </div>
+</header>

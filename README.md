@@ -1,37 +1,40 @@
-# reading room platform for [C3](https://www.goethe.de/ins/in/en/sta/mum/ueb/c3.html)
+# create-svelte
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a62fde10-43d7-41e9-adf6-8b702f10ad21/deploy-status)](https://app.netlify.com/sites/the-reading-room/deploys)
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
-## Getting Started
+## Creating a project
 
-### 1. Clone this repository
+If you're seeing this, you've probably already done this step. Congrats!
 
-```
-git clone https://github.com/an-online-reading-room/reading-room-platform.git 
-```
+```bash
+# create a new project in the current directory
+npm init svelte@next
 
-### 2. Navigate to the directory
-
-```
-cd reading-room-platform
+# create a new project in my-app
+npm init svelte@next my-app
 ```
 
-### 3. Install the dependencies
+> Note: the `@next` is temporary
 
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
-npm install
+
+## Building
+
+To create a production version of your app:
+
+```bash
+npm run build
 ```
 
-### 4. Run Eleventy
+You can preview the production build with `npm run preview`.
 
-```
-npm run start
-```
-
-## TODOS
-
-  - [ ] logo - favicon
-  - [x] netlify deploy 
-  - [ ] netlify function - search
-  - [ ] story page
-  - [ ] annotations
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
