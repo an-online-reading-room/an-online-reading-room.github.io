@@ -26,50 +26,59 @@
 <script >
   
   import Icon from '../../components/Icon.svelte'
-  import '@recogito/recogito-js/dist/recogito.min.css';
-
   
   export let story
   let openInfoCard = false
   let openShareCard = false
   let openCommentCard = false
-  let annotationsArea
+  let selectionControls, annotationTextControl
 
-  onMount(async () => {
-    // const Recogito = (await import('@recogito/recogito-js')).default
+  const showSelectionControls = () => {
+    let selection = document.getSelection()
+    let text = selection.toString()
+    if(text !== "") {
+      let rect = selection.getRangeAt(0).getBoundingClientRect()
+      selectionControls.style.top = `calc(${rect.top}px - 48px)`
+      selectionControls.style.left = `calc(${rect.left}px + calc(${rect.width}px / 2) - 40px)`
+      selectionControls['text'] = text
+      document.body.appendChild(selectionControls)
+    }
+  }
+  const removeControls = () => {
+    let controls = [
+      document.querySelector('#selection-controls'),
+      document.querySelector('#selection-text-annotation')
+    ]
+    controls.forEach(control => {
+      if(control !== null) {
+        control.remove()
+        document.getSelection().removeAllRanges()
+      }
+    })
+    
+  }
 
-    annotationsArea = Recogito.init({
-        content: 'content' // ID or DOM element
-      });
-    // jQuery(function ($) {
-    //     $('#content')
-    //     .annotator()
-    //     .annotator('setupPlugins', {}, {
-    //       // Disable the tags plugin
-    //       Tags: false,
-    //       // Filter plugin options
-    //       Filter: {
-    //         addAnnotationFilter: false, // Turn off default annotation filter
-    //         filters: [{label: 'Quote', property: 'quote'}] // Add a quote filter
-    //       }
-    //     })
-    //     .annotator('addPlugin', 'Touch', {
-    //       force: true,
-    //       useHighlighter: true
-    //     });
-    // });
+  const showAnnotationTextControl = () => {
+
+    let selection = document.querySelector('#selection-controls')
+    let pos = selection.style
+    console.log(annotationTextControl)
+    annotationTextControl.style.top = pos.top
+    annotationTextControl.style.left = pos.left
+    annotationTextControl['text'] = selection.getAttribute('text')
+    document.body.appendChild(annotationTextControl)
+    
+  }
+
+  onMount(() => {
+    // document.body.onpointerdown = removeControls
+    
+    
   })
 
 </script>
 
-<svelte:head>
-  <link rel="stylesheet" href="/libs/annotator/annotator.min.css">
-  <link rel="stylesheet" href="/libs/annotator/annotator.touch.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/libs/annotator/annotator-full.min.js" />
-  <script src="/libs/annotator/annotator.touch.min.js" />
-  <script src="/libs/recogito.min.js" />
-</svelte:head>
+
 
 <div class="flex flex-col align-items-center gap-y-4
             w-screen h-full bg-primary
@@ -85,13 +94,13 @@
 
     <div class="flex-1 text-sm border
                 flex flex-col">
-      <div id="content" class="px-1">
+      <div id="content" on:pointerup={showSelectionControls} class="px-1">
         {#each story.submission.blocks as block}
           {block.data.text}
           <br/>
         {/each}
-      
       </div>
+
       <div class="ml-auto mt-auto">
 
         {#if openCommentCard}
@@ -212,3 +221,21 @@
     </div>
   </div>
 </div>
+
+<section class="hidden">
+  <span bind:this={selectionControls} id="selection-controls">
+    <main class="flex flex-row gap-x-3 justify-between p-3
+                text-primary bg-accent underline">
+      <button on:click={showAnnotationTextControl} id="btn-annotate">text</button>
+      <button id="btn-upload">upload</button>
+      <button id="btn-link">link a story</button>
+    </main>
+  </span>
+
+  <span bind:this={annotationTextControl} id="selection-text-annotation">
+    <main style="background-color: red">
+      <input type="text" name="annotation" id="annotation">
+      <button>annotate</button>
+    </main>
+  </span>
+</section>
