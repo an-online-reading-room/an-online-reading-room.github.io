@@ -18,3 +18,28 @@ body>div {
 .annotator-touch-widget {
   display: none;
 }
+
+#selection-controls {
+  cursor: pointer;
+  position: absolute;
+  height: 40px;
+  border-radius: 2px;
+  background-color: #6A735A;
+}
+#selection-controls::before{
+  position: absolute;
+  content: '';
+  border-top: 10px solid #6A735A;
+  border-left:10px solid transparent;
+  border-right: 10px solid transparent;
+  left: 50px;
+  top: 40px;
+}
+
+#selection-text-annotation {
+  cursor: pointer;
+  position: absolute;
+  height: 40px;
+  border-radius: 2px;
+  background-color: red;
+}
