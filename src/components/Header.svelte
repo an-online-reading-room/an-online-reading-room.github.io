@@ -172,7 +172,7 @@
               <p>We welcome all to contribute as storytellers. We look specifically for stories that are rooted in a place. Every story is important as they add on to how your neighbourhood is seen and experienced by others. It is important to remember to be kind and responsible while sharing, and receive permission if sharing stories that are not your own. If you aren’t sure of what to say, here are our prompts to get you started. </p>
               <p class="text-xxs">◆</p>
               <h2 class="font-bold">How do I use the Storybuilder?</h2>
-              <p>The storybuilder is a tool you can use to tell your story. <a href="" class="underline">Here is a link to a tutorial.</a></p>
+              <p>The storybuilder is a tool you can use to tell your story. <a href="/" class="underline">Here is a link to a tutorial.</a></p>
               <p class="text-xxs">◆</p>
               <h2 class="font-bold">Can I share these stories?</h2>
               <p>Yes, please do! We hope sharing will gather more storytellers to share with us. Please ensure you credit the authors appropriately. Go through our terms and conditions for a further grasp on what can be shared. </p>

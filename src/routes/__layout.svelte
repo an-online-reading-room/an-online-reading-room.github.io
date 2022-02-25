@@ -1,5 +1,6 @@
 <script>
   import "../app.css";
+  import "../extra.css"
 </script>
 
 
@@ -19,8 +20,8 @@
 </svelte:head>
 
 
-<main class="h-full font-display bg-primary">
-  <slot />
+<main class="h-screen font-display bg-primary">
+  <slot></slot>
 </main>
 
 
