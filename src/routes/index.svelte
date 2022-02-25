@@ -1,3 +1,7 @@
+<script>
+  import Icon from '../components/Icon.svelte'
+</script>
+
 <div class="flex flex-col items-center
             w-screen h-screen bg-primary
             px-12 
@@ -8,7 +12,7 @@
   </div>
 
   <div class="h-36 w-36">
-    
+    <Icon src="/icons/Home Illustration.svg" alt="home illustration" />
   </div>
 
   <div class="h-1/5 px-10 py-6
@@ -24,7 +28,7 @@
 
   <div class="py-8
               font-display text-xxs">
-    <p class="bg-accent w-full">a</p>
+    
     <p>For best experience use the adventure version</p>
   </div>
 

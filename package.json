@@ -33,6 +33,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@editorjs/editorjs": "^2.23.2"
+    "@editorjs/editorjs": "^2.23.2",
+    "@recogito/recogito-js": "^1.7.1"
   }
 }
