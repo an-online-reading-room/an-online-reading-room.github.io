@@ -51,18 +51,25 @@
             </div>
           </div>
 
-          <div class="py-3 cursor-pointer" on:click={() => openAboutMenu = !openAboutMenu}>
-            About
-          </div>
-          <div class="py-3 cursor-pointer" on:click={() => openFAQMenu = !openFAQMenu}>
-            FAQ
-          </div>
-          <div class="py-3 cursor-pointer">
-            Adventure Version
-          </div>
-          <div class="py-3 cursor-pointer">
-            Storyteller
-          </div>
+          <nav class="flex flex-col divide-y divide-primary">
+            <div class="py-3 cursor-pointer" on:click={() => openAboutMenu = !openAboutMenu}>
+              About
+            </div>
+            <div class="py-3 cursor-pointer" on:click={() => openFAQMenu = !openFAQMenu}>
+              FAQ
+            </div>
+            <a href="/adventure" on:click={() => openMenu = !openMenu}>
+              <div class="py-3 cursor-pointer">
+                Adventure Version
+              </div>
+            </a>
+            <a href="/storybuilder" on:click={() => openMenu = !openMenu}>
+              <div class="py-3 cursor-pointer">
+                Storyteller
+              </div>
+            </a>
+          </nav>
+          
           <div class="w-full h-16 pb-6 pt-4">
             <div class="w-8 h-8 mx-auto">
               <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
