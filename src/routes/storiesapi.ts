@@ -22,13 +22,14 @@ export async function get(): Promise<EndpointOutput> {
   const res = await fetch('https://reading-room-backend.herokuapp.com/api/stories?populate=author,categories')
   let data = await res.json()
   data = data.data.map(story => {
+    const author_name = story.attributes.author.data.attributes.username
     return {
       id: story.id,
       title: story.attributes.title,
       submission: story.attributes.submission,
       location: story.attributes.location,
-      author_name: story.attributes.author.data.attributes.username,
-      url: slugify(story.attributes.title),
+      author_name: author_name,
+      url: slugify(author_name + '-' + story.attributes.title),
       categories: story.attributes.categories.data.map(category => category.attributes.name)
     }
   })
