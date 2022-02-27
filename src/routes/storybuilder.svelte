@@ -1,11 +1,18 @@
 <script>
   import Header from '../components/Header.svelte'
+  import { getSuggestions } from '../services/autocomplete'
   import { onMount } from "svelte";
   import "../form.css"
   import "leaflet/dist/leaflet.css"
   
   const API_URL = 'https://reading-room-backend.herokuapp.com/api'
   let form, editor
+  let locationInput = ''
+  let locationSuggestions = []
+  $: {
+    getSuggestions(locationInput)
+    .then(data => locationSuggestions = data)
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -100,16 +107,16 @@
   
       <fieldset>
         <legend class="hidden">Location</legend>
-        <input type="text" name="location" id="location" placeholder="Add Location" require
-                class="w-full px-2 py-2 border placeholder:text-black">
+        <input bind:value={locationInput} type="text" name="location" id="location" placeholder="Add Location" required
+                class="w-full px-2 py-2 border placeholder:text-black"
+                list="location-suggestions">
+        <datalist id="location-suggestions">
+          {#each locationSuggestions as suggestion} 
+            <option value={suggestion}> {suggestion} </option>
+          {/each}
+        </datalist>
       </fieldset>
   
-      <!-- <fieldset>
-        <legend class="hidden">Storyblock</legend>
-        <input type="text" name="story" id="story" placeholder="Add Storyblock"
-                class="w-full px-2 py-2 border placeholder:text-black">
-        
-      </fieldset> -->
       <section class="w-full placeholder:text-black"
                id="editor"></section>
       
