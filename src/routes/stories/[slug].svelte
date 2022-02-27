@@ -94,7 +94,7 @@
 
     <div class="flex-1 text-sm border
                 flex flex-col">
-      <div id="content" on:pointerup={showSelectionControls} class="px-1">
+      <div id="content" on:pointerup={showSelectionControls} class="p-2">
         {#each story.submission.blocks as block}
           {block.data.text}
           <br/>
@@ -144,6 +144,10 @@
       <div class="border border-primary text-left
                   p-1">
         {story.location}
+      </div>
+      <div class="border border-primary text-left
+                  p-1 text-sm">
+        {story.description}
       </div>
     </div>
   </div>

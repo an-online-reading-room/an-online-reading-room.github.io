@@ -17,5 +17,5 @@
 </section>
 
 <footer class="mt-auto pb-3 font-text text-xs">
-  <p>Click <a class="underline" href="/storybuilder">here</a> if you are a storyteller.</p>
+  <p>Click <a class="underline" href="/storyteller">here</a> if you are a storyteller.</p>
 </footer>

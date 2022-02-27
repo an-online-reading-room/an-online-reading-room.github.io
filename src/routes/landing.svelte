@@ -27,7 +27,7 @@
           Listener
         </button>
       </a>
-      <a href="/storybuilder">
+      <a href="/storyteller">
         <button class="font-display text-sm px-4 py-2 bg-black text-white">
           Storyteller
         </button>

@@ -1,6 +1,6 @@
 <script>
   import Header from '../components/Header.svelte'
-  import { getSuggestions } from '../services/autocomplete'
+  import { getSuggestions } from '../services/geocode'
   import { onMount } from "svelte";
   import "../form.css"
   import "leaflet/dist/leaflet.css"
@@ -27,6 +27,7 @@
       data: {
         title: data.get('title'),
         location: data.get('location'),
+        description: data.get('description')
       }
     }
     editor.save().then(data => {
@@ -61,22 +62,7 @@
       placeholder: 'Add Storyblock'
     })
 
-    const L = (await import('leaflet')).default
-    const geocoder = (await import('pelias-leaflet-plugin')).default
-    let map = L.map('map').setView([20.5937, 78.9629], 4);
-    L.tileLayer('https://api.mapbox.com/styles/v1/thereadingroom/ckz5ecvwu000c14pi4cc6z3kr/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoidGhlcmVhZGluZ3Jvb20iLCJhIjoiY2t6NWNicmxlMHAyZzJucW9ydTNrenA0eiJ9.zQ2AECdzKcl5TrQXrGqPeA', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-        accessToken: 'pk.eyJ1IjoidGhlcmVhZGluZ3Jvb20iLCJhIjoiY2t6NWNicmxlMHAyZzJucW9ydTNrenA0eiJ9.zQ2AECdzKcl5TrQXrGqPeA'
-    }).addTo(map);
-
-    var geocoderOptions = {
-      focus: true,
-      
-    };
+    
   })
 </script>
 
@@ -87,7 +73,7 @@
   
 
   <main>
-    <section id="map" class="h-0 w-0"></section>
+    
 
     <form bind:this={form} enctype="multipart/form-data" method="post"
           class="flex flex-col gap-4 px-4 py-8
@@ -115,6 +101,12 @@
             <option value={suggestion}> {suggestion} </option>
           {/each}
         </datalist>
+      </fieldset>
+
+      <fieldset>
+        <legend class="hidden">Description</legend>
+        <input type="text" name="description" id="desciption" placeholder="Brief description" maxlength="400" required
+                class="w-full px-2 py-2 border placeholder:text-black">
       </fieldset>
   
       <section class="w-full placeholder:text-black"

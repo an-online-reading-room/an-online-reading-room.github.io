@@ -63,7 +63,7 @@
                 Adventure Version
               </div>
             </a>
-            <a href="/storybuilder" on:click={() => openMenu = !openMenu}>
+            <a href="/storyteller" on:click={() => openMenu = !openMenu}>
               <div class="py-3 cursor-pointer">
                 Storyteller
               </div>

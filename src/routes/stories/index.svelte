@@ -7,7 +7,7 @@
 		const tags = await fetch('/tagsapi')
 		let storiesData = await stories.json()
 		let tagsData = await tags.json()
-		return { props: { listItems: storiesData, stories: storiesData, tags: tagsData.slice(0, ) }}
+		return { props: { listItems: storiesData, stories: storiesData, tags: tagsData.slice(0, 6) }}
 	}
 
 	
