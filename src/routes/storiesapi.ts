@@ -28,6 +28,7 @@ export async function get(): Promise<EndpointOutput> {
       title: story.attributes.title,
       submission: story.attributes.submission,
       location: story.attributes.location,
+      description: story.attributes.description,
       author_name: author_name,
       url: slugify(author_name + '-' + story.attributes.title),
       categories: story.attributes.categories.data.map(category => category.attributes.name)
