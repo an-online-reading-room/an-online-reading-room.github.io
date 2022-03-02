@@ -70,6 +70,19 @@
     
   }
 
+  const copyPageLink = () => {
+    // let temp = document.createElement('input')
+    // temp.classList.add('hidden')
+    // document.body.appendChild(temp)
+    // temp.value = encodeURI(window.location.href)
+    // console.log(temp.value)
+    // temp.select()
+    // let result = document.execCommand('copy') 
+    // document.body.removeChild(temp)
+    navigator.clipboard.writeText(window.location.href)
+    openShareCard = false
+  }
+
   onMount(() => {
     // document.body.onpointerdown = removeControls
     
@@ -171,9 +184,15 @@
           <a href="#">
             <Icon src="/icons/Share - Instagram Icon.svg" alt="share - instagram" />
           </a>
-          <Icon src="/icons/Share - Email Icon.svg" alt="share - email" />
-          <Icon src="/icons/Share - Message Icon.svg" alt="share - message" />
-          <Icon src="/icons/Share - URL Icon.svg" alt="share - url" />
+          <a href={"mailto:?subject="+story.url}>
+            <Icon src="/icons/Share - Email Icon.svg" alt="share - email" />
+          </a>
+          <a href={"sms:?body="+story.url}>
+            <Icon src="/icons/Share - Message Icon.svg" alt="share - message" />
+          </a>
+          <a href={window.location.href} on:click={copyPageLink}>
+            <Icon src="/icons/Share - URL Icon.svg" alt="share - url" />
+          </a>
         </div>
       </div>
     </div>
