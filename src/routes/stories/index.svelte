@@ -1,13 +1,17 @@
 <script lang="ts" context="module">
 	
-	import type { Load } from "@sveltejs/kit";
+	import type { Load } from "@sveltejs/kit"
 
 	export const load: Load = async ({ params, fetch, session, stuff }) => {
 		const stories = await fetch('/storiesapi')
 		const tags = await fetch('/tagsapi')
 		let storiesData = await stories.json()
 		let tagsData = await tags.json()
-		return { props: { listItems: storiesData, stories: storiesData, tags: tagsData.slice(0, 6) }}
+		return { props: { 
+			listItems: storiesData, 
+			stories: storiesData, 
+			tags: tagsData.slice(0, 6),
+		}}
 	}
 
 	
@@ -15,9 +19,9 @@
 
 <script>
 
-	import {goto} from '$app/navigation';
-	
-	export let listItems, stories, tags
+	import { visited } from '../../stores/visited'
+
+	export let listItems, stories, tags 
   let open = false
 	let query = ''
 	let locationQuery = ''
@@ -47,6 +51,11 @@
 		tagQuery = ''
 		open = false
 	}
+
+	const visitStory = (id) => {
+		visited.set([...$visited, id])
+	}
+
 </script>
 
 
@@ -73,11 +82,12 @@
 							flex flex-col gap-y-4">
 			{#each listItems as story}
 			<div>
-				<a href="/stories/{story.url}" >
-					<div class="px-3 py-3 w-full
+				<a href="/stories/{story.url}" on:click={() => visitStory(story.id)}>
+					<div class="px-3 py-3 w-full 
 										border border-black border-1
 										text-center font-text
-										inline-flex flex-col gap-y-1">
+										inline-flex flex-col gap-y-1
+										{$visited.includes(story.id) == true ? 'bg-accent text-primary' : 'bg-primary'}">
 						<div class="text-base font-display">
 							<h1>{story.title}</h1>
 						</div>
@@ -86,6 +96,9 @@
 						</div>
 						<div class="text-sm">
 							<p>{story.location}</p>
+						</div>
+						<div class="text-sm">
+							<p>{story.description}</p>
 						</div>
 						
 						
