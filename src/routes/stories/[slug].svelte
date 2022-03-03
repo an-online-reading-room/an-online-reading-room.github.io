@@ -3,10 +3,7 @@
   import { onMount } from 'svelte';
 
   export const load: Load = async ({ params, fetch, session, stuff }) => {
-      // The params object will contain all of the parameters in the route.
       const { slug } = params;
-
-      // Now, we'll fetch the blog post from Strapi
       const res = await fetch('/storiesapi');
 
       // A 404 status means "NOT FOUND"
@@ -24,50 +21,25 @@
 </script>
 
 <script >
-  
   import Icon from '../../components/Icon.svelte'
+  import TextSelection from '../../components/TextSelection.svelte';
   
   export let story
+  let reader, scrollWindow
+  let cnv, ctx, isPainting = false, startX, startY
   let openInfoCard = false
   let openShareCard = false
   let openCommentCard = false
-  let selectionControls, annotationTextControl
+  let showAnnotationView = false
 
-  const showSelectionControls = () => {
-    let selection = document.getSelection()
-    let text = selection.toString()
-    if(text !== "") {
-      let rect = selection.getRangeAt(0).getBoundingClientRect()
-      selectionControls.style.top = `calc(${rect.top}px - 48px)`
-      selectionControls.style.left = `calc(${rect.left}px + calc(${rect.width}px / 2) - 40px)`
-      selectionControls['text'] = text
-      document.body.appendChild(selectionControls)
+  $: {
+    if(showAnnotationView === true) {
+      story.annotations.forEach(annotation => showAnnotation(annotation))
+      cnv.height = reader.offsetHeight
+      cnv.width = reader.offsetWidth
+      cnv.classList.remove('hidden')
+      initialiseCanvas()
     }
-  }
-  const removeControls = () => {
-    let controls = [
-      document.querySelector('#selection-controls'),
-      document.querySelector('#selection-text-annotation')
-    ]
-    controls.forEach(control => {
-      if(control !== null) {
-        control.remove()
-        document.getSelection().removeAllRanges()
-      }
-    })
-    
-  }
-
-  const showAnnotationTextControl = () => {
-
-    let selection = document.querySelector('#selection-controls')
-    let pos = selection.style
-    console.log(annotationTextControl)
-    annotationTextControl.style.top = pos.top
-    annotationTextControl.style.left = pos.left
-    annotationTextControl['text'] = selection.getAttribute('text')
-    document.body.appendChild(annotationTextControl)
-    
   }
 
   const copyPageLink = () => {
@@ -83,11 +55,55 @@
     openShareCard = false
   }
 
-  onMount(() => {
-    // document.body.onpointerdown = removeControls
+  const showAnnotation = (annotation) => {
+    const block = document.querySelector(`section#${annotation.blockID}`)
+    const target = block.innerHTML.substring(annotation.startOffset, annotation.startOffset+annotation.length)
+    const newHTML = block.innerHTML.substring(0, annotation.startOffset) + 
+                    `<span class="highlight">${target}</span>` + 
+                    block.innerHTML.substring(annotation.startOffset, annotation.startOffset+annotation.length)
+    block.innerHTML = newHTML
     
+    const rect = document.querySelector(`section#${annotation.blockID} span`).getBoundingClientRect()
+    const comment = document.querySelector(`section#anno-${annotation.blockID}`)
+    comment.classList.remove('hidden')
+    comment.style.top = `calc(${rect.bottom + scrollWindow.scrollTop}px + 0px)`
+    comment.style.left = "1.5rem"
+    block.appendChild(comment)
+    // console.log(reader)
     
-  })
+  }
+
+  const draw = (e) => {
+    if(!isPainting) {
+      return;
+    }
+    console.log('info: drawing')
+
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#6A735A'
+
+    ctx.lineTo(e.clientX - scrollWindow.offsetLeft, e.clientY - scrollWindow.offsetTop);
+    ctx.stroke();
+}
+
+  const initialiseCanvas = () => {
+    ctx = cnv.getContext('2d')
+    cnv.addEventListener('pointerdown', (e) => {
+      console.log('info: beginning draw')
+      isPainting = true;
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+
+    cnv.addEventListener('pointerup', e => {
+      isPainting = false;
+      ctx.stroke();
+      ctx.beginPath();
+    });
+
+    cnv.addEventListener('pointermove', draw);
+  }
 
 </script>
 
@@ -97,53 +113,66 @@
             w-screen h-full bg-primary
             text-center relative">
     
-  <div class="overflow-y-scroll flex-1
+  <div bind:this={scrollWindow} class="overflow-y-scroll flex-1
               flex flex-col align-items-center gap-y-2
               font-display text-left
-              px-4">
+              px-4 relative">
     <div class="px-1 text-base border">
       {story.title}
     </div>
 
     <div class="flex-1 text-sm border
-                flex flex-col">
-      <div id="content" on:pointerup={showSelectionControls} class="p-2">
+                flex flex-col relative">
+      <div bind:this={reader} id="reader" class="{showAnnotationView == true ? 'blur-sm p-2' : 'p-2'}">
         {#each story.submission.blocks as block}
-          {block.data.text}
-          <br/>
+          <section id={block.id}>{block.data.text}</section>
+          
         {/each}
       </div>
 
       <div class="ml-auto mt-auto">
 
         {#if openCommentCard}
-          <div class="flex flex-row">
-            <button>
-              <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
-            </button>
-            <button>
-              <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
-            </button>
-            <button>
-              <Icon src="/icons/Comment - Delete Icon.svg"    alt="comment - delete" />
-            </button>
-            <button>
-              <Icon src="/icons/Comment - Save Icon.svg"      alt="comment - save" />
-            </button>
-            <button on:click={() => { openCommentCard = !openCommentCard }}>
-              <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
-            </button>
-          </div>
-        {:else}
-          <button class="px-3 py-2 bg-black text-white"
-                  on:click={() => { openCommentCard = !openCommentCard }}>
-            Leave a Note
+        <div class="flex flex-row">
+          <button>
+            <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
           </button>
+          <button>
+            <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
+          </button>
+          
+          <button on:click={() => { openCommentCard = !openCommentCard }}>
+            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
+          </button>
+        </div>
+        {:else if showAnnotationView} 
+        <button class="px-3 py-2 bg-black text-white"
+                  on:click={() => { openCommentCard = !openCommentCard }}>
+          Leave a Note
+        </button>
+        {:else}
+        <button on:click={() => { showAnnotationView = !showAnnotationView }}>
+          <Icon src="/icons/Comment Button - White on Black.svg" alt="show comments" />
+        </button>
         {/if}
       </div>
-    </div>
 
+      <canvas bind:this={cnv} class="hidden absolute left-0 top-0">
+        your browser does not support the canvas
+      </canvas>
+     
+    </div>
   </div>
+
+  <!-- annotation view -->
+  {#each story.annotations as annotation}
+  <section class="{`hidden absolute bg-accent text-primary p-2`}" id={"anno-"+annotation.blockID}>
+    <p>{annotation.content}</p>
+  </section>
+  {/each}
+  
+
+  
 
   {#if openInfoCard}
   <div class="absolute inset-x-0 bottom-8
@@ -245,20 +274,4 @@
   </div>
 </div>
 
-<section class="hidden">
-  <span bind:this={selectionControls} id="selection-controls">
-    <main class="flex flex-row gap-x-3 justify-between p-3
-                text-primary bg-accent underline">
-      <button on:click={showAnnotationTextControl} id="btn-annotate">text</button>
-      <button id="btn-upload">upload</button>
-      <button id="btn-link">link a story</button>
-    </main>
-  </span>
-
-  <span bind:this={annotationTextControl} id="selection-text-annotation">
-    <main style="background-color: red">
-      <input type="text" name="annotation" id="annotation">
-      <button>annotate</button>
-    </main>
-  </span>
-</section>
+<TextSelection readerID="reader" storyID={story.id}/>

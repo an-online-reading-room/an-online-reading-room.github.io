@@ -1,10 +1,10 @@
 import { writable } from 'svelte/store'
 import { browser } from '$app/env'
 
-const defaultValue = []
+const defaultValue = JSON.stringify([])
 const stored = browser ? window.localStorage.visited ?? defaultValue : defaultValue
 
-export const visited = writable(stored)
+export const visited = writable(JSON.parse(stored))
 
 visited.subscribe(value => {
   if(browser) {

@@ -19,7 +19,7 @@ const slugify = (str) => {
 };
 
 export async function get(): Promise<EndpointOutput> {
-  const res = await fetch('https://reading-room-backend.herokuapp.com/api/stories?populate=author,categories')
+  const res = await fetch('https://reading-room-backend.herokuapp.com/api/stories?populate=author,categories,annotations')
   let data = await res.json()
   data = data.data.map(story => {
     const author_name = story.attributes.author.data.attributes.username
@@ -31,7 +31,16 @@ export async function get(): Promise<EndpointOutput> {
       description: story.attributes.description,
       author_name: author_name,
       url: slugify(author_name + '-' + story.attributes.title),
-      categories: story.attributes.categories.data.map(category => category.attributes.name)
+      categories: story.attributes.categories.data.map(category => category.attributes.name),
+      annotations: story.attributes.annotations.data.map(annotation => {
+        return {
+          content: annotation.attributes.content,
+          targetText: annotation.attributes.target,
+          startOffset: annotation.attributes.startOffset,
+          length: annotation.attributes.length,
+          blockID: annotation.attributes.blockID,
+        }
+      })
     }
   })
   
