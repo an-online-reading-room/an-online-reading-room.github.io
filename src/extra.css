@@ -7,24 +7,13 @@ body>div {
   height: 100%;
 }
 
-.annotator-notice {
-  display: none;
-}
-
-.annotator-filter {
-  display: none;
-}
-
-.annotator-touch-widget {
-  display: none;
-}
 
 #selection-controls {
   cursor: pointer;
   position: absolute;
   height: 40px;
   border-radius: 2px;
-  background-color: #6A735A;
+  /* background-color: #6A735A; */
 }
 #selection-controls::before{
   position: absolute;
@@ -42,4 +31,23 @@ body>div {
   height: 40px;
   border-radius: 2px;
   background-color: red;
+}
+
+#selection-controls .arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 0.8rem solid transparent;
+  border-right: 0.8rem solid transparent;
+  border-bottom: 1.2rem solid #6A735A;
+  margin: 0 0 0 2rem;
+}
+
+::selection {
+  background-color: #6A735A;
+  color: #EEE2D2;
+}
+
+.highlight {
+  background-color: #6A735A;
+  color: #EEE2D2;
 }

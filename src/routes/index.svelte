@@ -4,7 +4,7 @@
 
 <div class="flex flex-col items-center
             w-screen h-screen bg-primary
-            px-12 
+            px-6
             text-center">
   <div class="h-20 flex flex-col justify-center
               font-display">
@@ -16,7 +16,8 @@
   </div>
 
   <div class="h-1/5 px-10 py-6
-              font-text text-xs leading-4">
+              font-text text-xs leading-4
+              flex flex-col gap-y-3">
     <p class="pt-2">We suggest you choose the</p>
     <a href="/landing">
       <button class="font-display px-4 py-2 bg-black text-white">

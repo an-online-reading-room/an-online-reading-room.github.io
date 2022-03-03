@@ -25,7 +25,9 @@
         <p>you create with it.</p>
       </div>
       <p>Go forth! Take us to your glorious sandbox.</p>
-      <p class="underline">What do I write about?</p>
+      <a href="/prompts">
+        <p class="underline">What do I write about?</p>
+      </a>
       <a href="/storybuilder">
         <p class="underline">I have a story to tell</p>
       </a>
