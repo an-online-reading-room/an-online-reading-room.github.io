@@ -1,4 +1,5 @@
 import type { EndpointOutput } from "@sveltejs/kit";
+import { variables } from "../variables";
 
 const slugify = (str) => {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
@@ -19,7 +20,7 @@ const slugify = (str) => {
 };
 
 export async function get(): Promise<EndpointOutput> {
-  const res = await fetch(`${import.meta.env.VITE_STRAPI_URL}/api/stories?populate=author,categories,annotations`)
+  const res = await fetch(`${variables.strapi_url}/api/stories?populate=author,categories,annotations`)
   let data = await res.json()
   data = data.data.map(story => {
     const author_name = story.attributes.author.data.attributes.username

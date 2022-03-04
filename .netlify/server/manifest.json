@@ -10,12 +10,18 @@
   "src/routes/storiesapi.ts": {
     "file": "entries/endpoints/storiesapi.ts.js",
     "src": "src/routes/storiesapi.ts",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_variables-ec492c3e.js"
+    ]
   },
   "src/routes/tagsapi.ts": {
     "file": "entries/endpoints/tagsapi.ts.js",
     "src": "src/routes/tagsapi.ts",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_variables-ec492c3e.js"
+    ]
   },
   "src/routes/__layout.svelte": {
     "file": "entries/pages/__layout.svelte.js",
@@ -182,6 +188,9 @@
   },
   "_index-e8b4228d.js": {
     "file": "chunks/index-e8b4228d.js"
+  },
+  "_variables-ec492c3e.js": {
+    "file": "chunks/variables-ec492c3e.js"
   },
   "_Icon-79100828.js": {
     "file": "chunks/Icon-79100828.js",

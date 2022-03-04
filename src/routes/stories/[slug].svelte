@@ -24,6 +24,7 @@
   import { browser } from '$app/env';
   import Icon from '../../components/Icon.svelte'
   import TextSelection from '../../components/TextSelection.svelte';
+  import { variables } from '../../variables';
   
   export let story
   let reader, scrollWindow
@@ -140,7 +141,7 @@
       uploadData.append('refID', `${story.id}`)
       uploadData.append('files', blob, `${story.id}-canvas.png`)
       
-      fetch(`${import.meta.env.VITE_STRAPI_URL}/api/upload`, {
+      fetch(`${variables.strapi_url}/api/upload`, {
         method: 'POST',
         body: uploadData
       })

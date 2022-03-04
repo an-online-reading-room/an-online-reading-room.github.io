@@ -1,7 +1,8 @@
 import type { EndpointOutput } from "@sveltejs/kit";
+import { variables } from "../variables";
 
 export async function get(): Promise<EndpointOutput> {
-  const res = await fetch(`${import.meta.env.VITE_STRAPI_URL}/api/categories`)
+  const res = await fetch(`${variables.strapi_url}/api/categories`)
   let data = await res.json()
   data = data.data.map(category => {
     return {

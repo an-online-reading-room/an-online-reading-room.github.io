@@ -22,18 +22,9 @@ var __toCommonJS = /* @__PURE__ */ ((cache) => {
 })(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
 var stdin_exports = {};
 __export(stdin_exports, {
-  get: () => get
+  v: () => variables
 });
-var import_variables_ec492c3e = require("../../chunks/variables-ec492c3e.js");
-async function get() {
-  const res = await fetch(`${import_variables_ec492c3e.v.strapi_url}/api/categories`);
-  let data = await res.json();
-  data = data.data.map((category) => {
-    return {
-      id: category.id,
-      name: category.attributes.name
-    };
-  });
-  return { body: data };
-}
+const variables = {
+  strapi_url: "https://strapi-t300.onrender.com"
+};
 module.exports = __toCommonJS(stdin_exports);
