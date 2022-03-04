@@ -19,7 +19,7 @@ const slugify = (str) => {
 };
 
 export async function get(): Promise<EndpointOutput> {
-  const res = await fetch('https://reading-room-backend.herokuapp.com/api/stories?populate=author,categories,annotations')
+  const res = await fetch(`${import.meta.env.VITE_STRAPI_URL}/api/stories?populate=author,categories,annotations`)
   let data = await res.json()
   data = data.data.map(story => {
     const author_name = story.attributes.author.data.attributes.username

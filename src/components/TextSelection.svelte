@@ -7,7 +7,7 @@
   export let storyID
   let reader, content, currSelection
   let selectionControls, annotationTextControl
-  let postUrl = 'https://reading-room-backend.herokuapp.com/api/annotations'
+  let postUrl = `${import.meta.env.VITE_STRAPI_URL}/api/annotations`
 
   selection.subscribe(value => currSelection = value)
 
