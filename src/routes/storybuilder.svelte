@@ -5,7 +5,7 @@
   import "../form.css"
   import "leaflet/dist/leaflet.css"
   
-  const API_URL = 'https://reading-room-backend.herokuapp.com/api'
+  const API_URL = `${import.meta.env.VITE_STRAPI_URL}/api`
   let form, editor
   let locationInput = ''
   let locationSuggestions = []

@@ -21,24 +21,37 @@
 </script>
 
 <script >
+  import { browser } from '$app/env';
   import Icon from '../../components/Icon.svelte'
   import TextSelection from '../../components/TextSelection.svelte';
   
   export let story
   let reader, scrollWindow
   let cnv, ctx, isPainting = false, startX, startY
+  let showAnnotationView = false
+  let drawingMode = false
+
   let openInfoCard = false
   let openShareCard = false
   let openCommentCard = false
-  let showAnnotationView = false
 
   $: {
     if(showAnnotationView === true) {
-      story.annotations.forEach(annotation => showAnnotation(annotation))
+      document.querySelector('#comment-board').classList.remove('hidden')
+      story.annotations.forEach(annotation => showAnnotation(annotation))  
+    } else {
+      if(browser && document.querySelector('#comment-board') != null) {
+        document.querySelector('#comment-board').classList.add('hidden')
+      }
+    }
+  }
+
+  $: {
+    if(drawingMode == true) {
+      cnv = document.querySelector('canvas')
       cnv.height = reader.offsetHeight
       cnv.width = reader.offsetWidth
-      cnv.classList.remove('hidden')
-      initialiseCanvas()
+      document.querySelector('#drawing-board').classList.remove('hidden')
     }
   }
 
@@ -56,19 +69,19 @@
   }
 
   const showAnnotation = (annotation) => {
-    const block = document.querySelector(`section#${annotation.blockID}`)
+    const block = document.querySelector(`section#target-${annotation.blockID}`)
     const target = block.innerHTML.substring(annotation.startOffset, annotation.startOffset+annotation.length)
     const newHTML = block.innerHTML.substring(0, annotation.startOffset) + 
                     `<span class="highlight">${target}</span>` + 
                     block.innerHTML.substring(annotation.startOffset, annotation.startOffset+annotation.length)
     block.innerHTML = newHTML
     
-    const rect = document.querySelector(`section#${annotation.blockID} span`).getBoundingClientRect()
+    const rect = document.querySelector(`section#target-${annotation.blockID} span`).getBoundingClientRect()
     const comment = document.querySelector(`section#anno-${annotation.blockID}`)
-    comment.classList.remove('hidden')
+    // comment.classList.remove('hidden')
     comment.style.top = `calc(${rect.bottom + scrollWindow.scrollTop}px + 0px)`
     comment.style.left = "1.5rem"
-    block.appendChild(comment)
+    // block.appendChild(comment)
     // console.log(reader)
     
   }
@@ -83,26 +96,56 @@
     ctx.lineCap = 'round';
     ctx.strokeStyle = '#6A735A'
 
-    ctx.lineTo(e.clientX - scrollWindow.offsetLeft, e.clientY - scrollWindow.offsetTop);
+    console.log(e.clientX + scrollWindow.offsetLeft, e.clientY + scrollWindow.parentNode.offsetTop)
+    console.log(e.clientX, e.clientY)
+    ctx.lineTo(e.clientX - scrollWindow.offsetLeft, 
+              e.clientY - scrollWindow.parentNode.offsetTop - reader.parentNode.offsetTop);
+    // ctx.lineTo(50, 50);
     ctx.stroke();
-}
+  }
+  const beginDraw = (e) => {
+    console.log('info: beginning draw')
+    isPainting = true;
+    startX = e.clientX;
+    startY = e.clientY;
+  }
+  const endDraw = (e) => {
+    isPainting = false;
+    ctx.stroke();
+    ctx.beginPath();
+  }
 
   const initialiseCanvas = () => {
+    console.log('info: canvas init')
+    
     ctx = cnv.getContext('2d')
-    cnv.addEventListener('pointerdown', (e) => {
-      console.log('info: beginning draw')
-      isPainting = true;
-      startX = e.clientX;
-      startY = e.clientY;
-    });
-
-    cnv.addEventListener('pointerup', e => {
-      isPainting = false;
-      ctx.stroke();
-      ctx.beginPath();
-    });
-
-    cnv.addEventListener('pointermove', draw);
+    cnv.addEventListener('mousedown', beginDraw);
+    cnv.addEventListener('mouseup', endDraw);
+    cnv.addEventListener('mousemove', draw);
+  }
+  const clearCanvas = () => {
+    ctx.clearRect(0, 0, cnv.width, cnv.height)
+    cnv.removeEventListener('mousedown', beginDraw)
+    cnv.removeEventListener('mouseup', endDraw)
+    cnv.removeEventListener('mousemove', draw)
+    document.querySelector('#drawing-board').classList.add('hidden')
+  }
+  const saveCanvas = () => {
+    let img = cnv.toDataURL("image/png").replace("image/png", "image/octet-stream")
+    img = ctx.getImageData(0, 0, cnv.width, cnv.height).data.buffer
+    cnv.toBlob((blob) => {
+      let uploadData = new FormData() 
+      uploadData.append('ref', 'api::story.story')
+      uploadData.append('field', 'annotationCanvas')
+      uploadData.append('refID', `${story.id}`)
+      uploadData.append('files', blob, `${story.id}-canvas.png`)
+      
+      fetch(`${import.meta.env.VITE_STRAPI_URL}/api/upload`, {
+        method: 'POST',
+        body: uploadData
+      })
+    })
+    
   }
 
 </script>
@@ -116,32 +159,50 @@
   <div bind:this={scrollWindow} class="overflow-y-scroll flex-1
               flex flex-col align-items-center gap-y-2
               font-display text-left
-              px-4 relative">
+              mx-4 relative">
     <div class="px-1 text-base border">
       {story.title}
     </div>
 
     <div class="flex-1 text-sm border
                 flex flex-col relative">
-      <div bind:this={reader} id="reader" class="{showAnnotationView == true ? 'blur-sm p-2' : 'p-2'}">
+      <div bind:this={reader} id="reader" class="{(showAnnotationView == true || drawingMode == true) ? 'blur-sm p-2' : 'p-2'}">
         {#each story.submission.blocks as block}
-          <section id={block.id}>{block.data.text}</section>
+          <section id="{"target-"+block.id}">{block.data.text}</section>
           
         {/each}
       </div>
 
       <div class="ml-auto mt-auto">
 
-        {#if openCommentCard}
+        {#if drawingMode}
+        <div class="flex flex-row">
+          <button on:click={() => { drawingMode = true; initialiseCanvas(); }}>
+            <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
+          </button>
+          <button>
+            <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
+          </button>
+          <button on:click={clearCanvas}>
+            <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
+          </button>
+          <button on:click={saveCanvas}>
+            <Icon src="/icons/Comment - Save Icon.svg" alt="comment - save" />
+          </button>
+          <button on:click={() => { openCommentCard = !openCommentCard }}>
+            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
+          </button>
+        </div>
+        {:else if openCommentCard}
         <div class="flex flex-row">
           <button>
             <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
           </button>
-          <button>
+          <button on:click={() => { drawingMode = true; showAnnotationView = false; initialiseCanvas(); }}>
             <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
           </button>
           
-          <button on:click={() => { openCommentCard = !openCommentCard }}>
+          <button on:click={() => { openCommentCard = !openCommentCard; showAnnotationView = true }}>
             <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
         </div>
@@ -157,19 +218,29 @@
         {/if}
       </div>
 
-      <canvas bind:this={cnv} class="hidden absolute left-0 top-0">
-        your browser does not support the canvas
-      </canvas>
+      
+      <section id="drawing-board" class="hidden absolute left-0 top-0">
+        <button class="absolute right-0 top-0 w-4 h-4 m-1" on:click={() => { clearCanvas(); drawingMode = false; showAnnotationView = true; }}>
+          <Icon src="/icons/Close Button - Black.svg"    alt="comment - close" />
+        </button>
+        <canvas bind:this={cnv}>
+        
+          your browser does not support the canvas
+        </canvas>
+      </section>
+      
      
     </div>
   </div>
 
   <!-- annotation view -->
-  {#each story.annotations as annotation}
-  <section class="{`hidden absolute bg-accent text-primary p-2`}" id={"anno-"+annotation.blockID}>
-    <p>{annotation.content}</p>
+  <section id="comment-board" class="hidden">
+    {#each story.annotations as annotation}
+    <section class="{`absolute bg-accent text-primary p-2`}" id={"anno-"+annotation.blockID}>
+      <p>{annotation.content}</p>
+    </section>
+    {/each}
   </section>
-  {/each}
   
 
   
