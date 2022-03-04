@@ -4,8 +4,9 @@
   import { onMount } from "svelte";
   import "../form.css"
   import "leaflet/dist/leaflet.css"
+  import { variables } from '../variables'
   
-  const API_URL = `${import.meta.env.VITE_STRAPI_URL}/api`
+  const API_URL = `${variables.strapi_url}/api`
   let form, editor
   let locationInput = ''
   let locationSuggestions = []

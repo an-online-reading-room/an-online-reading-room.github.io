@@ -2,12 +2,13 @@
   import { onMount } from "svelte";
   import Icon from './Icon.svelte'
   import { selection } from '../stores/selection'
+  import { variables } from "../variables";
 
   export let readerID
   export let storyID
   let reader, content, currSelection
   let selectionControls, annotationTextControl
-  let postUrl = `${import.meta.env.VITE_STRAPI_URL}/api/annotations`
+  let postUrl = `${variables.strapi_url}/api/annotations`
 
   selection.subscribe(value => currSelection = value)
 

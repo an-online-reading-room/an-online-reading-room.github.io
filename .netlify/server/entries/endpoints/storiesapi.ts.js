@@ -24,6 +24,7 @@ var stdin_exports = {};
 __export(stdin_exports, {
   get: () => get
 });
+var import_variables_ec492c3e = require("../../chunks/variables-ec492c3e.js");
 const slugify = (str) => {
   str = str.replace(/^\s+|\s+$/g, "");
   str = str.toLowerCase();
@@ -36,8 +37,7 @@ const slugify = (str) => {
   return str;
 };
 async function get() {
-  console.log(`${"https://strapi-t300.onrender.com"}/api/stories?populate=author,categories,annotations`);
-  const res = await fetch(`${"https://strapi-t300.onrender.com"}/api/stories?populate=author,categories,annotations`);
+  const res = await fetch(`${import_variables_ec492c3e.v.strapi_url}/api/stories?populate=author,categories,annotations`);
   let data = await res.json();
   data = data.data.map((story) => {
     const author_name = story.attributes.author.data.attributes.username;
