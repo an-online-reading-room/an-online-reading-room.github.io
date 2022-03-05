@@ -9,6 +9,12 @@ body>div {
   overflow: hidden;
 }
 
+/* storybuilder */
+.codex-editor__redactor {
+  padding-bottom: 100px !important;
+}
+
+/* comment */
 
 #selection-controls {
   cursor: pointer;
