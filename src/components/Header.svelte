@@ -6,10 +6,11 @@
   let openFAQMenu = false
   let openTermsMenu = false
   let openWorldbuildersMenu = false
-  
-  let currentVersion = $version
-  version.subscribe(value => currentVersion = value)  
-  $: pathPrefix = currentVersion === 'lite' ? '' : '/adventure'
+  let pathPrefix
+
+  version.subscribe(value => {
+    pathPrefix = value === 'lite' ? '/adventure' : ''
+  })
 </script>
 
 <header>
@@ -19,7 +20,7 @@
 
       <!-- menu card start -->
       {#if openMenu}
-      <div class="absolute inset-0 w-screen h-screen
+      <div class="absolute inset-0 w-screen h-full
                   bg-accent text-primary
                   pt-4 px-4 z-10">
 
@@ -66,12 +67,11 @@
             </div>
             <a href="{pathPrefix+'/landing'}" on:click={() => { 
               openMenu = !openMenu 
-              const newVersion = currentVersion === 'lite' ? 'adventure' : 'lite'
+              const newVersion = $version === 'lite' ? 'adventure' : 'lite'
               version.set(newVersion)
             }}>
-              <p>{pathPrefix}</p>
               <div class="py-3 cursor-pointer">
-                {#if currentVersion === 'lite'}
+                {#if $version === 'lite'}
                   Adventure Version
                 {:else}
                   Lite Version
@@ -96,8 +96,8 @@
 
         <!-- About Menu Card Start  -->
         {#if openAboutMenu}
-        <div class="absolute inset-0 w-screen h-screen
-                  bg-accent text-primary
+        <div class="absolute inset-0 w-screen 
+                  bg-accent text-primary h-full
                   py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
@@ -157,7 +157,7 @@
 
         <!-- FAQ Menu Card Start -->
         {#if openFAQMenu}
-        <div class="absolute inset-0 w-screen h-screen
+        <div class="absolute inset-0 w-screen h-full
                   bg-accent text-primary
                   py-4 px-4 z-20 overflow-y-scroll">
 
@@ -240,7 +240,7 @@
 
         <!-- Worldbuilders Menu Card Start -->
         {#if openWorldbuildersMenu}
-        <div class="absolute inset-0 w-screen h-screen
+        <div class="absolute inset-0 w-screen h-full
                 bg-accent text-primary
                 py-4 px-4 z-20 overflow-y-scroll">
 
@@ -313,7 +313,7 @@
 
         <!-- Terms Menu Card Start -->
         {#if openTermsMenu}
-        <div class="absolute inset-0 w-screen h-screen
+        <div class="absolute inset-0 w-screen h-full
                 bg-accent text-primary
                 py-4 px-4 z-20 overflow-y-scroll">
 
@@ -442,7 +442,7 @@
       {/if}
       <!-- menu card end -->
       
-      <a href="{pathPrefix+'/landing'}">
+      <a href="{pathPrefix === '' ? '/adventure/landing' : '/landing'}">
         <h1 class="text-2xl">The Reading Room</h1>
       </a>
       
