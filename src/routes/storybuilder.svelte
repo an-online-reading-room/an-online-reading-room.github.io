@@ -16,62 +16,68 @@
     .then(data => locationSuggestions = data)
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    const data = new FormData(event.target);
+    const formData = new FormData(event.target);
     const authorData = {
       data: {
-        username: data.get('username')
+        username: formData.get('username')
       }
     }
     const storyData = {
       data: {
-        title: data.get('title'),
-        location: data.get('location'),
-        description: data.get('description')
+        title: formData.get('title'),
+        location: formData.get('location'),
+        description: formData.get('description')
       }
     }
     editor.save().then(data => {
       storyData.data.submission = data
     }) 
-    fetch(`${API_URL}/authors`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(authorData)
-    })
-    .then(response => response.json())
-    .then(data => storyData.data.author = data.data.id)
-    .then(() => {
-      fetch(`${API_URL}/stories`, {
+    const authors = await (await fetch(`${API_URL}/authors`)).json()
+    const curr = authors.data.filter(author => author.attributes.username === authorData.data.username)
+    console.log(curr)    
+    
+    if(curr.length > 0) {
+      storyData.data.author = curr[0].id
+      const story = await (await fetch(`${API_URL}/stories`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(storyData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        // add ref for image uploads 
-        const imageData = {
-          data: {
-            media: mediaRefs
-          }
+      })).json()
+    } else {
+      const newAuthor = await (await fetch(`${API_URL}/authors`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(authorData)
+      })).json()
+      storyData.data.author = newAuthor.data.id
+      const story = await (await fetch(`${API_URL}/stories`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(storyData)
+      })).json()
+      const imageData = {
+        data: {
+          media: mediaRefs
         }
-        console.log(data)
-        return fetch(`${API_URL}/stories/${data.data.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(imageData)
-        })
-      
-      })
-      .then(response => console.log(response.json()))
-    })
+      }
+      const media = await (await fetch(`${API_URL}/stories/${story.data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(imageData)
+      })).json()
+      console.log(media)
+    }
 
   }
 
@@ -121,7 +127,7 @@
 
 <div class="flex flex-col align-items-center gap-y-4
             w-screen bg-primary
-            text-center">
+            text-center h-full overflow-y-scroll">
   <Header></Header>
   
 

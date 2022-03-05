@@ -3,11 +3,11 @@
 </script>
 
 <div class="flex flex-col align-items-center gap-y-6
-            w-screen bg-primary
+            w-screen bg-primary h-full overflow-y-scroll
             text-center">
   <Header></Header>
 
-  <main class="font-display text-sm px-6 pb-4
+  <main class="h-full overflow-y-scroll font-display text-sm px-6 pb-4
                 text-center leading-4
                 flex flex-col gap-y-4">
     <section class="flex flex-col gap-y-3">
