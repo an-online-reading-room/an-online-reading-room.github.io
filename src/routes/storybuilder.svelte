@@ -7,6 +7,7 @@
   import { variables } from '../variables'
   
   const API_URL = `${variables.strapi_url}/api`
+  let mediaRefs = []
   let form, editor
   let locationInput = ''
   let locationSuggestions = []
@@ -51,16 +52,67 @@
         },
         body: JSON.stringify(storyData)
       })
-      .then(response => window.location.reload())
+      .then(response => response.json())
+      .then(data => {
+        // add ref for image uploads 
+        const imageData = {
+          data: {
+            media: mediaRefs
+          }
+        }
+        console.log(data)
+        return fetch(`${API_URL}/stories/${data.data.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(imageData)
+        })
+      
+      })
+      .then(response => console.log(response.json()))
     })
+
   }
 
   onMount(async () => {
     const EditorJS = (await import('@editorjs/editorjs')).default;
+    const EditorJSImage = (await import('@editorjs/image')).default;
+    console.log(EditorJSImage)
     form.addEventListener('submit', handleSubmit);
     editor = new EditorJS({
       holder: 'editor',
-      placeholder: 'Add Storyblock'
+      placeholder: 'Add Storyblock',
+      tools: {
+        image: {
+          class: EditorJSImage,
+          config: {
+            endpoints: {
+              byFile: `${API_URL}/upload`,
+            },
+            uploader: {
+              uploadByFile(file) {
+                const uploadData = new FormData()
+                uploadData.append('files', file , file.name)
+
+                return fetch(`${API_URL}/upload`, {
+                  method: 'POST',
+                  body: uploadData
+                }).then(response => response.json())
+                .then(data => {
+                  mediaRefs.push(data[0].id)
+                  return {
+                    success: 1,
+                    file: {
+                      url: data[0].url
+                    }
+                  }
+                })
+              }
+            }
+          }
+        }
+      }
     })
 
     

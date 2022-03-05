@@ -61,7 +61,7 @@
 
   
 <!-- story list -->
-<main	class="flex flex-col align-items-center gap-y-4 px-4 h-full">
+<main	class="flex flex-col align-items-center gap-y-4 px-4 pb-4 overflow-y-scroll">
 
 		<div class="flex flex-row justify-between 
 								w-full gap-x-base divide-x
@@ -78,7 +78,7 @@
 			</button>
 		</div>
 		
-		<div class="list-container flex-1 overflow-y-scroll pb-4
+		<div class="pb-4
 							flex flex-col gap-y-4">
 			{#each listItems as story}
 			<div>

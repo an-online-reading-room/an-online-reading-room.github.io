@@ -20,7 +20,7 @@
 </svelte:head>
 
 
-<main class="h-screen font-display bg-primary">
+<main class="h-full font-display bg-primary">
   <slot></slot>
 </main>
 

@@ -1,9 +1,10 @@
 <script>
   import Icon from '../components/Icon.svelte'
+  import { version } from '../stores/version'
 </script>
 
 <div class="flex flex-col items-center
-            w-screen h-screen bg-primary
+            w-screen h-full bg-primary
             px-6
             text-center">
   <div class="h-20 flex flex-col justify-center
@@ -19,7 +20,7 @@
               font-text text-xs leading-4
               flex flex-col gap-y-3">
     <p class="pt-2">We suggest you choose the</p>
-    <a href="/landing">
+    <a href="/landing" on:click={() => version.set('lite')}>
       <button class="font-display px-4 py-2 bg-black text-white">
         Lite Version
       </button>
