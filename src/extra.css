@@ -15,7 +15,6 @@ body>div {
 }
 
 /* comment */
-
 #selection-controls {
   cursor: pointer;
   position: absolute;
@@ -26,27 +25,20 @@ body>div {
 #selection-controls::before{
   position: absolute;
   content: '';
-  border-top: 10px solid #6A735A;
-  border-left:10px solid transparent;
-  border-right: 10px solid transparent;
+  border-top: 8px solid #6A735A;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
   left: 50px;
   top: 40px;
 }
 
-#selection-text-annotation {
-  cursor: pointer;
-  position: absolute;
-  height: 40px;
-  border-radius: 2px;
-  background-color: red;
-}
 
-#selection-controls .arrow-up {
+.arrow-up {
   width: 0;
   height: 0;
   border-left: 0.8rem solid transparent;
   border-right: 0.8rem solid transparent;
-  border-bottom: 1.2rem solid #6A735A;
+  border-bottom: 0.8rem solid #6A735A;
   margin: 0 0 0 2rem;
 }
 
