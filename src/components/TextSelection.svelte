@@ -6,18 +6,26 @@
 
   export let readerID
   export let storyID
-  let reader, content, currSelection
-  let selectionControls, annotationTextControl
+  let reader, content
+  let currHighlightRange, currHighlightBlock
+  let selectionControls
   let postUrl = `${variables.strapi_url}/api/annotations`
-
-  selection.subscribe(value => currSelection = value)
-
 
   const showSelectionControls = (e) => {
     e.stopPropagation()
+    removeControls()
     console.log('info: showing controls')
+    let targetNode = document.getSelection().anchorNode.parentNode
+    let range = new Range()
+    range.setStart(targetNode, 0)
+    range.setEnd(targetNode, targetNode.childNodes.length)
+    document.getSelection().removeAllRanges()
+    document.getSelection().addRange(range)
     let currSelection = document.getSelection()
-    selection.set(currSelection)
+
+    currHighlightRange = range
+    currHighlightBlock = targetNode
+
     let text = currSelection.toString()
     if(text.length > 0) {
       let rect = currSelection.getRangeAt(0).getBoundingClientRect()
@@ -26,13 +34,19 @@
       selectionControls['text'] = text
       document.body.appendChild(selectionControls)
     }
+
+    if(currHighlightRange != null) {
+      console.log('info: adding class')
+      console.log(currHighlightRange)
+      document.getSelection().addRange(currHighlightRange)
+      currHighlightBlock.classList.add('highlight')
+    }
+    
   }
   const removeControls = (e) => {
-    e.stopPropagation()
     console.log('info: removing controls')
     let controls = [
       document.querySelector('#selection-controls'),
-      document.querySelector('#selection-text-annotation')
     ]
     controls.forEach(control => {
       if(control !== null) {
@@ -41,35 +55,30 @@
         document.getSelection().removeAllRanges()
       }
     })
-    
-  }
 
-  const showAnnotationTextControl = () => {
+    if(currHighlightBlock != null) {
+      currHighlightBlock.classList.remove('highlight')
+    }
+    currHighlightRange = null
+    currHighlightBlock = null
 
-    let selection = document.querySelector('#selection-controls')
-    let pos = selection.style
-    console.log(annotationTextControl)
-    annotationTextControl.style.top = pos.top
-    annotationTextControl.style.left = pos.left
-    annotationTextControl['text'] = selection.getAttribute('text')
-    document.body.appendChild(annotationTextControl)
-    
   }
 
   const submitAnnotation = () => {
     console.log('info: posting annotation')
-    console.log(currSelection)
+    console.log(currHighlightBlock.innerText)
     const annotationData = {
       data: {
-        targetText: currSelection.toString(),
-        blockID: currSelection.anchorNode.parentNode.id,
-        length: currSelection.toString().length,
+        targetText: currHighlightBlock.innerText,
+        blockID: currHighlightBlock.id.split('_')[1],
+        length: currHighlightBlock.innerText.length,
         content: content,
-        startOffset: currSelection.anchorOffset,
+        startOffset: 0,
         story: storyID
       }
     }
     console.log(annotationData)
+    removeControls()
     fetch(postUrl, {
       method: 'POST',
       headers: {
@@ -77,26 +86,39 @@
       },
       body: JSON.stringify(annotationData)
     })
+    .then(response => {
+      if(currHighlightBlock != null) {
+        currHighlightBlock.classList.remove('highlight')
+      }
+      currHighlightRange = null
+      currHighlightBlock = null
+    })
   }
 
   const pointerOnPopup = (e) => {
     console.log('info: pointer on popup')
-    console.log(currSelection)
+    // console.log(currSelection)
     e.stopPropagation()
   }
 
   onMount(() => {
+    // document.onselectstart = new Function("return false")
+    // document.onmousedown = (e) => false
+    // document.onclick = (e) => true
+
     reader = document.querySelector(`#${readerID}`)
-    selectionControls.onpointerup = pointerOnPopup　
-    reader.onpointerup = showSelectionControls
+    selectionControls.onpointerup = pointerOnPopup
     reader.onpointerdown = removeControls
+    reader.onpointerup = showSelectionControls
+    reader.ontouchstart = showSelectionControls
+    // reader.ontouchend = removeControls
     
     
   })
 
 </script>
 
-
+  
 <section class="hidden">
   <span bind:this={selectionControls} id="selection-controls">
     <section class="arrow-up"></section>
@@ -116,11 +138,5 @@
     </main>
   </span>
 
-  <div bind:this={annotationTextControl} id="selection-text-annotation">
-    <main style="background-color: red">
-      <input  type="text" name="annotation" id="annotation">
-      <button>annotate</button>
-    </main>
-  </div>
 </section>
 

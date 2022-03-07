@@ -22,17 +22,17 @@
 
 <script >
   import { browser } from '$app/env';
-import { dataset_dev } from 'svelte/internal';
   import Icon from '../../components/Icon.svelte'
   import TextSelection from '../../components/TextSelection.svelte';
   import { variables } from '../../variables';
+  import theme from '../../stores/theme';
   
   export let story
   let reader, scrollWindow
   let cnv, ctx, isPainting = false, startX, startY
   let ongoingTouches = []
   let showAnnotationView = false
-  let drawingMode = false
+  let drawingMode = false, selectionMode = false
 
   let openInfoCard = false
   let openShareCard = false
@@ -40,12 +40,12 @@ import { dataset_dev } from 'svelte/internal';
 
   $: {
     if(showAnnotationView === true) {
-      document.querySelector('#comment-board').classList.remove('hidden')
       story.annotations.forEach(annotation => showAnnotation(annotation))  
       showDrawingBoard()
     } else {
       if(browser && document.querySelector('#comment-board') != null) {
         document.querySelector('#comment-board').classList.add('hidden')
+        story.annotations.forEach(annotation => hideAnnotation(annotation))  
       }
     }
   }
@@ -74,21 +74,32 @@ import { dataset_dev } from 'svelte/internal';
   }
 
   const showAnnotation = (annotation) => {
-    const block = document.querySelector(`section#target-${annotation.blockID}`)
-    const target = block.innerHTML.substring(annotation.startOffset, annotation.startOffset+annotation.length)
-    const newHTML = block.innerHTML.substring(0, annotation.startOffset) + 
-                    `<span class="highlight">${target}</span>` + 
-                    block.innerHTML.substring(annotation.startOffset, annotation.startOffset+annotation.length)
-    block.innerHTML = newHTML
+    const block = document.querySelector(`section#target_${annotation.blockID}`) 
+    console.log(`section#target_${annotation.blockID}`)
+    block.classList.add('highlight')
+
     
-    const rect = document.querySelector(`section#target-${annotation.blockID} span`).getBoundingClientRect()
-    const comment = document.querySelector(`section#anno-${annotation.blockID}`)
-    // comment.classList.remove('hidden')
-    comment.style.top = `calc(${rect.bottom + scrollWindow.scrollTop}px + 0px)`
-    comment.style.left = "1.5rem"
-    // block.appendChild(comment)
-    // console.log(reader)
-    
+    const svg = block.parentElement.previousElementSibling
+    svg.classList.remove('hidden')
+    svg.addEventListener('click', () => {
+      const comments = document.querySelectorAll('.comment-view')
+      Array.from(comments).forEach(comment => {
+        console.log(comment.id, `comments-${annotation.blockID}`)
+        if(comment.id != `comments-${annotation.blockID}`) {
+          comment.classList.add('hidden')
+        }
+      })
+
+      const rect = document.querySelector(`section#target_${annotation.blockID}`).getBoundingClientRect()
+      const comment = document.querySelector(`section#comments-${annotation.blockID}`)
+      comment.classList.toggle('hidden')
+    })
+  
+  }
+  const hideAnnotation = (annotation) => {
+    console.log(annotation)
+    const block = document.querySelector(`section#target_${annotation.blockID}`)
+    block.innerHTML = block.dataset.content
   }
 
   const draw = (e) => {
@@ -296,30 +307,75 @@ import { dataset_dev } from 'svelte/internal';
       <div class="relative flex-1 text-sm border flex flex-col">
         <div bind:this={reader} id="reader"
             class="{(showAnnotationView == true || drawingMode == true) ?
-                   'flex flex-col blur-sm p-2' :
+                   'flex flex-col p-2' :
                    'flex flex-col p-2'}">
-          {#each story.submission.blocks as block}
-            {#if block.data.text}
-            <section id="{"target-"+block.id}">{block.data.text}</section>
-            {/if}
-            {#if block.data.file}
-            <img class="self-center" id="{"target-"+block.id}" src={block.data.file.url} alt={block.data.caption} />
-            {/if}
-          {/each}
+            {#each story.submission.blocks as block}
+              <div class="flex flex-row gap-x-2">
+              
+                <div class="pt-0.5 hidden">
+                  <svg class="w-4 h-4" viewBox="10 10 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 20C12 15.5817 15.5817 12 20 12V12C24.4183 12 28 15.5817 28 20V25.0909C28 25.9375 28 26.3608 27.8739 26.6989C27.6712 27.2425 27.2425 27.6712 26.6989 27.8739C26.3608 28 25.9375 28 25.0909 28H20C15.5817 28 12 24.4183 12 20V20Z" stroke={$theme.accent} stroke-width="1.2"/>
+                  <path d="M17 19L23 19" stroke={$theme.accent} stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M20 23H23" stroke={$theme.accent} stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              
+              
+                <div class="relative mb-1">
+                  {#if block.data.text}
+                  <section data-content={block.data.text} id="{"target_"+block.id}">{block.data.text}</section>
+                  {/if}
+                  {#if block.data.file}
+                  <div class="self-center flex-initial object-contain">
+                    <img  id="{"target_"+block.id}" src={block.data.file.url} alt={block.data.caption} />
+                  </div>
+                  {/if}
+
+                  <section class="comment-view hidden z-20
+                                  absolute text-primary
+                                  w-full max-h-32" id={"comments-"+block.id}>
+                    <div class="arrow-up"></div>
+                    <div class="bg-accent p-2 flex flex-col gap-y-2
+                                max-h-32 overflow-y-scroll">
+                      {#each story.annotations as annotation}
+                      {#if annotation.blockID == block.id}
+                      <section id={"anno-"+annotation.blockID}>
+                        <p>{annotation.content}</p>
+                      </section>
+                      {/if}
+                      {/each}
+                    </div>
+                  </section>
+                </div>
+
+                
+              </div>
+              
+              
+            
+            {/each}
         </div>
-    
+        
+        <!-- annotation view -->
         <section id="drawing-board" class="hidden absolute left-0 top-0">
-          <button class="absolute right-0 top-0 w-4 h-4 m-1" on:click={() => { clearCanvas(); drawingMode = false; showAnnotationView = true; }}>
-            <Icon src="/icons/Close Button - Black.svg"    alt="comment - close" />
-          </button>
           <canvas bind:this={cnv}>
     
             your browser does not support the canvas
           </canvas>
         </section>
+        <!-- annotation view end -->
+
+
         <div class="mt-auto ml-auto">
           <div class="flex flex-row">
-          {#if drawingMode}
+          {#if selectionMode}
+          <button>
+            <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
+          </button>
+          <button on:click={() => { selectionMode = !selectionMode; showAnnotationView = true }}>
+            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
+          </button>
+          {:else if drawingMode}
           <button on:click={() => { drawingMode = true; initialiseCanvas(); }}>
             <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
           </button>
@@ -332,11 +388,11 @@ import { dataset_dev } from 'svelte/internal';
           <button on:click={saveCanvas}>
             <Icon src="/icons/Comment - Save Icon.svg" alt="comment - save" />
           </button>
-          <button on:click={() => { openCommentCard = !openCommentCard }}>
+          <button on:click={() => { drawingMode = !drawingMode; showAnnotationView = true }}>
             <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
           {:else if openCommentCard}
-          <button>
+          <button on:click={() => { selectionMode = true; showAnnotationView = false; clearCanvas() } }>
             <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
           </button>
           <button on:click={() => { drawingMode = true; showAnnotationView = false; initialiseCanvas(); }}>
@@ -347,6 +403,9 @@ import { dataset_dev } from 'svelte/internal';
             <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
           {:else if showAnnotationView}
+          <button class="absolute right-0 top-0 w-4 h-4 m-1" on:click={() => { clearCanvas(); showAnnotationView = false }}>
+            <Icon src="/icons/Close Button - Black.svg"    alt="comment - close" />
+          </button>
           <button class="px-3 py-2 bg-black text-white"
                     on:click={() => { openCommentCard = !openCommentCard }}>
             Leave a Note
@@ -458,17 +517,9 @@ import { dataset_dev } from 'svelte/internal';
       </div>
     </div>
   </section>
-
-
-  <!-- annotation view -->
-  <section id="comment-board" class="hidden">
-    {#each story.annotations as annotation}
-    <section class="{`absolute bg-accent text-primary p-2`}" id={"anno-"+annotation.blockID}>
-      <p>{annotation.content}</p>
-    </section>
-    {/each}
-  </section>
   
 </div>
 
+{#if selectionMode}
 <TextSelection readerID="reader" storyID={story.id}/>
+{/if}

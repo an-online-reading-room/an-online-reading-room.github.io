@@ -36,7 +36,7 @@ export async function get(): Promise<EndpointOutput> {
       annotations: story.attributes.annotations.data.map(annotation => {
         return {
           content: annotation.attributes.content,
-          targetText: annotation.attributes.target,
+          targetText: annotation.attributes.targetText,
           startOffset: annotation.attributes.startOffset,
           length: annotation.attributes.length,
           blockID: annotation.attributes.blockID,
