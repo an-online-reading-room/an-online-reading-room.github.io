@@ -110,8 +110,8 @@
     selectionControls.onpointerup = pointerOnPopup
     reader.onpointerdown = removeControls
     reader.onpointerup = showSelectionControls
-    reader.ontouchstart = showSelectionControls
-    // reader.ontouchend = removeControls
+    reader.ontouchend = showSelectionControls
+    reader.ontouchstart = removeControls
     
     
   })

@@ -28,26 +28,34 @@
 	let tagQuery = ''
 	
 	const search = (e) => {
+		query = query.toLowerCase()
 		listItems = stories.filter(story => {
-			return story.title.includes(query) ||
-						 story.author_name.includes(query) || 
-						 story.location.includes(query)
+			return story.title.toLowerCase().includes(query) ||
+						 story.author_name.toLowerCase().includes(query) || 
+						 story.location.toLowerCase().includes(query)
 		})
 		query = ''
 	}
 
 	const filterByLocation = (e) => {
+		locationQuery = locationQuery.toLowerCase()
 		listItems = stories.filter(story => {
-			return story.location.includes(locationQuery)
+			return story.location.toLowerCase().includes(locationQuery)
 		})
 		locationQuery = ''
 		open = false
 	}
 
 	const filterByTag = (tag) => {
-		listItems = stories.filter(story => {
-			return story.categories.includes(tag)
+		tag = tag.toLowerCase()
+		listItems = []
+		stories.forEach(story => {
+			let match = story.categories
+			.map(item => item.toLowerCase())
+			.filter(item => item.includes(tag))
+			if(match.length > 0) listItems.push(story)
 		})
+		console.log(listItems)
 		tagQuery = ''
 		open = false
 	}
