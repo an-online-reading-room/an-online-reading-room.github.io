@@ -13,6 +13,20 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
 
+  <link rel="apple-touch-icon"      sizes="180x180" href="/img/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="96x96"   href="/img/favicons/favicons/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16"   href="/img/favicons/favicons/android-chrome-384x384.png">
+  <link rel="icon" type="image/png" sizes="16x16"   href="/img/favicons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32"   href="/img/favicons/favicon-32x32.png">
+
+  <meta property="og:title" content="The Reading Room" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="The Reading Room is a collaborative storytelling project that enables us to think of place differently. Through storytelling, we can take the initiative of re-defining a place beyond its history and geography.">
+  <meta property="og:url" content="https://thereadingroom.online/" />
+  <meta property="og:image" content="https://thereadingroom.online/img/Main%20Illustration%20-%20Green.png" />
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- <meta name="twitter:site" content="@website-username"> -->
+  
   <!-- google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -24,11 +24,19 @@ export async function get(): Promise<EndpointOutput> {
   let data = await res.json()
   data = data.data.map(story => {
     const author_name = story.attributes.author.data.attributes.username
+    const regexLocation = /([A-Za-z\s]+,*)/g;
+    let location = story.attributes.location.trim()
+    const match = location.match(regexLocation)
+    if(match != null) {
+      const len = match.length
+      if(len === 1) location = `${match[0]}`
+      else location = `${match[len-2]} ${match[len-1]}`
+    } 
     return {
       id: story.id,
       title: story.attributes.title,
       submission: story.attributes.submission,
-      location: story.attributes.location,
+      location: location,
       description: story.attributes.description,
       author_name: author_name,
       url: slugify(author_name + '-' + story.attributes.title),
