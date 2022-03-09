@@ -12,8 +12,10 @@
     <h1 class="text-2xl">The Reading Room</h1>
   </div>
 
-  <div class="h-36 w-36">
-    <Icon src="/icons/Home Illustration.svg" alt="home illustration" />
+  <div class="h-52 w-52 pt-2 self-center">
+    <img class="w-full h-full object-cover rounded-full
+                border-2 border-accent" 
+        src="/img/Main Illustration - Green.png" alt="home illustration" />
   </div>
 
   <div class="h-1/5 px-10 py-6

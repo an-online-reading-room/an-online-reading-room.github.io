@@ -538,39 +538,39 @@
     {/if}
     <div
         class="{(openInfoCard || openShareCard) ?
-        'flex-initial flex flex-row justify-around py-2 px-4 bg-accent text-primary' :
-        'flex-initial flex flex-row justify-around py-2 px-4 bg-primary'}"
+        'flex-initial flex flex-row justify-between py-2 px-5 bg-accent text-primary' :
+        'flex-initial flex flex-row justify-between py-2 px-5 bg-primary'}"
         style="border-top: black 1.5px solid;">
       <a href="/stories">
         {#if (openInfoCard || openShareCard)}
-        <div class="w-4 h-4">
-          <Icon src="/icons/Back Icon - White.svg" alt="back icon" />
+        <div class="w-6 h-6">
+          <Icon src="/icons/Back Button - White.svg" alt="back icon" />
         </div>
         {:else}
-        <div class="w-4 h-4">
-          <Icon src="/icons/Back Icon - Black.svg" alt="back icon" />
+        <div class="w-6 h-6">
+          <Icon src="/icons/Back Button - Black.svg" alt="back icon" />
         </div>
         {/if}
       </a>
       <div>
         {#if (openInfoCard || openShareCard)}
-        <div class="w-4 h-4" on:click={() => { openInfoCard = !openInfoCard; openShareCard = false }}>
-          <Icon src="/icons/Info Icon - White.svg" alt="info icon" />
+        <div class="w-6 h-6" on:click={() => { openInfoCard = !openInfoCard; openShareCard = false }}>
+          <Icon src="/icons/Info Button - White.svg" alt="info icon" />
         </div>
         {:else}
-        <div class="w-4 h-4" on:click={() => { openInfoCard = !openInfoCard; openShareCard = false }}>
-          <Icon src="/icons/Info Icon - Black.svg" alt="info icon" />
+        <div class="w-6 h-6" on:click={() => { openInfoCard = !openInfoCard; openShareCard = false }}>
+          <Icon src="/icons/Info Button - Black.svg" alt="info icon" />
         </div>
         {/if}
       </div>
       <div>
         {#if (openInfoCard || openShareCard)}
-        <div class="w-4 h-4" on:click={() => { openShareCard = !openShareCard; openInfoCard = false }}>
-          <Icon src="/icons/Large Share Icon - White.svg" alt="share icon" />
+        <div class="w-6 h-6" on:click={() => { openShareCard = !openShareCard; openInfoCard = false }}>
+          <Icon src="/icons/Share Button - White.svg" alt="share icon" />
         </div>
         {:else}
-        <div class="w-4 h-4" on:click={() => { openShareCard = !openShareCard; openInfoCard = false }}>
-          <Icon src="/icons/Large Share Icon - Black.svg" alt="share icon" />
+        <div class="w-6 h-6" on:click={() => { openShareCard = !openShareCard; openInfoCard = false }}>
+          <Icon src="/icons/Share Button - Black.svg" alt="share icon" />
         </div>
         {/if}
     
