@@ -30,6 +30,7 @@
   export let story
   let reader, scrollWindow
   let cnv, ctx, isPainting = false, startX, startY
+  let prevCnv, prevCtx, prevCnvImg
   let ongoingTouches = []
   let showAnnotationView = false
   let drawingMode = false, selectionMode = false
@@ -43,9 +44,15 @@
       story.annotations.forEach(annotation => showAnnotation(annotation))  
       showDrawingBoard()
     } else {
-      if(browser && document.querySelector('#comment-board') != null) {
-        document.querySelector('#comment-board').classList.add('hidden')
+      if(browser && document.querySelector('#drawing-board') != null) {
         story.annotations.forEach(annotation => hideAnnotation(annotation))  
+        console.log('adding')
+        console.log(document.querySelector('#drawing-board'))
+        // if(Array.from(document.querySelector('#drawing-board').classList).includes('hidden') == false) {
+          document.querySelector('#drawing-board').classList.add('hidden')
+        console.log(document.querySelector('#drawing-board'))
+
+        // }
       }
     }
   }
@@ -56,8 +63,20 @@
       cnv.height = reader.offsetHeight
       cnv.width = reader.offsetWidth
       ctx = cnv.getContext('2d')
+      prevCnv.height = reader.offsetHeight
+      prevCnv.width = reader.offsetWidth
+      prevCtx = prevCnv.getContext('2d')
+      console.log('removign hidden')
       document.querySelector('#drawing-board').classList.remove('hidden')
+
+      if(drawingMode == true && showAnnotationView == false) {
+        cnv.parentNode.classList.add('z-20')
+      } else {
+        cnv.parentNode.classList.remove('z-20')
+      }
     }
+
+    
   }
 
   const copyPageLink = () => {
@@ -97,9 +116,10 @@
   
   }
   const hideAnnotation = (annotation) => {
-    console.log(annotation)
     const block = document.querySelector(`section#target_${annotation.blockID}`)
     block.innerHTML = block.dataset.content
+    block.classList.remove('highlight')
+    block.parentElement.previousElementSibling.classList.add('hidden')
   }
 
   const draw = (e) => {
@@ -131,8 +151,8 @@
     ctx.beginPath();
   }
 
-  function copyTouch({ identifier, pageX, pageY }) {
-    return { identifier, pageX, pageY };
+  function copyTouch(touch) {
+    return {identifier: touch.identifier,clientX: touch.clientX,clientY: touch.clientY};
   }
   function ongoingTouchIndexById(idToFind) {
     for (var i = 0; i < ongoingTouches.length; i++) {
@@ -144,48 +164,71 @@
     }
     return -1;    // not found
   }
+  function findPos (obj) {
+    var curleft = 0,
+        curtop = 0;
+
+    if (obj.offsetParent) {
+      do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+
+        return { x: curleft-reader.parentNode.parentNode.scrollLeft, y: curtop-reader.parentNode.parentNode.scrollTop };
+        // return { x: curleft, y: curtop };
+    }
+}
   function handleStart(evt) {
     evt.preventDefault();
     console.log("touchstart.");
     var touches = evt.changedTouches;
+    var offset = findPos(cnv)
 
     for (var i = 0; i < touches.length; i++) {
-      console.log("touchstart:" + i + "...");
-      ongoingTouches.push(copyTouch(touches[i]));
-      var color = '#6A735A';
-      ctx.beginPath();
-      ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
-      ctx.fillStyle = color;
-      ctx.fill();
-      console.log("touchstart:" + i + ".");
+      if(touches[i].clientX-offset.x >0 && touches[i].clientX-offset.x < parseFloat(cnv.width) && touches[i].clientY-offset.y >0 && touches[i].clientY-offset.y < parseFloat(cnv.height)){
+            evt.preventDefault();
+        console.log("touchstart:" + i + "...");
+        ongoingTouches.push(copyTouch(touches[i]));
+        // var color = '#6A735A'
+        // ctx.beginPath();
+        // ctx.arc(touches[i].clientX-offset.x, touches[i].clientY-offset.y, 4, 0, 2 * Math.PI, false); // a circle at the start
+        // ctx.fillStyle = color;
+        // ctx.fill();
+        console.log("touchstart:" + i + ".");
+      }
     }
   }
   function handleMove(evt) {
     evt.preventDefault();
     var touches = evt.changedTouches;
+    // var offset = {
+    //   x: reader.parentNode.offsetLeft,
+    //   y: reader.parentNode.offsetTop 
+    //   + reader.parentNode.parentNode.offsetTop
+    //   + reader.parentNode.parentNode.scrollTop
+    // }
+    var offset = findPos(cnv)
+    // offset.x += pos.x
+    // offset.y += pos.y
+    console.log(offset)
+    console.log(ongoingTouches)
 
     for (var i = 0; i < touches.length; i++) {
       var color = '#6A735A';
       var idx = ongoingTouchIndexById(touches[i].identifier);
 
       if (idx >= 0) {
-        console.log("continuing touch "+idx);
-
-        // scale from display coordinates to model coordinates
-        var modelX = Math.round( touches[i].pageX * (cnv.width / cnv.offsetWidth) );
-        var modelY = Math.round( touches[i].pageY * (cnv.height / cnv.offsetHeight) );
-        modelY += reader.parentNode.offsetTop*2
-
+        console.log("continuing touch " + idx);
         ctx.beginPath();
-        console.log("ctx.lineTo(" + ongoingTouches[idx].pageX + ", " + ongoingTouches[idx].pageY + ");");
-        ctx.lineTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
-        console.log("ctx.lineTo(" + touches[i].pageX + ", " + touches[i].pageY + ");");
-        // ctx.lineTo(modelX, modelY);
+        console.log("ctx.moveTo(" + ongoingTouches[idx].clientX + ", " + ongoingTouches[idx].clientY + ");");
+        ctx.moveTo(ongoingTouches[idx].clientX-offset.x, ongoingTouches[idx].clientY-offset.y);
+        console.log("ctx.lineTo(" + touches[i].clientX + ", " + touches[i].clientY + ");");
+        ctx.lineTo(touches[i].clientX-offset.x, touches[i].clientY-offset.y);
         ctx.lineWidth = 4;
         ctx.strokeStyle = color;
         ctx.stroke();
-
-        ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+        
+        ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
         console.log(".");
       } else {
         console.log("can't figure out which touch to continue");
@@ -195,22 +238,25 @@
   function handleEnd(evt) {
     evt.preventDefault();
     var touches = evt.changedTouches;
+    var offset = findPos(cnv)
 
     for (var i = 0; i < touches.length; i++) {
-      var color = '#6A735A';
-      var idx = ongoingTouchIndexById(touches[i].identifier);
-
-      if (idx >= 0) {
-        ctx.lineWidth = 4;
-        ctx.fillStyle = color;
-        ctx.stroke()
-        ctx.beginPath();
-        ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
-        ctx.lineTo(touches[i].pageX, touches[i].pageY);
-        ctx.fillRect(touches[i].pageX - 4, touches[i].pageY - 4, 8, 8);  // and a square at the end
-        ongoingTouches.splice(idx, 1);  // remove it; we're done
-      } else {
-        console.log("can't figure out which touch to end");
+              if(touches[i].clientX-offset.x >0 && touches[i].clientX-offset.x < parseFloat(cnv.width) && touches[i].clientY-offset.y >0 && touches[i].clientY-offset.y < parseFloat(cnv.height)){
+                    evt.preventDefault();
+        var color = '#6A735A'
+        var idx = ongoingTouchIndexById(touches[i].identifier);
+            
+        if (idx >= 0) {
+          // ctx.lineWidth = 4;
+          ctx.fillStyle = 'transparent';
+          ctx.beginPath();
+          ctx.moveTo(ongoingTouches[idx].clientX-offset.x, ongoingTouches[idx].clientY-offset.y);
+          ctx.lineTo(touches[i].clientX-offset.x, touches[i].clientY-offset.y);
+          ctx.fillRect(touches[i].clientX - 4-offset.x, touches[i].clientY - 4-offset.y, 8, 8); // and a square at the end
+          ongoingTouches.splice(i, 1); // remove it; we're done
+        } else {
+          console.log("can't figure out which touch to end");
+        }
       }
     }
   }
@@ -218,9 +264,9 @@
   const initialiseCanvas = () => {
     console.log('info: canvas init')
     showDrawingBoard()
-    cnv.addEventListener('pointerdown', beginDraw);
-    cnv.addEventListener('pointerup', endDraw);
-    cnv.addEventListener('pointermove', draw);
+    // cnv.addEventListener('pointerdown', beginDraw);
+    // cnv.addEventListener('pointerup', endDraw);
+    // cnv.addEventListener('pointermove', draw);
     cnv.addEventListener('touchstart', handleStart);
     cnv.addEventListener('touchend', handleEnd);
     cnv.addEventListener('touchmove', handleMove);
@@ -241,7 +287,8 @@
         img.src = URL.createObjectURL(blob)
         img.onload = () => {
           console.log('info: prev canvas loaded')
-          ctx.drawImage(img, 0, 0, cnv.width, cnv.height)
+          prevCnvImg = img
+          prevCtx.drawImage(img, 0, 0, cnv.width, cnv.height)
         }
       })
 
@@ -249,15 +296,20 @@
   }
   const clearCanvas = () => {
     ctx.clearRect(0, 0, cnv.width, cnv.height)
+  }
+  const disableCanvas = () => {
     cnv.removeEventListener('pointerdown', beginDraw)
     cnv.removeEventListener('pointerup', endDraw)
     cnv.removeEventListener('pointermove', draw)
     cnv.removeEventListener('touchstart', handleStart)
     cnv.removeEventListener('touchend', handleEnd)
     cnv.removeEventListener('touchmove', handleMove)
-    document.querySelector('#drawing-board').classList.add('hidden')
+    document.querySelector('#current-cnv').classList.add('hidden')
   }
   const saveCanvas = () => {
+    if(prevCnvImg != null) {
+      ctx.drawImage(prevCnvImg, 0, 0, cnv.width, cnv.height)
+    }
     cnv.toBlob((blob) => {
       let uploadData = new FormData() 
       uploadData.append('files', blob, `${story.id}-canvas.png`)
@@ -269,7 +321,7 @@
       .then(data => {
         showAnnotationView = true
         drawingMode = false
-        clearCanvas()
+        disableCanvas()
         showDrawingBoard()
         const canvasData = {
           data: {
@@ -285,7 +337,7 @@
         })
       })
     })
-    
+    disableCanvas()
   }
 
 </script>
@@ -306,8 +358,8 @@
       </div>
       <div class="relative flex-1 text-sm border flex flex-col">
         <div bind:this={reader} id="reader"
-            class="{(showAnnotationView == true || drawingMode == true) ?
-                   'flex flex-col p-2' :
+            class="{(showAnnotationView == true) ?
+                   'flex flex-col p-2 z-10' :
                    'flex flex-col p-2'}">
             {#each story.submission.blocks as block}
               <div class="flex flex-row gap-x-2">
@@ -331,7 +383,7 @@
                   </div>
                   {/if}
 
-                  <section class="comment-view hidden z-20
+                  <section class="comment-view hidden z-30
                                   absolute text-primary
                                   w-full max-h-32" id={"comments-"+block.id}>
                     <div class="arrow-up"></div>
@@ -357,11 +409,19 @@
         </div>
         
         <!-- annotation view -->
-        <section id="drawing-board" class="hidden absolute left-0 top-0">
-          <canvas bind:this={cnv}>
-    
-            your browser does not support the canvas
-          </canvas>
+        <section id="drawing-board"
+          class="absolute left-0 top-0">
+          <div id="current-cnv" 
+          class="absolute left-0 top-0">
+            <canvas bind:this={cnv}>
+              your browser does not support the canvas
+            </canvas>
+          </div>
+          <div class="absolute left-0 top-0">
+            <canvas bind:this={prevCnv}>
+              your browser does not support the canvas
+            </canvas>
+          </div>
         </section>
         <!-- annotation view end -->
 
@@ -379,16 +439,16 @@
           <button on:click={() => { drawingMode = true; initialiseCanvas(); }}>
             <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
           </button>
-          <button>
+          <!-- <button>
             <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
-          </button>
+          </button> -->
           <button on:click={clearCanvas}>
             <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
           </button>
           <button on:click={saveCanvas}>
             <Icon src="/icons/Comment - Save Icon.svg" alt="comment - save" />
           </button>
-          <button on:click={() => { drawingMode = !drawingMode; showAnnotationView = true }}>
+          <button on:click={() => { drawingMode = !drawingMode; showAnnotationView = true; disableCanvas() }}>
             <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
           {:else if openCommentCard}
@@ -403,12 +463,12 @@
             <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
           {:else if showAnnotationView}
-          <button class="absolute right-0 top-0 w-4 h-4 m-1" on:click={() => { clearCanvas(); showAnnotationView = false }}>
-            <Icon src="/icons/Close Button - Black.svg"    alt="comment - close" />
-          </button>
           <button class="px-3 py-2 bg-black text-white"
                     on:click={() => { openCommentCard = !openCommentCard }}>
             Leave a Note
+          </button>
+          <button on:click={() => { showAnnotationView = false }}>
+            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
           {:else}
           <button on:click={() => { showAnnotationView = !showAnnotationView }}>
