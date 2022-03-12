@@ -26,6 +26,7 @@
   import TextSelection from '../../components/TextSelection.svelte';
   import { variables } from '../../variables';
   import theme from '../../stores/theme';
+  import html2canvas from 'html2canvas'
   
   export let story
   let reader, scrollWindow
@@ -38,6 +39,19 @@
   let openInfoCard = false
   let openShareCard = false
   let openCommentCard = false
+
+  let shareTextWhatsapp = `
+  The Reading Room is a collaborative storytelling project that enables us to think of place differently. Through storytelling, we can take the initiative of re-defining a place beyond its history and geography.%0a
+  *${story.title}*%0a
+  _${story.description}_%0a
+  Read it here ${variables.site_url}/stories/${story.url}
+  `
+  let shareTextEmail = `
+  The Reading Room is a collaborative storytelling project that enables us to think of place differently. Through storytelling, we can take the initiative of re-defining a place beyond its history and geography.%0D%0A
+  ${story.title}%0D%0A
+  ${story.description}%0D%0A
+  Read it here ${variables.site_url}/stories/${story.url}
+  `
 
   $: {
     if(showAnnotationView === true) {
@@ -77,6 +91,21 @@
     }
 
     
+  }
+
+  const captureScreen = () => {
+    document.querySelector('#capture').classList.remove('hidden')
+    html2canvas(document.querySelector('#capture'))
+    .then(canvas => {
+      document.querySelector('#capture').classList.add('hidden')
+      var link = document.createElement('a');
+      link.download = 'story.png';
+      link.href = canvas.toDataURL()
+      link.click();
+      let ig = document.createElement('a')
+      ig.href = 'instagram://story-camera'
+      ig.click()
+    })
   }
 
   const copyPageLink = () => {
@@ -340,8 +369,12 @@
     disableCanvas()
   }
 
-</script>
+  onMount(() => {
+    const capture = document.querySelector('#capture')
+    capture.style.top = `${document.body.offsetHeight}px`
+  })
 
+</script>
 
 
 <div class="flex-1 flex flex-col align-items-center gap-y-4
@@ -452,13 +485,12 @@
             <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
           {:else if openCommentCard}
-          <button on:click={() => { selectionMode = true; showAnnotationView = false; clearCanvas() } }>
-            <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
-          </button>
           <button on:click={() => { drawingMode = true; showAnnotationView = false; initialiseCanvas(); }}>
             <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
           </button>
-      
+          <button on:click={() => { selectionMode = true; showAnnotationView = false; clearCanvas() } }>
+            <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
+          </button>    
           <button on:click={() => { openCommentCard = !openCommentCard; showAnnotationView = true }}>
             <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
           </button>
@@ -516,16 +548,16 @@
         <div class="
                     p-1">
           <div class="flex flex-row flex-nowrap justify-between">
-            <a href={"whatsapp://send?text="+"https://the-reading-room.netlify.app/stories/"+story.url} data-action="share/whatsapp/share">
+            <a href={"whatsapp://send?text="+shareTextWhatsapp} data-action="share/whatsapp/share">
               <Icon src="/icons/Share - WhatsApp Icon.svg" alt="share - whatsapp" />
             </a>
-            <a href="#">
+            <button on:click={captureScreen}>
               <Icon src="/icons/Share - Instagram Icon.svg" alt="share - instagram" />
-            </a>
-            <a href={"mailto:?subject="+story.url}>
+            </button>
+            <a href={"mailto:?subject=Read this story on The Reading Room&body="+shareTextEmail}>
               <Icon src="/icons/Share - Email Icon.svg" alt="share - email" />
             </a>
-            <a href={"sms:?body="+story.url}>
+            <a href={"sms:?body="+shareTextEmail}>
               <Icon src="/icons/Share - Message Icon.svg" alt="share - message" />
             </a>
             <a href={window.location.href} on:click={copyPageLink}>
@@ -583,3 +615,14 @@
 {#if selectionMode}
 <TextSelection readerID="reader" storyID={story.id}/>
 {/if}
+
+<div id="capture" class="hidden absolute left-0 px-2 bg-primary w-full flex flex-col gap-y-1 items-center">
+  <h1 class="text-lg">The Reading Room</h1>
+  <div class="h-52 w-52 pt-1 self-center">
+    <img class="w-full h-full object-cover rounded-full
+                border-2 border-accent" 
+        src="/img/Main Illustration - Green.png" alt="home illustration" />
+  </div>
+  <h2 class="font-display font-semibold text-sm">{story.title}</h2>
+  <p class="font-text text-sm">{story.description}</p>
+</div>

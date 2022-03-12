@@ -1,16 +1,12 @@
 <script>
+  import Header from "../components/Header.svelte";
   import Icon from '../components/Icon.svelte'
-  import { version } from '../stores/version'
 </script>
 
-<div class="flex flex-col items-center
+<div class="flex flex-col align-items-center gap-y-4
             w-screen h-full bg-primary
-            px-6
             text-center">
-  <div class="h-20 flex flex-col justify-center
-              font-display">
-    <h1 class="text-2xl">The Reading Room</h1>
-  </div>
+  <Header></Header>
 
   <div class="h-52 w-52 pt-2 self-center">
     <img class="w-full h-full object-cover rounded-full
@@ -18,26 +14,26 @@
         src="/img/Main Illustration - Green.png" alt="home illustration" />
   </div>
 
-  <div class="h-1/5 px-10 py-6
-              font-text text-xs leading-4
-              flex flex-col gap-y-3">
-    <p class="pt-2">We suggest you choose the</p>
-    <a href="/landing" on:click={() => version.set('lite')}>
-      <button class="font-display px-4 py-2 bg-black text-white">
-        Lite Version
-      </button>
-    </a>
-    <p class="pt-2">if you have low bandwidth for a smoother experience.</p>
+  <div class="h-1/5 py-6 px-4 flex flex-col gap-y-2
+              font-display text-sm leading-4">
+    <p>The Reading Room is an online platform for location-based storytelling.</p>
+    <p>Our contributors come from across the world.  Join us and tell us your story, or go forth and discover stories that could make you fall in love with where you live. </p>  
   </div>
 
-  <div class="py-8
-              font-display text-xxs">
-    
-    <p>For best experience use the adventure version</p>
-  </div>
-
-  <div class="mt-auto pb-6
+  <div class="py-8 px-4
               font-display text-xs">
-    <p>Turn on sound for a more immersive experience</p>
+    <p class="font-text">Are you a listener or a storyteller?</p>
+    <div class="flex justify-evenly px-8 py-2">
+      <a href="/stories">
+        <button class="font-display text-sm px-4 py-2 bg-black text-white">
+          Listener
+        </button>
+      </a>
+      <a href="/storyteller">
+        <button class="font-display text-sm px-4 py-2 bg-black text-white">
+          Storyteller
+        </button>
+      </a>
+    </div>
   </div>
 </div>

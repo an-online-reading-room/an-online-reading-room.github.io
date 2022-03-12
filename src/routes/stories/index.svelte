@@ -1,28 +1,9 @@
-<script lang="ts" context="module">
-	
-	import type { Load } from "@sveltejs/kit"
-
-	export const load: Load = async ({ params, fetch, session, stuff }) => {
-		// const stories = await fetch('/storiesapi')
-		const tags = await fetch('/tagsapi')
-		// let storiesData = await stories.json()
-		let tagsData = await tags.json()
-		return { props: { 
-			// listItems: storiesData, 
-			// stories: storiesData, 
-			tags: tagsData.slice(0, 6),
-		}}
-	}
-
-	
-</script>
-
 <script>
 
 	import { visited } from '../../stores/visited'
 	import storyList from "../../stores/storyList";
+	import tagList from "../../stores/tagList";
 
-	export let tags 
 	let listItems, stories
   let open = false
 	let query = ''
@@ -63,7 +44,6 @@
 			.filter(item => item.includes(tag))
 			if(match.length > 0) listItems.push(story)
 		})
-		console.log(listItems)
 		tagQuery = ''
 		open = false
 	}
@@ -81,7 +61,7 @@
 								w-full gap-x-base divide-x
 								border">
 			<input type="search" name="search-query" placeholder="Search for a story"
-						class="flex-1 py-1 bg-primary text-sm px-2 focus:outline-none"
+						class="flex-1 py-1 bg-primary text-sm px-2 focus:outline-none placeholder:text-black"
 						bind:value={query}>
 			<button class="w-8 h-8 bg-primary focus:outline-none" 
 							on:click={search}>
@@ -101,7 +81,7 @@
 										border border-black border-1
 										text-center font-text
 										inline-flex flex-col gap-y-1
-										{$visited.includes(story.id) == true ? 'bg-accent text-primary' : 'bg-primary'}">
+										{$visited.includes(story.id) == true ? 'bg-story-accent text-primary' : 'bg-primary'}">
 						<div class="text-base font-display">
 							<h1>{story.title}</h1>
 						</div>
@@ -117,11 +97,11 @@
 					</div>
 				</a>
 			</div>
-			{:else}
+			{/each}
+			{:else if listItems.length == 0}
 			<p class="font-display text-xs text-left">
 				sorry, we could'nt find what you were looking for
 			</p>
-			{/each}
 			{:else} 
 			<video src="/img/loading.webm" autoplay loop muted></video>
 			{/if}
@@ -170,7 +150,7 @@
 
 		<div class="flex flex-row flex-wrap gap-y-4 gap-x-6
 								text-sm text-primary">
-			{#each tags as tag}
+			{#each $tagList as tag}
 			<button class="border border-primary py-1 px-2"
 							on:click={() => filterByTag(tag.name)}>
 				{tag.name}

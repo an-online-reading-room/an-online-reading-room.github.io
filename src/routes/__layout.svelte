@@ -25,7 +25,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:description" content="The Reading Room is a collaborative storytelling project that enables us to think of place differently. Through storytelling, we can take the initiative of re-defining a place beyond its history and geography.">
   <meta property="og:url" content="https://thereadingroom.online/" />
-  <meta property="og:image:secure_url" content="https://thereadingroom.online/img/Main%20Illustration%20-%20Green.png" />
+  <meta property="og:image" content="http://thereadingroom.online/img/Main%20Illustration%20-%20Green.png" />
   <meta property="og:image:alt" content="Person running toward a book floating in the air. There are houses, trees, and animals in the background." />
   <meta name="twitter:card" content="summary_large_image">
   <!-- <meta name="twitter:site" content="@website-username"> -->
@@ -37,8 +37,10 @@
 </svelte:head>
 
 
-<main class="h-full {"theme-"+$theme} font-display bg-primary">
-  <slot></slot>
-</main>
+<div class={"h-full theme-"+$theme}>
+  <main class="h-full font-display bg-primary">
+    <slot></slot>
+  </main>
+</div>
 
 
