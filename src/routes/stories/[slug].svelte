@@ -365,10 +365,10 @@
               <div class="flex flex-row gap-x-2">
               
                 <div class="pt-0.5 hidden">
-                  <svg class="w-4 h-4" viewBox="10 10 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 20C12 15.5817 15.5817 12 20 12V12C24.4183 12 28 15.5817 28 20V25.0909C28 25.9375 28 26.3608 27.8739 26.6989C27.6712 27.2425 27.2425 27.6712 26.6989 27.8739C26.3608 28 25.9375 28 25.0909 28H20C15.5817 28 12 24.4183 12 20V20Z" stroke={$theme.accent} stroke-width="1.2"/>
-                  <path d="M17 19L23 19" stroke={$theme.accent} stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M20 23H23" stroke={$theme.accent} stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <svg class="w-4 h-4 stroke-accent" viewBox="10 10 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 20C12 15.5817 15.5817 12 20 12V12C24.4183 12 28 15.5817 28 20V25.0909C28 25.9375 28 26.3608 27.8739 26.6989C27.6712 27.2425 27.2425 27.6712 26.6989 27.8739C26.3608 28 25.9375 28 25.0909 28H20C15.5817 28 12 24.4183 12 20V20Z" stroke="#000" stroke-width="1.2"/>
+                  <path d="M17 19L23 19" stroke="#000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M20 23H23" stroke="#000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
               

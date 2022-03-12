@@ -1,17 +1,14 @@
 import { writable } from 'svelte/store'
 import { browser } from '$app/env'
 
-const defaultValue = JSON.stringify({
-  primary: '#EEE2D2',
-  accent: '#6A735A'
-})
+const defaultValue = 'cream'
 const stored = browser ? window.localStorage.theme ?? defaultValue : defaultValue
 
-export const theme = writable(JSON.parse(stored))
+export const theme = writable(stored)
 
 theme.subscribe(value => {
   if(browser) {
-    window.localStorage.setItem('theme', JSON.stringify(value))
+    window.localStorage.setItem('theme', value)
   }
 })
 
