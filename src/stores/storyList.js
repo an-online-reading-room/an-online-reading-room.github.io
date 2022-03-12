@@ -37,7 +37,7 @@ export default {
     if (loading || noMoreData) return
 
     const query = qs.stringify({
-      populate: ['author'],
+      populate: ['author', 'categories'],
       pagination: {
         page: page,
         pageSize: 10,
@@ -68,6 +68,7 @@ export default {
         description: story.attributes.description,
         author_name: author_name,
         url: slugify(author_name + '-' + story.attributes.title),
+        categories: story.attributes.categories.data.map(category => category.attributes.name),
       }
     }) 
     data.push(...list)

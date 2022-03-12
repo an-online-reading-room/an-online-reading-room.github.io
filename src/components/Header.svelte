@@ -10,11 +10,11 @@
   let pathPrefix
 
   version.subscribe(value => {
-    pathPrefix = value === 'lite' ? '/adventure' : ''
+    pathPrefix = value === 'lite' ? '/adventure/landing' : '/'
   })
 
   const changeTheme = () => {
-    const themes = ['cream', 'green', 'red', 'teal', 'grey']
+    const themes = ['cream', 'green', 'red', 'teal', 'grey'].filter(value => value != $theme)
     const newTheme = themes[Math.floor(Math.random()*themes.length)]
     theme.set(newTheme)
   }
@@ -28,7 +28,7 @@
       <!-- menu card start -->
       {#if openMenu}
       <div class="absolute inset-0 w-screen h-full
-                  bg-accent text-primary
+                  bg-menu-primary text-menu-accent
                   pt-4 px-4 z-10">
 
         <div class="flex flex-row justify-end gap-x-2">
@@ -39,7 +39,7 @@
           </button>
           <button class="w-8 h-8 focus:outline-none"
                   on:click={() => openMenu = !openMenu}>
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="stroke-menu-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
             <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
             <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
@@ -55,12 +55,12 @@
                     text-display text-base">
           <div class="w-full h-16 pb-6 pt-4">
             <div class="w-8 h-8 mx-auto">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M23.5417 28.6875V21.9375C23.5417 20.8329 22.6462 19.9375 21.5417 19.9375H18.25C17.1454 19.9375 16.25 20.8329 16.25 21.9375V28.6875" stroke="#EEE2D2" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M27.9165 14.1042V9" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-menu-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke-width="1.5"/>
+              <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M23.5417 28.6875V21.9375C23.5417 20.8329 22.6462 19.9375 21.5417 19.9375H18.25C17.1454 19.9375 16.25 20.8329 16.25 21.9375V28.6875" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M27.9165 14.1042V9" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </div>
           </div>
@@ -72,7 +72,7 @@
             <div class="py-3 cursor-pointer" on:click={() => openFAQMenu = !openFAQMenu}>
               FAQ
             </div>
-            <a href="{pathPrefix+'/landing'}" on:click={() => { 
+            <a href={pathPrefix} on:click={() => { 
               openMenu = !openMenu 
               const newVersion = $version === 'lite' ? 'adventure' : 'lite'
               version.set(newVersion)
@@ -104,7 +104,7 @@
         <!-- About Menu Card Start  -->
         {#if openAboutMenu}
         <div class="absolute inset-0 w-screen 
-                  bg-accent text-primary h-full
+                  bg-accent text-menu-accent h-full
                   py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
@@ -165,7 +165,7 @@
         <!-- FAQ Menu Card Start -->
         {#if openFAQMenu}
         <div class="absolute inset-0 w-screen h-full
-                  bg-accent text-primary
+                  bg-accent text-menu-accent
                   py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
@@ -248,7 +248,7 @@
         <!-- Worldbuilders Menu Card Start -->
         {#if openWorldbuildersMenu}
         <div class="absolute inset-0 w-screen h-full
-                bg-accent text-primary
+                bg-accent text-menu-accent
                 py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
@@ -321,7 +321,7 @@
         <!-- Terms Menu Card Start -->
         {#if openTermsMenu}
         <div class="absolute inset-0 w-screen h-full
-                bg-accent text-primary
+                bg-accent text-menu-accent
                 py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
@@ -449,7 +449,7 @@
       {/if}
       <!-- menu card end -->
       
-      <a href="{pathPrefix === '' ? '/adventure/landing' : '/landing'}">
+      <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}">
         <h1 class="text-2xl">The Reading Room</h1>
       </a>
       
@@ -466,11 +466,11 @@
                 openTermsMenu = false;
                 openWorldbuildersMenu = false; 
               }}>
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="19.25" stroke="black" stroke-width="1.5"/>
-          <path d="M12 13H28" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M12 20H28" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M12 27H28" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+        <svg class="stroke-black" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+          <path d="M12 13H28" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M12 20H28" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M12 27H28" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </button>
       
