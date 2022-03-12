@@ -39,6 +39,9 @@
     "@recogito/recogito-js": "^1.7.1",
     "dotenv": "^16.0.0",
     "leaflet": "^1.7.1",
-    "pelias-leaflet-plugin": "^1.12.0"
+    "lodash": "^4.17.21",
+    "pelias-leaflet-plugin": "^1.12.0",
+    "qs": "^6.10.3",
+    "tailwind-theme-switcher": "^1.0.2"
   }
 }

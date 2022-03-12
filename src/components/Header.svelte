@@ -1,5 +1,6 @@
 <script>
   import { version } from '../stores/version'
+  import { theme } from '../stores/theme'
 
   let openMenu = false
   let openAboutMenu = false
@@ -11,6 +12,12 @@
   version.subscribe(value => {
     pathPrefix = value === 'lite' ? '/adventure' : ''
   })
+
+  const changeTheme = () => {
+    const themes = ['cream', 'green', 'red', 'teal', 'grey']
+    const newTheme = themes[Math.floor(Math.random()*themes.length)]
+    theme.set(newTheme)
+  }
 </script>
 
 <header>
@@ -446,9 +453,9 @@
         <h1 class="text-2xl">The Reading Room</h1>
       </a>
       
-      <button class="w-8 h-8 focus:outline-none ml-auto">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
+      <button class="w-8 h-8 focus:outline-none ml-auto" on:click={changeTheme}>
+        <svg class="fill-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="19.25" />
         </svg>
       </button>
       <button class="w-8 h-8 focus:outline-none"

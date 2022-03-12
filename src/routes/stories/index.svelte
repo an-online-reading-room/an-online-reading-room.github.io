@@ -3,13 +3,13 @@
 	import type { Load } from "@sveltejs/kit"
 
 	export const load: Load = async ({ params, fetch, session, stuff }) => {
-		const stories = await fetch('/storiesapi')
+		// const stories = await fetch('/storiesapi')
 		const tags = await fetch('/tagsapi')
-		let storiesData = await stories.json()
+		// let storiesData = await stories.json()
 		let tagsData = await tags.json()
 		return { props: { 
-			listItems: storiesData, 
-			stories: storiesData, 
+			// listItems: storiesData, 
+			// stories: storiesData, 
 			tags: tagsData.slice(0, 6),
 		}}
 	}
@@ -20,12 +20,20 @@
 <script>
 
 	import { visited } from '../../stores/visited'
+	import storyList from "../../stores/storyList";
 
-	export let listItems, stories, tags 
+	export let tags 
+	let listItems, stories
   let open = false
 	let query = ''
 	let locationQuery = ''
 	let tagQuery = ''
+
+	storyList.fetchNextPage()
+	storyList.subscribe(value => {
+		listItems = value.data
+		stories = value.data
+	})
 	
 	const search = (e) => {
 		query = query.toLowerCase()
@@ -66,8 +74,6 @@
 
 </script>
 
-
-  
 <!-- story list -->
 <main	class="flex flex-col align-items-center gap-y-4 px-4 pb-4 overflow-y-scroll">
 
@@ -86,8 +92,8 @@
 			</button>
 		</div>
 		
-		<div class="pb-4
-							flex flex-col gap-y-4">
+		<div class="pb-4 flex flex-col gap-y-4">
+			{#if listItems && listItems.length}
 			{#each listItems as story}
 			<div>
 				<a href="/stories/{story.url}" on:click={() => visitStory(story.id)}>
@@ -108,8 +114,6 @@
 						<div class="text-sm">
 							<p>{story.description}</p>
 						</div>
-						
-						
 					</div>
 				</a>
 			</div>
@@ -118,6 +122,9 @@
 				sorry, we could'nt find what you were looking for
 			</p>
 			{/each}
+			{:else} 
+			<video src="/img/loading.webm" autoplay loop muted></video>
+			{/if}
 		</div>
 </main>
 <!-- story list end -->

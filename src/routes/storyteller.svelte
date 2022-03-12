@@ -8,8 +8,10 @@
             text-center">
   <Header></Header>
   
-  <div class="h-36 w-36 py-2 self-center">
-    <Icon src="/icons/Home Illustration.svg" alt="home illustration" />
+  <div class="h-52 w-52 pt-2 self-center">
+    <img class="w-full h-full object-cover rounded-full
+                border-2 border-accent" 
+        src="/img/Main Illustration - Green.png" alt="home illustration" />
   </div>
 
   <main class="font-text text-sm leading-4 px-6">
