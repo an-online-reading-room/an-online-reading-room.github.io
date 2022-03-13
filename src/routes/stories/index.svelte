@@ -165,8 +165,8 @@
 	<button 
 					on:click={() => open = !open}
 					class="{open ? 
-							'absolute inset-x-0 bottom-0 w-full h-8 focus:outline-none bg-accent text-primary' : 
-							'absolute inset-x-0 bottom-0 w-full h-8 focus:outline-none bg-primary border-t'}">
+							'absolute inset-x-0 bottom-0 w-full h-10 py-2 focus:outline-none bg-accent text-primary' : 
+							'absolute inset-x-0 bottom-0 w-full h-10 py-2 focus:outline-none bg-primary border-t'}">
 		Filters
 	</button>
 </div>

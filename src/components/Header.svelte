@@ -1,6 +1,7 @@
 <script>
   import { version } from '../stores/version'
   import { theme } from '../stores/theme'
+  import Icon from '../components/Icon.svelte'
 
   let openMenu = false
   let openAboutMenu = false
@@ -51,21 +52,25 @@
 
         <div class="flex flex-col justify-center
                     h-3/4
-                    divide-y divide-primary
+                    divide-y divide-menu-accent
                     text-display text-base">
-          <div class="w-full h-16 pb-6 pt-4">
-            <div class="w-8 h-8 mx-auto">
-              <svg class="stroke-menu-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
-              <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke-width="1.5"/>
-              <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M23.5417 28.6875V21.9375C23.5417 20.8329 22.6462 19.9375 21.5417 19.9375H18.25C17.1454 19.9375 16.25 20.8329 16.25 21.9375V28.6875" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M27.9165 14.1042V9" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
+          <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}" on:click={() => {
+            openMenu = !openMenu; 
+          }}>
+            <div class="w-full h-16 pb-6 pt-4">
+              <div class="w-8 h-8 mx-auto">
+                <svg class="stroke-menu-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+                <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke-width="1.5"/>
+                <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M23.5417 28.6875V21.9375C23.5417 20.8329 22.6462 19.9375 21.5417 19.9375H18.25C17.1454 19.9375 16.25 20.8329 16.25 21.9375V28.6875" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M27.9165 14.1042V9" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
             </div>
-          </div>
+          </a>
 
-          <nav class="flex flex-col divide-y divide-primary">
+          <nav class="flex flex-col divide-y divide-menu-accent">
             <div class="py-3 cursor-pointer" on:click={() => openAboutMenu = !openAboutMenu}>
               About
             </div>
@@ -206,12 +211,24 @@
               <p class="text-xxs">◆</p>
               <section>
                 <h2 class="font-bold">What is an annotated story?</h2>
-                <p>An annotated story is a version of a story that has comments and shared experiences of its listeners. You can press on X to view it, add your own drawings and comments, and share your favourite snippets with others.</p>
+                <p>An annotated story is a version of a story that has comments and shared experiences of its listeners. You can press on
+                
+                <!-- <img class="inline w-4 h-4" src="/icons/Comment Button - White on Black.svg" alt="show comments" /> -->
+                <svg class="inline w-4 h-4" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="black"/>
+                <rect width="24" height="24" transform="translate(8 8)" fill="black"/>
+                <path d="M12 20C12 15.5817 15.5817 12 20 12V12C24.4183 12 28 15.5817 28 20V25.0909C28 25.9375 28 26.3608 27.8739 26.6989C27.6712 27.2425 27.2425 27.6712 26.6989 27.8739C26.3608 28 25.9375 28 25.0909 28H20C15.5817 28 12 24.4183 12 20V20Z" stroke="#EEE2D2" stroke-width="2.0"/>
+                <path d="M17 19L23 19" stroke="#EEE2D2" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M20 23H23" stroke="#EEE2D2" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                  
+                
+                to view it, add your own drawings and comments, and share your favourite snippets with others.</p>
               </section>
               <p class="text-xxs">◆</p>
               <section>
                 <h2 class="font-bold">How do I upload stories?</h2>
-                <p>Our StoryForm will ask you to share a story title, summary, username(s), and location, along with your story. Please email us at anonlinereadingroom@gmail.com if you have any trouble.</p>
+                <p>Our story form will ask you to share a story title, summary, username(s), and location, along with your story. Please email us at anonlinereadingroom@gmail.com if you have any trouble.</p>
               </section>
               <p class="text-xxs">◆</p>
               <section>
@@ -231,7 +248,7 @@
               </section>
               <p class="text-xxs">◆</p>
               <section>
-                <p>The Adventure Version is too frugal with stories, I’d like to view all the stories and choose from there.</p>
+                <p class="font-bold">The Adventure Version is too frugal with stories, I’d like to view all the stories and choose from there.</p>
                 <p>Our lite version has all stories listed with filters available for quick views. However, The Reading Room’s agenda is to promote slow media. We hope you make use of the Adventure Version and AR version for this reason.</p>
               </section>
               <p class="text-xxs">◆</p>

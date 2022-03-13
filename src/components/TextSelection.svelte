@@ -7,40 +7,46 @@
   export let readerID
   export let storyID
   let reader, content
+  let selecting = false
   let currHighlightRange, currHighlightBlock
   let selectionControls
   let postUrl = `${variables.strapi_url}/api/annotations`
 
   const showSelectionControls = (e) => {
     e.stopPropagation()
-    removeControls()
+    // removeControls()
     console.log('info: showing controls')
-    let targetNode = document.getSelection().anchorNode.parentNode
-    let range = new Range()
-    range.setStart(targetNode, 0)
-    range.setEnd(targetNode, targetNode.childNodes.length)
-    document.getSelection().removeAllRanges()
-    document.getSelection().addRange(range)
-    let currSelection = document.getSelection()
+    console.log(document.getSelection())
+    if(document.getSelection().anchorNode != null || 
+      document.getSelection().anchorNode != document) {
+      let targetNode = document.getSelection().anchorNode.parentNode
+      let range = new Range()
+      range.setStart(targetNode, 0)
+      range.setEnd(targetNode, targetNode.childNodes.length)
+      document.getSelection().removeAllRanges()
+      document.getSelection().addRange(range)
+      let currSelection = document.getSelection()
 
-    currHighlightRange = range
-    currHighlightBlock = targetNode
+      currHighlightRange = range
+      currHighlightBlock = targetNode
 
-    let text = currSelection.toString()
-    if(text.length > 0) {
-      let rect = currSelection.getRangeAt(0).getBoundingClientRect()
-      selectionControls.style.top = `calc(${rect.bottom}px + 0px)`
-      selectionControls.style.left = "1.5rem"
-      selectionControls['text'] = text
-      document.body.appendChild(selectionControls)
+      let text = currSelection.toString()
+      if(text.length > 0) {
+        let rect = currSelection.getRangeAt(0).getBoundingClientRect()
+        selectionControls.style.top = `calc(${rect.bottom}px + 0px)`
+        selectionControls.style.left = "1.5rem"
+        selectionControls['text'] = text
+        document.body.appendChild(selectionControls)
+      }
+
+      if(currHighlightRange != null) {
+        console.log('info: adding class')
+        console.log(currHighlightRange)
+        document.getSelection().addRange(currHighlightRange)
+        currHighlightBlock.classList.add('highlight')
+      }
     }
-
-    if(currHighlightRange != null) {
-      console.log('info: adding class')
-      console.log(currHighlightRange)
-      document.getSelection().addRange(currHighlightRange)
-      currHighlightBlock.classList.add('highlight')
-    }
+    
     
   }
   const removeControls = (e) => {
@@ -108,11 +114,15 @@
 
     reader = document.querySelector(`#${readerID}`)
     selectionControls.onpointerup = pointerOnPopup
-    reader.onpointerdown = removeControls
-    reader.onpointerup = showSelectionControls
-    reader.ontouchend = showSelectionControls
-    reader.ontouchstart = removeControls
-    
+    // reader.onpointerdown = removeControls
+    // reader.onpointerup = showSelectionControls
+    // reader.ontouchend = showSelectionControls
+    // reader.ontouchstart = removeControls
+    document.addEventListener('selectionchange', (e) => {
+      setTimeout(() => {
+        showSelectionControls(e)
+      }, 500)
+    })
     
   })
 
@@ -120,7 +130,7 @@
 
   
 <section class="hidden">
-  <span bind:this={selectionControls} id="selection-controls">
+  <span bind:this={selectionControls} id="selection-controls" class="select-none">
     <section class="arrow-up"></section>
     <main class="flex flex-col p-2 
                 text-primary bg-accent underline">
