@@ -1,0 +1,1 @@
+import{D as s}from"./vendor-64152532.js";const e=JSON.stringify([]);var t;const o=(t=window.localStorage.visited)!=null?t:e,r=s(JSON.parse(o));r.subscribe(i=>{window.localStorage.setItem("visited",JSON.stringify(i))});export{r as v};
