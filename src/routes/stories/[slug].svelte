@@ -132,7 +132,6 @@
     svg.addEventListener('click', () => {
       const comments = document.querySelectorAll('.comment-view')
       Array.from(comments).forEach(comment => {
-        console.log(comment.id, `comments-${annotation.blockID}`)
         if(comment.id != `comments-${annotation.blockID}`) {
           comment.classList.add('hidden')
         }
@@ -369,6 +368,89 @@
     disableCanvas()
   }
 
+
+  let content
+  let selecting = false
+  let currHighlightRange, currHighlightBlock
+  let selectionControls
+  let postUrl = `${variables.strapi_url}/api/annotations`
+
+  const showSelectionControls = (e) => {
+    // e.stopPropagation()
+    removeControls(e)
+    console.log('info: showing controls')
+    console.log(e.target)
+    
+    let targetNode = e.target
+    let range = new Range()
+    range.setStart(targetNode, 0)
+    range.setEnd(targetNode, targetNode.childNodes.length)
+    
+    currHighlightBlock = e.target
+
+    let text = e.target.innerText
+    if(text.length > 0) {
+      let rect = e.target.getBoundingClientRect()
+      selectionControls.style.top = `calc(${rect.bottom}px + 0px)`
+      selectionControls.style.left = "1.5rem"
+      selectionControls['text'] = text
+      document.body.appendChild(selectionControls)
+    }    
+    console.log('info: adding class')
+    e.target.classList.add('highlight')
+ 
+  }
+  const removeControls = (e) => {
+    console.log('info: removing controls')
+    let controls = [
+      document.querySelector('#selection-controls'),
+    ]
+    controls.forEach(control => {
+      if(control !== null) {
+        console.log('removing..')
+        control.remove()
+        document.getSelection().removeAllRanges()
+      }
+    })
+
+    if(currHighlightBlock != null) {
+      currHighlightBlock.classList.remove('highlight')
+    }
+    currHighlightRange = null
+    currHighlightBlock = null
+
+  }
+  const submitAnnotation = () => {
+    console.log('info: posting annotation')
+    console.log(currHighlightBlock.innerText)
+    const annotationData = {
+      data: {
+        targetText: currHighlightBlock.innerText,
+        blockID: currHighlightBlock.id.split('_')[1],
+        length: currHighlightBlock.innerText.length,
+        content: content,
+        startOffset: 0,
+        story: story.id
+      }
+    }
+    console.log(annotationData)
+    removeControls()
+    fetch(postUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(annotationData)
+    })
+    .then(response => {
+      if(currHighlightBlock != null) {
+        currHighlightBlock.classList.remove('highlight')
+      }
+      currHighlightRange = null
+      currHighlightBlock = null
+    })
+  }
+
   onMount(() => {
     const capture = document.querySelector('#capture')
     capture.style.top = `${document.body.offsetHeight}px`
@@ -379,7 +461,7 @@
 
 <div class="flex-1 flex flex-col align-items-center gap-y-4
             w-screen overflow-y-scroll bg-primary
-            text-center">
+            text-center select-none">
   
   
     <div bind:this={scrollWindow} class="overflow-y-scroll flex-1
@@ -389,7 +471,7 @@
       <div class="px-1 text-base border">
         {story.title}
       </div>
-      <div class="relative flex-1 text-sm border flex flex-col">
+      <div class="relative flex-1 text-sm border flex flex-col select-text">
         <div bind:this={reader} id="reader"
             class="{(showAnnotationView == true) ?
                    'flex flex-col p-2 z-10' :
@@ -406,9 +488,9 @@
                 </div>
               
               
-                <div class="relative mb-1">
+                <div class="relative mb-1 w-full">
                   {#if block.data.text}
-                  <section data-content={block.data.text} id="{"target_"+block.id}">{block.data.text}</section>
+                  <section data-content={block.data.text} id="{"target_"+block.id}" on:click={showSelectionControls}>{block.data.text}</section>
                   {/if}
                   {#if block.data.file}
                   <div class="self-center flex-initial object-contain">
@@ -418,10 +500,10 @@
 
                   <section class="comment-view hidden z-30
                                   absolute text-primary
-                                  w-full max-h-32" id={"comments-"+block.id}>
+                                  w-full max-h-42" id={"comments-"+block.id}>
                     <div class="arrow-up"></div>
-                    <div class="bg-accent p-2 flex flex-col gap-y-2
-                                max-h-32 overflow-y-scroll">
+                    <div class="bg-accent p-2 flex flex-col flex-wrap gap-y-2
+                                w-full overflow-y-scroll">
                       {#each story.annotations as annotation}
                       {#if annotation.blockID == block.id}
                       <section id={"anno-"+annotation.blockID}>
@@ -613,7 +695,27 @@
 </div>
 
 {#if selectionMode}
-<TextSelection readerID="reader" storyID={story.id}/>
+<section class="hidden">
+  <span bind:this={selectionControls} id="selection-controls" class="select-none">
+    <section class="arrow-up"></section>
+    <main class="flex flex-col p-2 w-10/12
+                text-primary bg-accent underline">
+      <section>
+        <textarea bind:value={content} class="bg-accent text-primary placeholder:text-primary focus:outline-none
+                        overflow-hidden w-full"
+                name="annotation" id="annotation" placeholder="Leave a comment"
+                rows=2 cols=30 wrap="soft"></textarea>
+      </section>
+      <section class="flex flex-row-reverse items-center">
+        <button on:click={submitAnnotation}>
+          <Icon src="/icons/Highlight - Send Icon.svg" alt="send icon" />
+        </button>
+      </section>
+    </main>
+  </span>
+
+</section>
+
 {/if}
 
 <div id="capture" class="hidden absolute left-0 px-2 bg-primary w-full flex flex-col gap-y-1 items-center">

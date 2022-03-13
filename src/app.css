@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .highlight {
+    @apply bg-accent text-primary
+  }
+
+  .arrow-up {
+    @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-accent mx-0 ml-2 mr-0
+  }
+}

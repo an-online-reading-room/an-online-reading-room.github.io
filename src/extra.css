@@ -33,21 +33,7 @@ body>div {
 }
 
 
-.arrow-up {
-  width: 0;
-  height: 0;
-  border-left: 0.8rem solid transparent;
-  border-right: 0.8rem solid transparent;
-  border-bottom: 0.8rem solid #6A735A;
-  margin: 0 0 0 2rem;
-}
-
 ::selection {
-  background-color: #6A735A;
-  color: #EEE2D2;
-}
-
-.highlight {
   background-color: #6A735A;
   color: #EEE2D2;
 }
