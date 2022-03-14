@@ -12,6 +12,7 @@ module.exports = {
         'menu-primary': '#6A735A',
         'menu-accent': '#EEE2D2',
         'story-accent': '#6A735A',
+        'contrast': '#00000',
       }, 
       green: {
         'primary': '#6A735A',
@@ -19,6 +20,7 @@ module.exports = {
         'menu-primary': '#EEE2D2',
         'menu-accent': '#6A735A',
         'story-accent': '#EEE2D2',
+        'contrast': '#EEE2D2',
       },
       red: {
         'primary': '#BC6E4D',
@@ -26,6 +28,7 @@ module.exports = {
         'menu-primary': '#EEE2D2',
         'menu-accent': '#BC6E4D',
         'story-accent': '#EEE2D2',
+        'contrast': '#EEE2D2',
       },
       teal: {
         'primary': '#A7C4B0',
@@ -33,6 +36,7 @@ module.exports = {
         'menu-primary': '#6A735A',
         'menu-accent': '#EEE2D2',
         'story-accent': '#6A735A',
+        'contrast': '#000000',
       },
       grey: {
         'primary': '#CCC8BC',
@@ -40,6 +44,7 @@ module.exports = {
         'menu-primary': '#BC6E4D',
         'menu-accent': '#EEE2D2',
         'story-accent': '#BC6E4D',
+        'contrast': '#000000',
       }
     },
     colors: {
@@ -51,6 +56,7 @@ module.exports = {
       'menu-primary': '#6A735A',
       'menu-accent': '#EEE2D2',
       'story-accent': '#6A735A',
+      'contrast': '#000000',
 
       'black': '#000000',
       'white': '#ffffff',
@@ -64,6 +70,21 @@ module.exports = {
       'menu-primary': '#6A735A',
       'menu-accent': '#EEE2D2',
       'story-accent': '#6A735A',
+      'contrast': '#00000',
+
+      'black': '#000000',
+      'white': '#ffffff',
+    },
+    divideColor: {
+      'transparent': 'transparent',
+      'current': 'currentColor',
+
+      'primary': '#EEE2D2',
+      'accent': '#6A735A',
+      'menu-primary': '#6A735A',
+      'menu-accent': '#EEE2D2',
+      'story-accent': '#6A735A',
+      'contrast': '#00000',
 
       'black': '#000000',
       'white': '#ffffff',

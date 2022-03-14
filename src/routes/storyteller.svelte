@@ -14,7 +14,7 @@
         src="/img/Main Illustration - Green.png" alt="home illustration" />
   </div>
 
-  <main class="font-text text-sm leading-4 px-6">
+  <main class="font-text text-sm text-contrast leading-4 px-6">
     <section class="flex flex-col gap-y-6">
       <div>
         <p>Welcome to</p>

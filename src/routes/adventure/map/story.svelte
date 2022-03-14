@@ -131,6 +131,6 @@
 </section>
 
 <section class="absolute inset-x-0 bottom-0 z-50 p-2
-                bg-accent text-primary font-text text-sm">
+                bg-accent text-menu-accent font-text text-sm">
   <p>You have travelled {travelledDistance}km on your journey</p>
 </section>
