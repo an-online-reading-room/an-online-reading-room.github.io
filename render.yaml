@@ -1,0 +1,10 @@
+previewsEnabled: true
+previewsExpireAfterDays: 3
+services:
+  - type: web
+    plan: free
+    previewPlan: free
+    name: platform
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node build/index.js

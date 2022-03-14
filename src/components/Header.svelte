@@ -1,6 +1,7 @@
 <script>
   import { version } from '../stores/version'
   import { theme } from '../stores/theme'
+  import { mode } from '../stores/mode'
   import Icon from '../components/Icon.svelte'
 
   let openMenu = false
@@ -33,18 +34,14 @@
                   pt-4 px-4 z-10">
 
         <div class="flex flex-row justify-end gap-x-2">
-          <button class="w-8 h-8 focus:outline-none">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
-            </svg>
-          </button>
-          <button class="w-8 h-8 focus:outline-none"
+          
+          <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
                   on:click={() => openMenu = !openMenu}>
-            <svg class="stroke-menu-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-            <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+            <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+            <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </button>
         </div>
@@ -52,14 +49,14 @@
 
         <div class="flex flex-col justify-center
                     h-3/4
-                    divide-y divide-menu-accent
+                    divide-y divide-current
                     text-display text-base">
           <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}" on:click={() => {
             openMenu = !openMenu; 
           }}>
             <div class="w-full h-16 pb-6 pt-4">
-              <div class="w-8 h-8 mx-auto">
-                <svg class="stroke-menu-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div class="w-8 h-8 mx-auto stroke-menu-accent">
+                <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
                 <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke-width="1.5"/>
                 <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke-width="1.5" stroke-linecap="round"/>
@@ -70,7 +67,7 @@
             </div>
           </a>
 
-          <nav class="flex flex-col divide-y divide-menu-accent">
+          <nav class="flex flex-col divide-y divide-current">
             <div class="py-3 cursor-pointer" on:click={() => openAboutMenu = !openAboutMenu}>
               About
             </div>
@@ -90,17 +87,26 @@
                 {/if}
               </div>
             </a>
-            <a href="/storyteller" on:click={() => openMenu = !openMenu}>
+            <a href="{$mode === 'listener' ? '/storyteller' : $version === 'lite' ? '/stories' : '/adventure/listener'}" 
+            on:click={() => { 
+              openMenu = !openMenu 
+              const newMode = $mode === 'listener' ? 'storyteller' : 'listener'
+              mode.set(newMode)
+            }}>
               <div class="py-3 cursor-pointer">
-                Storyteller
+                {#if $mode === 'listener'}
+                  Storyteller
+                {:else}
+                  Listener
+                {/if}
               </div>
             </a>
           </nav>
           
           <div class="w-full h-16 pb-6 pt-4">
-            <div class="w-8 h-8 mx-auto">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" fill="none" stroke="#EEE2D2" stroke-width="1.5"/>
+            <div class="w-8 h-8 mx-auto stroke-menu-accent">
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="19.25" fill="none" stroke-width="1.5"/>
               </svg>
             </div>
           </div>
@@ -113,28 +119,23 @@
                   py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
-            <button class="w-8 h-8 focus:outline-none" 
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
                     on:click={() => openAboutMenu = !openAboutMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
 
             </button>
 
-            <button class="w-8 h-8 ml-auto focus:outline-none">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
-              </svg>
-            </button>
-            <button class="w-8 h-8 focus:outline-none"
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
                     on:click={() => openMenu = !openMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
           </div>
@@ -174,28 +175,23 @@
                   py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
-            <button class="w-8 h-8 focus:outline-none" 
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
                     on:click={() => openFAQMenu = !openFAQMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
 
             </button>
 
-            <button class="w-8 h-8 ml-auto focus:outline-none">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
-              </svg>
-            </button>
-            <button class="w-8 h-8 focus:outline-none"
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
                     on:click={() => openMenu = !openMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
           </div>
@@ -269,28 +265,23 @@
                 py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
-            <button class="w-8 h-8 focus:outline-none" 
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
                     on:click={() => openWorldbuildersMenu = !openWorldbuildersMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28"  stroke-width="1.5" stroke-linecap="round"/>
               </svg>
 
             </button>
 
-            <button class="w-8 h-8 ml-auto focus:outline-none">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
-              </svg>
-            </button>
-            <button class="w-8 h-8 focus:outline-none"
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
                     on:click={() => openMenu = !openMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
           </div>
@@ -342,28 +333,23 @@
                 py-4 px-4 z-20 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
-            <button class="w-8 h-8 focus:outline-none" 
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
                     on:click={() => openTermsMenu = !openTermsMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M15 20L24.9485 12" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M15.0518 20L25.0002 28" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M15 20L24.9485 12" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15.0518 20L25.0002 28" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
 
             </button>
 
-            <button class="w-8 h-8 ml-auto focus:outline-none">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" fill="#BC6E4D"/>
-              </svg>
-            </button>
-            <button class="w-8 h-8 focus:outline-none"
+            <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
                     on:click={() => openMenu = !openMenu}>
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke="#EEE2D2" stroke-width="1.5"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14.3433 14.3431L25.657 25.6568" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14 25.3137L25.3137 14" stroke="#EEE2D2" stroke-width="1.5" stroke-linecap="round"/>
+              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+              <path d="M14 25.3137L25.3137 14"  stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
           </div>
@@ -467,15 +453,15 @@
       <!-- menu card end -->
       
       <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}">
-        <h1 class="text-2xl">The Reading Room</h1>
+        <h1 class="text-2xl text-contrast">The Reading Room</h1>
       </a>
       
-      <button class="w-8 h-8 focus:outline-none ml-auto" on:click={changeTheme}>
-        <svg class="fill-accent" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="19.25" />
+      <button class="w-8 h-8 focus:outline-none ml-auto text-accent" on:click={changeTheme}>
+        <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle class="fill-current" cx="20" cy="20" r="19.25" />
         </svg>
       </button>
-      <button class="w-8 h-8 focus:outline-none"
+      <button class="w-8 h-8 focus:outline-none text-contrast"
               on:click={() => {
                 openMenu = !openMenu; 
                 openAboutMenu = false; 
@@ -483,7 +469,7 @@
                 openTermsMenu = false;
                 openWorldbuildersMenu = false; 
               }}>
-        <svg class="stroke-black" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
           <path d="M12 13H28" stroke-width="1.5" stroke-linecap="round"/>
           <path d="M12 20H28" stroke-width="1.5" stroke-linecap="round"/>

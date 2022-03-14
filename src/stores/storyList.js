@@ -46,7 +46,8 @@ export default {
       encodeValuesOnly: true,
     })
     loading = true
-
+    storyList.set({loading, data, noMoreData})
+    
     const response = await fetch(`${variables.strapi_url}/api/stories?${query}`)
     loading = false
     let list = (await response.json()).data

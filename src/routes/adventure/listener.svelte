@@ -9,7 +9,7 @@
 </div>
 
 <section class="py-1 px-10 flex flex-col gap-y-3
-                font-text text-sm leading-4">
+                font-text text-sm text-contrast leading-4">
   <div class="flex flex-col gap-y-2">
     <div>
       <p>Welcome to</p>
@@ -25,7 +25,7 @@
 </section>
 
 <section class="py-1 px-4 flex flex-col items-center items-center
-                font-text text-sm leading-4">
+                font-text text-sm text-contrast leading-4">
   <ul class="underline list-disc text-left
             flex flex-col gap-y-3">
     <li>

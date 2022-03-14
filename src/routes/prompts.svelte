@@ -7,7 +7,7 @@
             text-center">
   <Header></Header>
 
-  <main class="h-full overflow-y-scroll font-display text-sm px-6 pb-4
+  <main class="h-full overflow-y-scroll font-display text-sm text-contrast px-6 pb-4
                 text-center leading-4
                 flex flex-col gap-y-4">
     <section class="flex flex-col gap-y-3">
