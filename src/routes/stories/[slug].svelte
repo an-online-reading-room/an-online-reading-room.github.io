@@ -109,14 +109,6 @@
   }
 
   const copyPageLink = () => {
-    // let temp = document.createElement('input')
-    // temp.classList.add('hidden')
-    // document.body.appendChild(temp)
-    // temp.value = encodeURI(window.location.href)
-    // console.log(temp.value)
-    // temp.select()
-    // let result = document.execCommand('copy') 
-    // document.body.removeChild(temp)
     navigator.clipboard.writeText(window.location.href)
     openShareCard = false
   }
@@ -126,20 +118,18 @@
     console.log(`section#target_${annotation.blockID}`)
     block.classList.add('highlight')
 
-    
     const svg = block.parentElement.previousElementSibling
     svg.classList.remove('hidden')
     svg.addEventListener('click', () => {
       const comments = document.querySelectorAll('.comment-view')
       Array.from(comments).forEach(comment => {
-        if(comment.id != `comments-${annotation.blockID}`) {
+        if(comment.id != `comments-${annotation.blockID}` && !Array.from(comment.classList).includes('hidden')) {
           comment.classList.add('hidden')
         }
       })
 
-      const rect = document.querySelector(`section#target_${annotation.blockID}`).getBoundingClientRect()
       const comment = document.querySelector(`section#comments-${annotation.blockID}`)
-      comment.classList.toggle('hidden')
+      comment.classList.remove('hidden')
     })
   
   }
@@ -147,7 +137,9 @@
     const block = document.querySelector(`section#target_${annotation.blockID}`)
     block.innerHTML = block.dataset.content
     block.classList.remove('highlight')
-    block.parentElement.previousElementSibling.classList.add('hidden')
+    const comment = document.querySelector(`section#comments-${annotation.blockID}`)
+    comment.classList.add('hidden')
+    block.parentElement.previousElementSibling.classList.add('hidden') // svg
   }
 
   const draw = (e) => {
@@ -434,6 +426,7 @@
       }
     }
     console.log(annotationData)
+    content = ''
     removeControls()
     fetch(postUrl, {
       method: 'POST',
@@ -464,18 +457,18 @@
             text-center text-contrast select-none">
   
   
-    <div bind:this={scrollWindow} class="overflow-y-scroll flex-1
+    <div bind:this={scrollWindow} class="relative overflow-y-scroll flex-1
                 flex flex-col align-items-center gap-y-2
                 font-display text-left
                 mx-4">
       <div class="px-1 text-base border">
         {story.title}
       </div>
-      <div class="relative flex-1 text-sm border flex flex-col select-text">
+      <div class="relative flex-1 overflow-hidden overflow-y-scroll text-sm border flex flex-col select-text">
         <div bind:this={reader} id="reader"
             class="{(showAnnotationView == true) ?
-                   'flex flex-col p-2 z-10' :
-                   'flex flex-col p-2'}">
+                   'flex flex-col pb-12 p-2 z-10' :
+                   'flex flex-col pb-12 p-2'}">
             {#each story.submission.blocks as block}
               <div class="flex flex-row gap-x-2">
               
@@ -501,7 +494,7 @@
                   <section class="comment-view hidden z-30
                                   absolute text-primary
                                   w-full max-h-42" id={"comments-"+block.id}>
-                    <div class="arrow-up"></div>
+                    <div class="theme-{$theme} arrow-up"></div>
                     <div class="bg-accent p-2 flex flex-col flex-wrap gap-y-2
                                 w-full overflow-y-scroll">
                       {#each story.annotations as annotation}
@@ -540,64 +533,62 @@
         </section>
         <!-- annotation view end -->
 
-
-        <div class="mt-auto ml-auto">
-          <div class="flex flex-row">
-          {#if selectionMode}
-          <button>
-            <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
-          </button>
-          <button on:click={() => { selectionMode = !selectionMode; showAnnotationView = true }}>
-            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
-          </button>
-          {:else if drawingMode}
-          <button on:click={() => { drawingMode = true; initialiseCanvas(); }}>
-            <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
-          </button>
-          <!-- <button>
-            <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
-          </button> -->
-          <button on:click={clearCanvas}>
-            <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
-          </button>
-          <button on:click={saveCanvas}>
-            <Icon src="/icons/Comment - Save Icon.svg" alt="comment - save" />
-          </button>
-          <button on:click={() => { drawingMode = !drawingMode; showAnnotationView = true; disableCanvas() }}>
-            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
-          </button>
-          {:else if openCommentCard}
-          <button on:click={() => { drawingMode = true; showAnnotationView = false; initialiseCanvas(); }}>
-            <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
-          </button>
-          <button on:click={() => { selectionMode = true; showAnnotationView = false; clearCanvas() } }>
-            <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
-          </button>    
-          <button on:click={() => { openCommentCard = !openCommentCard; showAnnotationView = true }}>
-            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
-          </button>
-          {:else if showAnnotationView}
-          <button class="px-3 py-2 bg-black text-white"
-                    on:click={() => { openCommentCard = !openCommentCard }}>
-            Leave a Note
-          </button>
-          <button on:click={() => { showAnnotationView = false }}>
-            <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
-          </button>
-          {:else}
-          <button on:click={() => { showAnnotationView = !showAnnotationView }}>
-            <Icon src="/icons/Comment Button - White on Black.svg" alt="show comments" />
-          </button>
-          {/if}
-          </div>
+      </div>
+      <div class="absolute bottom-0 right-0 z-50">
+        <div class="flex flex-row">
+        {#if selectionMode}
+        <button>
+          <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
+        </button>
+        <button on:click={() => { selectionMode = !selectionMode; showAnnotationView = true }}>
+          <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
+        </button>
+        {:else if drawingMode}
+        <button on:click={() => { drawingMode = true; initialiseCanvas(); }}>
+          <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
+        </button>
+        <!-- <button>
+          <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
+        </button> -->
+        <button on:click={clearCanvas}>
+          <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
+        </button>
+        <button on:click={saveCanvas}>
+          <Icon src="/icons/Comment - Save Icon.svg" alt="comment - save" />
+        </button>
+        <button on:click={() => { drawingMode = !drawingMode; showAnnotationView = true; disableCanvas() }}>
+          <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
+        </button>
+        {:else if openCommentCard}
+        <button on:click={() => { drawingMode = true; showAnnotationView = false; initialiseCanvas(); }}>
+          <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
+        </button>
+        <button on:click={() => { selectionMode = true; showAnnotationView = false; clearCanvas() } }>
+          <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
+        </button>    
+        <button on:click={() => { openCommentCard = !openCommentCard; showAnnotationView = true }}>
+          <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
+        </button>
+        {:else if showAnnotationView}
+        <button class="px-3 py-2 bg-black text-white"
+                  on:click={() => { openCommentCard = !openCommentCard }}>
+          Leave a Note
+        </button>
+        <button on:click={(e) => { showAnnotationView = false; removeControls(e) }}>
+          <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
+        </button>
+        {:else}
+        <button on:click={() => { showAnnotationView = !showAnnotationView }}>
+          <Icon src="/icons/Comment Button - White on Black.svg" alt="show comments" />
+        </button>
+        {/if}
         </div>
-    
       </div>
      
     </div>
   
 
-  <section>
+  <section class="z-60">
     {#if openInfoCard}
     <div class="absolute inset-x-0 bottom-8
                 bg-accent text-primary text-base
@@ -743,19 +734,23 @@
 
 {#if selectionMode}
 <section class="hidden">
-  <span bind:this={selectionControls} id="selection-controls" class="select-none">
-    <section class="arrow-up"></section>
-    <main class="flex flex-col p-2 w-10/12
-                text-primary bg-accent underline">
+  <span bind:this={selectionControls} id="selection-controls" class="select-none theme-{$theme}">
+    <section class="theme-{$theme} arrow-up"></section>
+    <main class="flex flex-col p-2 w-full
+                text-menu-accent bg-accent underline popup">
       <section>
-        <textarea bind:value={content} class="bg-accent text-primary placeholder:text-primary focus:outline-none
+        <textarea bind:value={content} class="bg-accent text-menu-accent placeholder:text-menu-accent focus:outline-none
                         overflow-hidden w-full"
                 name="annotation" id="annotation" placeholder="Leave a comment"
                 rows=2 cols=30 wrap="soft"></textarea>
       </section>
       <section class="flex flex-row-reverse items-center">
-        <button on:click={submitAnnotation}>
-          <Icon src="/icons/Highlight - Send Icon.svg" alt="send icon" />
+        <button on:click={submitAnnotation} class="text-menu-primary">
+          <svg class="stroke-menu-accent" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect class="fill-current" width="30" height="30" />
+          <path class="theme-{$theme} stroke-color" d="M8.41412 9.65147L10.749 14.0294L10.749 14.0294C10.8719 14.2598 10.9333 14.375 10.9333 14.5C10.9333 14.625 10.8719 14.7402 10.749 14.9706L10.749 14.9706L8.41412 19.3485C7.82963 20.4445 7.53738 20.9924 7.78568 21.2539C8.03397 21.5153 8.59628 21.2517 9.7209 20.7246L21.0684 15.4055C21.9041 15.0137 22.322 14.8178 22.322 14.5C22.322 14.1822 21.9041 13.9863 21.0684 13.5945L9.72091 8.27542C8.59628 7.74826 8.03397 7.48467 7.78568 7.74613C7.53738 8.00759 7.82963 8.55555 8.41412 9.65147Z" stroke-width="1.2"/>
+          </svg>
+            
         </button>
       </section>
     </main>

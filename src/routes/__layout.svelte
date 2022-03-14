@@ -1,6 +1,5 @@
 <script>
   import "../app.css";
-  import "../extra.css"
 
   import { theme } from '../stores/theme'
 </script>

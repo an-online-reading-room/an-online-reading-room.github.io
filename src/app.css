@@ -7,7 +7,66 @@
     @apply bg-accent text-primary
   }
 
-  .arrow-up {
-    @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-accent mx-0 ml-2 mr-0
+  .arrow-up.theme-cream {
+    @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#6A735A] mx-0 ml-2 mr-0
   }
+  .arrow-up.theme-green {
+    @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#EEE2D2] mx-0 ml-2 mr-0
+  }
+  .arrow-up.theme-red {
+    @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#EEE2D2] mx-0 ml-2 mr-0
+  }
+  .arrow-up.theme-teal {
+    @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#6A735A] mx-0 ml-2 mr-0
+  }
+  .arrow-up.theme-grey {
+    @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#BC6E4D] mx-0 ml-2 mr-0
+  }
+  .stroke-color.theme-cream {
+    @apply stroke-[#EEE2D2]
+  }
+  .stroke-color.theme-green {
+    @apply stroke-[#6A735A]
+  }
+  .stroke-color.theme-red {
+    @apply stroke-[#BC6E4D]
+  }
+  .stroke-color.theme-teal {
+    @apply stroke-[#EEE2D2]
+  }
+  .stroke-color.theme-grey {
+    @apply stroke-[#EEE2D2]
+  }
+
+
+  ::selection {
+    @apply bg-accent text-menu-accent
+  }
+
+  #selection-controls {
+    @apply cursor-pointer absolute h-[40px] text-menu-accent
+    
+  }
+
+  
+}
+
+html, body {
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body>div {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* storybuilder */
+.codex-editor__redactor {
+  padding-bottom: 100px !important;
+}
+
+#selection-controls {
+  width: 85%;
 }
