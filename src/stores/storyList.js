@@ -20,7 +20,7 @@ const slugify = (str) => {
   return str;
 }
 
-let loading = false
+let loading = true
 let noMoreData = false
 let data = []
 let page = 1
@@ -34,7 +34,7 @@ const storyList = writable({
 export default {
   subscribe: storyList.subscribe,
   async fetchNextPage() {
-    if (loading || noMoreData) return
+    if (noMoreData) return
 
     const query = qs.stringify({
       populate: ['author', 'categories'],
@@ -45,8 +45,8 @@ export default {
     }, {
       encodeValuesOnly: true,
     })
-    loading = true
-    storyList.set({loading, data, noMoreData})
+    // loading = true
+    // storyList.set({loading, data, noMoreData})
     
     const response = await fetch(`${variables.strapi_url}/api/stories?${query}`)
     loading = false
@@ -72,6 +72,7 @@ export default {
         categories: story.attributes.categories.data.map(category => category.attributes.name),
       }
     }) 
+    console.log(list)
     data.push(...list)
     page += 1
 

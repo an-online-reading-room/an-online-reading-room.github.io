@@ -24,14 +24,14 @@
   <meta property="og:type" content="website" />
   <meta property="og:description" content="The Reading Room is a collaborative storytelling project that enables us to think of place differently. Through storytelling, we can take the initiative of re-defining a place beyond its history and geography.">
   <meta property="og:url" content="https://thereadingroom.online/" />
-  <meta property="og:image" content="http://thereadingroom.online/img/Main%20Illustration%20-%20Green.png" />
+  <meta property="og:image" content="http://thereadingroom.online/img/illustration-small.png" />
   <meta property="og:image:alt" content="Person running toward a book floating in the air. There are houses, trees, and animals in the background." />
   <meta name="twitter:card" content="summary_large_image">
   <!-- <meta name="twitter:site" content="@website-username"> -->
   
   <!-- google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=true>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
 </svelte:head>
 

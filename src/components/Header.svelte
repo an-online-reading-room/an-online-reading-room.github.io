@@ -74,7 +74,7 @@
             <div class="py-3 cursor-pointer" on:click={() => openFAQMenu = !openFAQMenu}>
               FAQ
             </div>
-            <a href={pathPrefix} on:click={() => { 
+            <!-- <a href={pathPrefix} on:click={() => { 
               openMenu = !openMenu 
               const newVersion = $version === 'lite' ? 'adventure' : 'lite'
               version.set(newVersion)
@@ -86,7 +86,7 @@
                   Lite Version
                 {/if}
               </div>
-            </a>
+            </a> -->
             <a href="{$mode === 'listener' ? '/storyteller' : $version === 'lite' ? '/stories' : '/adventure/listener'}" 
             on:click={() => { 
               openMenu = !openMenu 
