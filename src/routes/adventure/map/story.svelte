@@ -16,7 +16,6 @@
   import { getCoordinates } from '../../../services/geocode';
   import { onMount } from 'svelte';
   import "leaflet/dist/leaflet.css"
-  import "../../../popup.css"
   import Popup from '../../../components/Popup.svelte';
   import { visited } from '../../../stores/visited'
   

@@ -1,11 +1,11 @@
 <script>
 
-	import { visited } from '../../stores/visited'
 	import storyList from "../../stores/storyList";
 	import tagList from "../../stores/tagList";
-import { list } from 'postcss';
+	import List from '../../components/List.svelte'
+	import { theme } from '../../stores/theme'
 
-	let listItems, stories, loading = false
+	let listItems, stories, loading = true, noMoreData = false
   let open = false
 	let query = ''
 	let locationQuery = ''
@@ -14,8 +14,10 @@ import { list } from 'postcss';
 	storyList.fetchNextPage()
 	storyList.subscribe(value => {
 		loading = value.loading
+		noMoreData = value.noMoreData
 		listItems = value.data
 		stories = value.data
+		console.log(loading)
 	})
 	
 	const search = (e) => {
@@ -50,14 +52,10 @@ import { list } from 'postcss';
 		open = false
 	}
 
-	const visitStory = (id) => {
-		visited.set([...$visited, id])
-	}
-
 </script>
 
 <!-- story list -->
-<main	class="flex flex-col align-items-center gap-y-4 px-4 pb-4 overflow-y-scroll text-contrast">
+<main	class="flex flex-col align-items-center gap-y-4 px-4 pb-10 overflow-y-scroll text-contrast">
 
 		<div class="flex flex-row justify-between 
 								w-full gap-x-base divide-x
@@ -74,51 +72,40 @@ import { list } from 'postcss';
 			</button>
 		</div>
 		
-		<div class="pb-4 flex flex-col gap-y-4">
-			{#if listItems && listItems.length}
-			{#each listItems as story}
-			<div>
-				<a href="/stories/{story.url}" on:click={() => visitStory(story.id)}>
-					<div class="px-3 py-3 w-full 
-										border border-contrast border-1
-										text-center font-text
-										inline-flex flex-col gap-y-1
-										{$visited.includes(story.id) == true ? 'bg-story-accent text-menu-accent' : 'bg-primary'}">
-						<div class="text-base font-display">
-							<h1>{story.title}</h1>
-						</div>
-						<div class="text-sm" >
-							<p>{story.author_name}</p>
-						</div>
-						<div class="text-sm">
-							<p>{story.location}</p>
-						</div>
-						<div class="text-sm">
-							<p>{story.description}</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			{/each}
+		<div class="flex flex-col gap-y-4">
+			{#if loading}
+			<video src="/img/loading-{$theme}.webm" autoplay loop muted></video>
+			{:else}
+			{#if listItems.length > 0}
+			<List {listItems}></List>
+			{#if !noMoreData}
+			<button class="mt-auto p-2 self-center text-white font-display text-xs bg-black"
+						on:click={() => storyList.fetchNextPage()}>
+				Load more stories
+			</button>
+			{/if}
 			{:else if listItems.length == 0}
+			<!-- <video src="/img/loading-{$theme}.webm" autoplay loop muted></video> -->
+
 			<p class="font-display text-xs text-left">
-				sorry, we could'nt find what you were looking for
+				It's is a bit lonely here. Maybe add a story with the same name?
 			</p>
-			{:else if loading == true} 
-			<video src="/img/loading.webm" autoplay loop muted></video>
+			{/if} 
 			{/if}
 		</div>
+
+		
 </main>
 <!-- story list end -->
 
 <div class="flex flex-col divide-y">
 	{#if open}
 	<div class="absolute inset-x-0 bottom-8
-							flex flex-col gap-y-6
+							flex flex-col gap-y-4
 							w-full h-2/5 px-6 py-6
 							bg-accent">
 		<div class="flex flex-row justify-between
-								divide-x divide-menu-accent w-full border border-menu-accent
+								divide-x divide-current w-full border border-menu-accent
 								bg-accent gap-x-base">
 			<input type="text" name="location-query" placeholder="Enter a location"
 						class="flex-1 py-1 bg-accent text-sm px-2 text-primary
@@ -135,7 +122,7 @@ import { list } from 'postcss';
 		</div>
 
 		<div class="flex flex-row justify-between
-								divide-x divide-menu-accent w-full border border-menu-accent
+								divide-x divide-current w-full border border-menu-accent
 								bg-accent gap-x-base">
 			<input type="text" name="tag-query" placeholder="Enter a tag/topic"
 						class="flex-1 py-1 bg-accent text-sm px-2 text-menu-accent
