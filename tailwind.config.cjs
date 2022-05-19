@@ -12,7 +12,7 @@ module.exports = {
         'menu-primary': '#6A735A',
         'menu-accent': '#EEE2D2',
         'story-accent': '#6A735A',
-        'contrast': '#00000',
+        'contrast': '#000002',
       }, 
       green: {
         'primary': '#6A735A',

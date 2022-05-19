@@ -1,6 +1,9 @@
 <script>
   import Header from "../components/Header.svelte";
+  import { user } from "$lib/stores/user"
+
   import Icon from '../components/Icon.svelte'
+  
 </script>
 
 <div class="flex flex-col align-items-center gap-y-4
@@ -14,8 +17,10 @@
         src="/img/Main Illustration - Green.png" alt="home illustration" />
   </div>
 
+ 
   <div class="h-1/5 py-6 px-4 flex flex-col gap-y-2
               font-display text-contrast text-sm leading-4">
+    <p class="font-display text-accent text-xl">Hi {$user.username}!</p>
     <p>The Reading Room is an online platform for location-based storytelling.</p>
     <p>Our contributors come from across the world.  Join us and tell us your story, or go forth and discover stories that could make you fall in love with where you live. </p>  
   </div>
