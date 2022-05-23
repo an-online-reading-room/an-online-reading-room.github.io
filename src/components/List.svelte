@@ -11,7 +11,7 @@
 
 {#each listItems as story}
 	<div>
-		<a href="/stories/{story.url}" on:click={() => visitStory(story.id)}>
+		<a href="/stories/{story.slug}" on:click={() => visitStory(story.id)}>
 			<div class="px-3 py-3 w-full 
 								border border-contrast border-1
 								text-center font-text

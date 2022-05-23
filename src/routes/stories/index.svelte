@@ -1,9 +1,8 @@
 <script>
 
-	import storyList from "../../stores/storyList";
-	import tagList from "../../stores/tagList";
-	import List from '../../components/List.svelte'
-	import { theme } from '../../stores/theme'
+	import storyList from '$stores/storyList.js';
+	import List from '$components/List.svelte'
+	import { theme } from '$stores/theme.js'
 
 	let listItems, stories, loading = true, noMoreData = false
   let open = false
@@ -17,7 +16,6 @@
 		noMoreData = value.noMoreData
 		listItems = value.data
 		stories = value.data
-		console.log(loading)
 	})
 	
 	const search = (e) => {
@@ -39,18 +37,6 @@
 		open = false
 	}
 
-	const filterByTag = (tag) => {
-		tag = tag.toLowerCase()
-		listItems = []
-		stories.forEach(story => {
-			let match = story.categories
-			.map(item => item.toLowerCase())
-			.filter(item => item.includes(tag))
-			if(match.length > 0) listItems.push(story)
-		})
-		tagQuery = ''
-		open = false
-	}
 
 </script>
 
@@ -129,23 +115,12 @@
 									placeholder:text-menu-accent focus:outline-none " 
 						bind:value={tagQuery}>
 			<button class="w-8 h-8 text-primary focus:outline-none text-menu-accent" 
-							on:click={() => filterByTag(tagQuery)}>
+							>
 				<svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<circle cx="19" cy="19" r="7" stroke-width="1.5"/>
 				<path d="M28 28L25 25" stroke-width="1.5" stroke-linecap="round"/>
 				</svg>
 			</button>
-		</div>
-
-		<div class="flex flex-row flex-wrap gap-y-4 gap-x-6
-								text-sm text-menu-accent">
-			{#each $tagList as tag}
-			<button class="border border-menu-accent py-1 px-2"
-							on:click={() => filterByTag(tag.name)}>
-				{tag.name}
-			</button>
-			{/each}
-			
 		</div>
 
 	</div>

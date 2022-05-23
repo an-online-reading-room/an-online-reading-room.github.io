@@ -1,8 +1,7 @@
 <script>
-  import { version } from '../stores/version'
-  import { theme } from '../stores/theme'
-  import { mode } from '../stores/mode'
-  import Icon from '../components/Icon.svelte'
+  import { version } from '$stores/version'
+  import { theme } from '$stores/theme'
+  import { mode } from '$stores/mode'
 
   let openMenu = false
   let openAboutMenu = false

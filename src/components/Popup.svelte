@@ -1,5 +1,4 @@
 <script>
-  import Icon from './Icon.svelte'
 
   export let popupElement
   export let storyName

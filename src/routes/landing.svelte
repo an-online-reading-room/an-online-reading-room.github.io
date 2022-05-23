@@ -1,6 +1,5 @@
 <script>
-  import Icon from '../components/Icon.svelte'
-  import { version } from '../stores/version'
+  import { version } from '$stores/version'
 </script>
 
 <div class="flex flex-col items-center
