@@ -1,5 +1,5 @@
 <script>
-  import Header from '../components/Header.svelte'
+  import Header from '$components/Header.svelte'
 </script>
 
 <div class="flex flex-col align-items-center gap-y-6

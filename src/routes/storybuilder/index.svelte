@@ -1,10 +1,10 @@
 <script>
-  import Header from '../../components/Header.svelte'
-  import { getSuggestions } from '../../services/geocode'
+  import Header from '$components/Header.svelte'
+  import { getSuggestions } from '$lib/services/geocode'
   import { onMount } from "svelte";
   import "leaflet/dist/leaflet.css"
-  import { variables } from '../../variables'
-  import { theme } from '../../stores/theme'
+  import { variables } from '$lib/variables'
+  import { theme } from '$stores/theme'
   
   const API_URL = `${variables.strapi_url}/api`
   let mediaRefs = []
