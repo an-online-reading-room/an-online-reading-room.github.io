@@ -1,40 +1,12 @@
-<script context="module">
-	import { browser } from '$app/env';
-	import { user } from '$lib/stores/user';
-
-	export async function load({ url, fetch }) {
-		const isLoading = true;
-		if (browser) {
-			if (url.searchParams.has('loginToken')) {
-				const token = url.searchParams.get('loginToken');
-				const response = await fetch(`login/register?token=${token}`).then((r) => r.json());
-				if (response.error) {
-					console.log(response.error.status, response.error.message);
-					return {};
-				} else {
-					console.log(response);
-					user.set({ jwt: response.jwt, username: response.user.username });
-					return {
-						status: 302,
-						redirect: '/'
-					};
-				}
-			}
-		}
-		return {};
-	}
-</script>
-
 <script>
 	import { post } from '$lib/utils.js';
-	export const isLoading = true;
-
 	let email = '';
 	let username = '';
 	let errors = null;
 	let isLinkSent = false;
 	$: buttonText = isLinkSent ? 'MagicLink Sent' : 'Send MagicLink';
 	async function submitForm() {
+		//const response = await post(`api/passwordless/send-link`, { email, username }, null);
 		const response = await post(`login/register`, { email, username });
 		console.log(response);
 
@@ -55,15 +27,15 @@
 >
 	<h1 class="text-2xl text-contrast z-20">The Reading Room</h1>
 	<div
-		class="flex flex-col items-center z-10
-        w-1/2 gap-y-4"
+		class="flex flex-col z-10
+        gap-y-4"
 	>
 		<form
 			on:submit|preventDefault={submitForm}
 			class="	flex flex-col 
-        			w-full gap-y-4 text-sm"
+        	gap-y-4 text-sm"
 		>
-			<div>
+			<div class="mx-auto">
 				<label class="block" for="username">Username </label>
 				<input
 					bind:value={username}
@@ -76,8 +48,8 @@
 				/>
 			</div>
 
-			<div>
-				<label class="block" for="email">Email ID </label>
+			<div class="mx-auto">
+				<label class="block" for="email">Email ID</label>
 				<input
 					bind:value={email}
 					class="text-contrast placeholder-accent bg-primary border-solid border border-black px-2 py-1"
@@ -89,14 +61,23 @@
 				/>
 			</div>
 
+			<div class="text-xs">
+				<input class="accent-accent" type="checkbox" id="accept" name="accept" required />
+				<label class="font-text align-middle " for="accept">
+					I accept the
+					<a class="underline" href="/terms-and-conditions"> terms and conditions</a>
+				</label>
+			</div>
 			<button
 				class="w-fit mx-auto bg-accent text-sm text-primary px-4 py-2"
 				type="submit"
-				disabled={isLinkSent}>{buttonText}</button
-			>
+				disabled={isLinkSent}
+				>{buttonText}
+			</button>
 		</form>
+
 		<div class="mx-auto text-center text-sm underline">
-			<a class="block" href="/login/signup">Signup</a>
+			<a class="block" href="/login">Login</a>
 			<a class="block" href="/">Continue as guest</a>
 		</div>
 	</div>

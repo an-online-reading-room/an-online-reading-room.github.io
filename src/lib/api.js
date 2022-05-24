@@ -9,7 +9,7 @@ async function send({ method, path, data, token }) {
 	}
 
 	if (token) {
-		opts.headers['Authorization'] = `Token ${token}`;
+		opts.headers['Authorization'] = `Bearer ${token}`;
 	}
 
 	return fetch(`${base}/${path}`, opts)
@@ -24,10 +24,12 @@ async function send({ method, path, data, token }) {
 }
 
 export function get(path, token) {
+	// @ts-ignore
 	return send({ method: 'GET', path, token });
 }
 
 export function del(path, token) {
+	// @ts-ignore
 	return send({ method: 'DELETE', path, token });
 }
 
