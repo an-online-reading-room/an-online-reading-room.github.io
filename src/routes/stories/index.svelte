@@ -74,24 +74,22 @@
 		
 		<div class="flex flex-col gap-y-4">
 			{#if loading}
-			<video src="/img/loading-{$theme}.webm" autoplay loop muted></video>
+              <video src="/img/loading-{$theme}.webm" autoplay loop muted></video>
 			{:else}
-			{#if listItems.length > 0}
-			<List {listItems}></List>
-			{#if !noMoreData}
-			<button class="mt-auto p-2 self-center text-white font-display text-xs bg-black"
+			  {#if listItems.length > 0}
+			    <List {listItems}></List>
+			    {#if !noMoreData}
+			      <button class="mt-auto p-2 self-center text-white font-display text-xs bg-black"
 						on:click={() => storyList.fetchNextPage()}>
-				Load more stories
-			</button>
-			{/if}
-			{:else if listItems.length == 0}
-			<!-- <video src="/img/loading-{$theme}.webm" autoplay loop muted></video> -->
-
-			<p class="font-display text-xs text-left">
-				It's is a bit lonely here. Maybe add a story with the same name?
-			</p>
-			{/if} 
-			{/if}
+				  Load more stories
+			      </button>
+			    {/if}
+			    {:else if listItems.length == 0}
+			      <p class="font-display text-xs text-left">
+				    It's is a bit lonely here. Maybe add a story with the same name?
+			      </p>
+			    {/if} 
+			  {/if}
 		</div>
 
 		

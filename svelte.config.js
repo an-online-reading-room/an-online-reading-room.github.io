@@ -8,8 +8,12 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
+		alias: {
+			$components: 'src/components',
+			$stores: 'src/stores'
+		},
 		adapter: adapter({ out: 'build' })
-	}, 
+	},
 };
 
 export default config;

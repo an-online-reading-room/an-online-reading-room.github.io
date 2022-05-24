@@ -24,8 +24,7 @@
 
 <header>
   <div>
-    <div class="flex-initial flex flex-row justify-between gap-x-2
-                pt-4 px-4">
+    <div class="flex-initial flex flex-row justify-between gap-x-2 p-4">
 
       <!-- menu card start -->
       {#if openMenu}
@@ -50,7 +49,7 @@
         <div class="flex flex-col justify-center
                     h-3/4
                     divide-y divide-current
-                    text-display text-base">
+                    text-display text-base text-center">
           <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}" on:click={() => {
             openMenu = !openMenu; 
           }}>
