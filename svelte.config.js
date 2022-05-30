@@ -13,7 +13,7 @@ const config = {
 			$stores: 'src/stores'
 		},
 		adapter: adapter({ out: 'build' })
-	},
+	}
 };
 
 export default config;
