@@ -1,4 +1,4 @@
-import type { EndpointOutput } from "@sveltejs/kit";
+import type { RequestHandlerOutput} from "@sveltejs/kit";
 import { variables } from "../variables";
 
 const slugify = (str) => {
@@ -19,7 +19,7 @@ const slugify = (str) => {
   return str;
 };
 
-export async function get(): Promise<EndpointOutput> {
+export async function get(): Promise<RequestHandlerOutput> {
   const res = await fetch(`${variables.strapi_url}/api/stories?populate=author,categories,annotations`)
   let data = await res.json()
   data = data.data.map(story => {
