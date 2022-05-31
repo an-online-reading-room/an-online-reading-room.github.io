@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { dev } from "$app/env";
-    import { getSuggestions } from "../../services/geocode";
+    import { getSuggestions } from "$lib/services/geocode";
     import { theme } from "$stores/theme";
     import { user } from "$stores/user.js";
     import TopNav from "$components/TopNav.svelte";
@@ -109,7 +109,7 @@
     });
 </script>
 
-<TopNav back="/storyteller" next="" />
+<TopNav back="/storyteller" next={null} />
 
 <div class="py-3.5 px-8">
     <Time />

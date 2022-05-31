@@ -20,7 +20,7 @@ async function send({ method, path, data, token }) {
         .then((r) => r.text())
         .then((json) => {
             try {
-                //console.log(json)
+                
                 return JSON.parse(json);
             } catch (err) {
                 //console.log(json)

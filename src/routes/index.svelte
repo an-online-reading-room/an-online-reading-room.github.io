@@ -1,76 +1,45 @@
 <script>
     import Header from "../components/Header.svelte";
-    import { user } from "$stores/user";
-    import Modal from "$components/Modal.svelte";
-    import { goto } from "$app/navigation";
-    function checkLogin() {
-        if ($user.jwt) {
-            goto("/storyteller");
-        } else {
-            openModal();
-        }
-    }
-
-    let isOpenModal = false;
-
-    function openModal() {
-        isOpenModal = true;
-    }
-
-    function closeModal() {
-        isOpenModal = false;
-    }
 </script>
 
-<div
-    class="flex flex-col align-items-center gap-y-4
-            w-screen h-full bg-primary
+<Header></Header>
+<section class="flex flex-col justify-center items-center 
+            w-screen h-full bg-cover bg-center
             text-center">
-    <Header />
 
-    <div class="h-52 w-52 pt-2 self-center">
-        <img
-            class="w-full h-full object-cover rounded-full
-                border-2 border-accent"
-            src="/img/Main Illustration - Green.png"
-            alt="home illustration" />
-    </div>
 
-    <div
-        class="h-1/5 py-6 px-4 flex flex-col gap-y-2
-              font-display text-contrast text-sm leading-4">
-        {#if $user.username}
-            <p class="font-display text-accent text-xl">Hi {$user.username}!</p>
-        {/if}
-        <p>
-            The Reading Room is an online platform for location-based
-            storytelling.
-        </p>
-        <p>
-            Our contributors come from across the world. Join us and tell us
-            your story, or go forth and discover stories that could make you
-            fall in love with where you live.
-        </p>
-    </div>
-
-    <div
-        class="py-8 px-4
-              font-display text-contrast text-xs">
-        <p class="font-text">Are you a listener or a storyteller?</p>
-        <div class="flex justify-evenly px-8 py-2">
-            <a href="/stories">
-                <button
-                    class="font-display text-sm px-4 py-2 bg-contrast text-primary">
-                    Listener
-                </button>
-            </a>
-            <a href="/storyteller" on:click|preventDefault={checkLogin}>
-                <button
-                    class="font-display text-sm px-4 py-2 bg-contrast text-primary">
-                    Storyteller
-                </button>
-            </a>
+  <div class="h-2/5 w-full flex flex-col items-center justify-start">
+    <div class="bg-white w-4/6
+      rounded-lg flex flex-col items-center">
+      <div class="w-full py-3
+                  flex flex-col justify-around gap-y-6
+                  font-display text-contrast text-xs">
+        <p class="font-text text-base">Choose a version!</p>
+        <div class="flex flex-col justify-between gap-y-2">
+          <a href="/mode">
+            <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
+              Lite
+            </button>
+          </a>
+          <a href="/mode">
+            <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
+              Adventure
+            </button>
+          </a>
+          <a href="/">
+            <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
+              Outdoors
+            </button>
+          </a>
         </div>
+      </div>
+      <p class="text-xxs">Turn on GPS for best experience.</p>
     </div>
-    <Modal {isOpenModal} on:closeModal={closeModal} />
-</div>
+  </div>
+</section>
+
+<style>
+  section {
+    background-image: url("/img/Full Size_Landing Page Illustration_Choose Version.png");  
+  }
+</style>

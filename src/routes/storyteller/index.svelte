@@ -8,10 +8,11 @@
         //console.log($user.jwt)
         const userData = await api.get("api/users/me", $user.jwt);
         stories = userData.stories;
+        console.log(stories)
     });
 </script>
 
-<div class="flex flex-col gap-y-2 px-8 py-3.5">
+<div class="flex flex-col border-t border-contrast gap-y-2 px-8 py-3.5">
     <a href="/storyteller/editor">
         <div class="btn">Create a new story</div>
     </a>
@@ -20,7 +21,7 @@
     </a>
     {#if stories}
         {#each stories as story}
-            <a href="storyteller/editor?story={story.id}"
+            <a href="storyteller/editor?story={story.slug}"
                 class="flex flex-col gap-y-3 border-2 border-contrast px-3.5 py-2 font-display text-contrast">
                 <p class="text-base font-medium">{story.title}</p>
                 <p class="text-sm font-text">{story.location}</p>

@@ -1,40 +1,28 @@
 <script lang="ts" context="module">
   import type { Load } from '@sveltejs/kit';
   import { onMount } from 'svelte';
+  import { flattenStrapiResponse } from '$lib/utils/api'
 
   export const load: Load = async ({ params, fetch, session, stuff }) => {
-      const { slug } = params;
-      const res = await fetch('/storiesapi');
-
-      // A 404 status means "NOT FOUND"
-      if (res.status === 404) {
-          // We can create a custom error and return it.
-          // SvelteKit will automatically show us an error page that we'll learn to customise later on.
-          const error = new Error(`The post with ID ${slug} was not found`);
-          return { status: 404, error };
-      } else {
-          let data = await res.json();
-          data = data.find(story => story.url === slug)
-          return { props: { story: data } };
-      }
+    const strapiRes = await (await fetch(`${variables.strapi_url}/api/stories?slug=${params.slug}`)).json()
+    
+    const data = flattenStrapiResponse(strapiRes)
+    return { props: { story: data } }
+      
   };
 </script>
 
 <script >
   import { browser } from '$app/env';
-  import Icon from '../../components/Icon.svelte'
-  import TextSelection from '../../components/TextSelection.svelte';
-  import { variables } from '../../variables';
-  import theme from '../../stores/theme';
+  import Icon from '$components/Icon.svelte'
+  import { variables } from '$lib/variables';
+  import theme from '$stores/theme';
   import html2canvas from 'html2canvas'
   
   export let story
-  let reader, scrollWindow
-  let cnv, ctx, isPainting = false, startX, startY
-  let prevCnv, prevCtx, prevCnvImg
-  let ongoingTouches = []
+  let reader, scrollWindow, cnv, prevCnv
   let showAnnotationView = false
-  let drawingMode = false, selectionMode = false
+  let selectionMode = false
 
   let openInfoCard = false
   let openShareCard = false
@@ -56,42 +44,9 @@
   $: {
     if(showAnnotationView === true) {
       story.annotations.forEach(annotation => showAnnotation(annotation))  
-      showDrawingBoard()
-    } else {
-      if(browser && document.querySelector('#drawing-board') != null) {
-        story.annotations.forEach(annotation => hideAnnotation(annotation))  
-        console.log('adding')
-        console.log(document.querySelector('#drawing-board'))
-        // if(Array.from(document.querySelector('#drawing-board').classList).includes('hidden') == false) {
-          document.querySelector('#drawing-board').classList.add('hidden')
-        console.log(document.querySelector('#drawing-board'))
-
-        // }
-      }
-    }
+    } 
   }
 
-  $: {
-    if(drawingMode == true || showAnnotationView == true) {
-      cnv = document.querySelector('canvas')
-      cnv.height = reader.offsetHeight
-      cnv.width = reader.offsetWidth
-      ctx = cnv.getContext('2d')
-      prevCnv.height = reader.offsetHeight
-      prevCnv.width = reader.offsetWidth
-      prevCtx = prevCnv.getContext('2d')
-      console.log('removign hidden')
-      document.querySelector('#drawing-board').classList.remove('hidden')
-
-      if(drawingMode == true && showAnnotationView == false) {
-        cnv.parentNode.classList.add('z-20')
-      } else {
-        cnv.parentNode.classList.remove('z-20')
-      }
-    }
-
-    
-  }
 
   const captureScreen = () => {
     document.querySelector('#capture').classList.remove('hidden')
@@ -142,224 +97,8 @@
     block.parentElement.previousElementSibling.classList.add('hidden') // svg
   }
 
-  const draw = (e) => {
-    if(!isPainting) {
-      return;
-    }
-    console.log('info: drawing')
-
-    ctx.lineWidth = 4;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#6A735A'
-
-    console.log(e.clientX + scrollWindow.offsetLeft, e.clientY + scrollWindow.parentNode.offsetTop)
-    console.log(e.clientX, e.clientY)
-    ctx.lineTo(e.clientX - scrollWindow.offsetLeft, 
-              e.clientY - scrollWindow.parentNode.offsetTop - reader.parentNode.offsetTop);
-    // ctx.lineTo(50, 50);
-    ctx.stroke();
-  }
-  const beginDraw = (e) => {
-    console.log('info: beginning draw')
-    isPainting = true;
-    startX = e.clientX;
-    startY = e.clientY;
-  }
-  const endDraw = (e) => {
-    isPainting = false;
-    ctx.stroke();
-    ctx.beginPath();
-  }
-
-  function copyTouch(touch) {
-    return {identifier: touch.identifier,clientX: touch.clientX,clientY: touch.clientY};
-  }
-  function ongoingTouchIndexById(idToFind) {
-    for (var i = 0; i < ongoingTouches.length; i++) {
-      var id = ongoingTouches[i].identifier;
-
-      if (id == idToFind) {
-        return i;
-      }
-    }
-    return -1;    // not found
-  }
-  function findPos (obj) {
-    var curleft = 0,
-        curtop = 0;
-
-    if (obj.offsetParent) {
-      do {
-            curleft += obj.offsetLeft;
-            curtop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
-
-        return { x: curleft-reader.parentNode.parentNode.scrollLeft, y: curtop-reader.parentNode.parentNode.scrollTop };
-        // return { x: curleft, y: curtop };
-    }
-}
-  function handleStart(evt) {
-    evt.preventDefault();
-    console.log("touchstart.");
-    var touches = evt.changedTouches;
-    var offset = findPos(cnv)
-
-    for (var i = 0; i < touches.length; i++) {
-      if(touches[i].clientX-offset.x >0 && touches[i].clientX-offset.x < parseFloat(cnv.width) && touches[i].clientY-offset.y >0 && touches[i].clientY-offset.y < parseFloat(cnv.height)){
-            evt.preventDefault();
-        console.log("touchstart:" + i + "...");
-        ongoingTouches.push(copyTouch(touches[i]));
-        // var color = '#6A735A'
-        // ctx.beginPath();
-        // ctx.arc(touches[i].clientX-offset.x, touches[i].clientY-offset.y, 4, 0, 2 * Math.PI, false); // a circle at the start
-        // ctx.fillStyle = color;
-        // ctx.fill();
-        console.log("touchstart:" + i + ".");
-      }
-    }
-  }
-  function handleMove(evt) {
-    evt.preventDefault();
-    var touches = evt.changedTouches;
-    // var offset = {
-    //   x: reader.parentNode.offsetLeft,
-    //   y: reader.parentNode.offsetTop 
-    //   + reader.parentNode.parentNode.offsetTop
-    //   + reader.parentNode.parentNode.scrollTop
-    // }
-    var offset = findPos(cnv)
-    // offset.x += pos.x
-    // offset.y += pos.y
-    console.log(offset)
-    console.log(ongoingTouches)
-
-    for (var i = 0; i < touches.length; i++) {
-      var color = '#6A735A';
-      var idx = ongoingTouchIndexById(touches[i].identifier);
-
-      if (idx >= 0) {
-        console.log("continuing touch " + idx);
-        ctx.beginPath();
-        console.log("ctx.moveTo(" + ongoingTouches[idx].clientX + ", " + ongoingTouches[idx].clientY + ");");
-        ctx.moveTo(ongoingTouches[idx].clientX-offset.x, ongoingTouches[idx].clientY-offset.y);
-        console.log("ctx.lineTo(" + touches[i].clientX + ", " + touches[i].clientY + ");");
-        ctx.lineTo(touches[i].clientX-offset.x, touches[i].clientY-offset.y);
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = color;
-        ctx.stroke();
-        
-        ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
-        console.log(".");
-      } else {
-        console.log("can't figure out which touch to continue");
-      }
-    }
-  }
-  function handleEnd(evt) {
-    evt.preventDefault();
-    var touches = evt.changedTouches;
-    var offset = findPos(cnv)
-
-    for (var i = 0; i < touches.length; i++) {
-              if(touches[i].clientX-offset.x >0 && touches[i].clientX-offset.x < parseFloat(cnv.width) && touches[i].clientY-offset.y >0 && touches[i].clientY-offset.y < parseFloat(cnv.height)){
-                    evt.preventDefault();
-        var color = '#6A735A'
-        var idx = ongoingTouchIndexById(touches[i].identifier);
-            
-        if (idx >= 0) {
-          // ctx.lineWidth = 4;
-          ctx.fillStyle = 'transparent';
-          ctx.beginPath();
-          ctx.moveTo(ongoingTouches[idx].clientX-offset.x, ongoingTouches[idx].clientY-offset.y);
-          ctx.lineTo(touches[i].clientX-offset.x, touches[i].clientY-offset.y);
-          ctx.fillRect(touches[i].clientX - 4-offset.x, touches[i].clientY - 4-offset.y, 8, 8); // and a square at the end
-          ongoingTouches.splice(i, 1); // remove it; we're done
-        } else {
-          console.log("can't figure out which touch to end");
-        }
-      }
-    }
-  }
-
-  const initialiseCanvas = () => {
-    console.log('info: canvas init')
-    showDrawingBoard()
-    // cnv.addEventListener('pointerdown', beginDraw);
-    // cnv.addEventListener('pointerup', endDraw);
-    // cnv.addEventListener('pointermove', draw);
-    cnv.addEventListener('touchstart', handleStart);
-    cnv.addEventListener('touchend', handleEnd);
-    cnv.addEventListener('touchmove', handleMove);
-  }
-  const showDrawingBoard = () => {
-    fetch(`${variables.strapi_url}/api/stories/${story.id}?populate=annotationCanvas`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data.data.attributes)
-      if(data.data.attributes.annotationCanvas.data == null) return
-
-      let prevCanvasUrl = data.data.attributes.annotationCanvas.data.attributes.formats
-      prevCanvasUrl = prevCanvasUrl.thumbnail.url ?? prevCanvasUrl.small.url ?? prevCanvasUrl.medium.url
-      fetch(prevCanvasUrl)
-      .then(response => response.blob())
-      .then(blob => {
-        let img = new Image()
-        img.src = URL.createObjectURL(blob)
-        img.onload = () => {
-          console.log('info: prev canvas loaded')
-          prevCnvImg = img
-          prevCtx.drawImage(img, 0, 0, cnv.width, cnv.height)
-        }
-      })
-
-    })
-  }
-  const clearCanvas = () => {
-    ctx.clearRect(0, 0, cnv.width, cnv.height)
-  }
-  const disableCanvas = () => {
-    cnv.removeEventListener('pointerdown', beginDraw)
-    cnv.removeEventListener('pointerup', endDraw)
-    cnv.removeEventListener('pointermove', draw)
-    cnv.removeEventListener('touchstart', handleStart)
-    cnv.removeEventListener('touchend', handleEnd)
-    cnv.removeEventListener('touchmove', handleMove)
-    document.querySelector('#current-cnv').classList.add('hidden')
-  }
-  const saveCanvas = () => {
-    if(prevCnvImg != null) {
-      ctx.drawImage(prevCnvImg, 0, 0, cnv.width, cnv.height)
-    }
-    cnv.toBlob((blob) => {
-      let uploadData = new FormData() 
-      uploadData.append('files', blob, `${story.id}-canvas.png`)
-      fetch(`${variables.strapi_url}/api/upload`, {
-        method: 'POST',
-        body: uploadData
-      })
-      .then(response => response.json())
-      .then(data => {
-        showAnnotationView = true
-        drawingMode = false
-        disableCanvas()
-        showDrawingBoard()
-        const canvasData = {
-          data: {
-            annotationCanvas: data[0].id
-          }
-        }
-        return fetch(`${variables.strapi_url}/api/stories/${story.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(canvasData)
-        })
-      })
-    })
-    disableCanvas()
-  }
-
+  
+  
 
   let content
   let selecting = false
@@ -452,7 +191,7 @@
 </script>
 
 
-<div class="flex-1 flex flex-col align-items-center gap-y-4
+<div class="flex-1 flex flex-col gap-y-4 py-4
             w-screen overflow-y-scroll bg-primary
             text-center text-contrast select-none">
   
@@ -497,13 +236,13 @@
                     <div class="theme-{$theme} arrow-up"></div>
                     <div class="bg-accent p-2 flex flex-col flex-wrap gap-y-2
                                 w-full overflow-y-scroll">
-                      {#each story.annotations as annotation}
+                      <!-- {#each story.annotations as annotation}
                       {#if annotation.blockID == block.id}
                       <section id={"anno-"+annotation.blockID}>
                         <p>{annotation.content}</p>
                       </section>
                       {/if}
-                      {/each}
+                      {/each} -->
                     </div>
                   </section>
                 </div>
@@ -543,32 +282,8 @@
         <button on:click={() => { selectionMode = !selectionMode; showAnnotationView = true }}>
           <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
         </button>
-        {:else if drawingMode}
-        <button on:click={() => { drawingMode = true; initialiseCanvas(); }}>
-          <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
-        </button>
-        <!-- <button>
-          <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
-        </button> -->
-        <button on:click={clearCanvas}>
-          <Icon src="/icons/Comment - Delete Icon.svg" alt="comment - delete" />
-        </button>
-        <button on:click={saveCanvas}>
-          <Icon src="/icons/Comment - Save Icon.svg" alt="comment - save" />
-        </button>
-        <button on:click={() => { drawingMode = !drawingMode; showAnnotationView = true; disableCanvas() }}>
-          <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
-        </button>
-        {:else if openCommentCard}
-        <button on:click={() => { drawingMode = true; showAnnotationView = false; initialiseCanvas(); }}>
-          <Icon src="/icons/Comment - Draw Icon.svg"      alt="comment - draw" />
-        </button>
-        <button on:click={() => { selectionMode = true; showAnnotationView = false; clearCanvas() } }>
-          <Icon src="/icons/Comment - Highlight Icon.svg" alt="comment - highlight" />
-        </button>    
-        <button on:click={() => { openCommentCard = !openCommentCard; showAnnotationView = true }}>
-          <Icon src="/icons/Comments - Close Icon.svg"    alt="comment - close" />
-        </button>
+        
+        
         {:else if showAnnotationView}
         <button class="px-3 py-2 bg-black text-white"
                   on:click={() => { openCommentCard = !openCommentCard }}>

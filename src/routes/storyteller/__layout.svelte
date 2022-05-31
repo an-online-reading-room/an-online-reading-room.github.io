@@ -21,7 +21,7 @@
 
 <div class="relative flex flex-col max-w-screen-sm h-full mx-auto shadow-2xl">
     <Header />
-    <main class="overflow-y-auto flex-1 border-t border-contrast pb-16">
+    <main class="overflow-y-auto flex-1 pb-16">
         <slot />
     </main>
 </div>
