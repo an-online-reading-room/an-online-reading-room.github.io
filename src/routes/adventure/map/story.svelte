@@ -13,11 +13,11 @@
 
 
 <script>
-  import { getCoordinates } from '../../../services/geocode';
+  import { getCoordinates } from '$lib/services/geocode';
   import { onMount } from 'svelte';
   import "leaflet/dist/leaflet.css"
-  import Popup from '../../../components/Popup.svelte';
-  import { visited } from '../../../stores/visited'
+  import Popup from '$components/Popup.svelte';
+  import { visited } from '$stores/visited'
   
   export let stories 
   let travelledDistance = 0

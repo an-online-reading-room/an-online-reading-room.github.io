@@ -6,7 +6,7 @@
 
 <div class="max-w-screen-sm h-full mx-auto shadow-2xl ">
     <div
-        class="w-full h-full bg-contain bg-no-repeat bg-bottom bg-[url('/img/main-illustration-green-cropped.png')]">
+        class="w-full h-full bg-contain bg-no-repeat bg-bottom bg-[url('/img/login-screen-illustration.png')]">
         <div class="flex flex-col items-center gap-y-5 py-16">
             <h1 class="text-2xl text-contrast mb-2">The Reading Room</h1>
             <slot />

@@ -3,7 +3,8 @@
     export let next;
 </script>
 
-<div class="flex h-9 border-b border-contrast text-contrast px-6 justify-between">
+<div class="flex h-9 border-y border-contrast text-contrast px-6 justify-between">
+    {#if back}
     <a href={back} class="navBtn">
         <svg
             width="7"
@@ -17,6 +18,8 @@
         </svg>
         Back
     </a>
+    {/if}
+    {#if next}
     <a href={next} class="navBtn">
         Next
         <svg
@@ -30,6 +33,7 @@
                 stroke="black" />
         </svg>
     </a>
+    {/if}
 </div>
 
 <style lang="postcss">

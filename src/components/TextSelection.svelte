@@ -1,8 +1,8 @@
 <script>
   import { onMount } from "svelte";
-  import Icon from './Icon.svelte'
-  import { selection } from '../stores/selection'
-  import { variables } from "../variables";
+  import Icon from '$components/Icon.svelte'
+  import { selection } from '$stores/selection'
+  import { variables } from "$lib/variables";
 
   export let readerID
   export let storyID
