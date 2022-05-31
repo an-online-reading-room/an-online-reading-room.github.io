@@ -20,11 +20,9 @@
   import html2canvas from 'html2canvas'
   
   export let story
-  let reader, scrollWindow
-  let cnv = false
-  let prevCnv
+  let reader, scrollWindow, cnv, prevCnv
   let showAnnotationView = false
-  let drawingMode = false, selectionMode = false
+  let selectionMode = false
 
   let openInfoCard = false
   let openShareCard = false
@@ -46,18 +44,7 @@
   $: {
     if(showAnnotationView === true) {
       story.annotations.forEach(annotation => showAnnotation(annotation))  
-    } else {
-      if(browser && document.querySelector('#drawing-board') != null) {
-        story.annotations.forEach(annotation => hideAnnotation(annotation))  
-        console.log('adding')
-        console.log(document.querySelector('#drawing-board'))
-        // if(Array.from(document.querySelector('#drawing-board').classList).includes('hidden') == false) {
-          document.querySelector('#drawing-board').classList.add('hidden')
-        console.log(document.querySelector('#drawing-board'))
-
-        // }
-      }
-    }
+    } 
   }
 
 
@@ -204,7 +191,7 @@
 </script>
 
 
-<div class="flex-1 flex flex-col align-items-center gap-y-4
+<div class="flex-1 flex flex-col gap-y-4 py-4
             w-screen overflow-y-scroll bg-primary
             text-center text-contrast select-none">
   

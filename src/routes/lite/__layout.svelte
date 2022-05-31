@@ -4,9 +4,12 @@
 
 <div class="flex flex-col align-items-center gap-y-4
             w-screen h-full bg-primary
+            divide-y
             text-center">
   <Header></Header>
 
+  
   <slot></slot>
+  
 
 </div>

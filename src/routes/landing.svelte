@@ -1,42 +1,41 @@
 <script>
-  import { version } from '$stores/version'
+  import Header from "$components/Header.svelte";
 </script>
 
-<div class="flex flex-col items-center
-            w-screen h-full bg-primary
-            px-6
+
+<Header></Header>
+<section class="flex flex-col justify-center items-center 
+            w-screen h-full bg-cover
             text-center">
-  <div class="h-20 flex flex-col justify-center
-              font-display">
-    <h1 class="text-2xl">The Reading Room</h1>
-  </div>
 
-  <div class="h-52 w-52 pt-2 self-center">
-    <img class="w-full h-full object-cover rounded-full
-                border-2 border-accent" 
-        src="/img/Main Illustration - Green.png" alt="home illustration" />
-  </div>
 
-  <div class="h-1/5 px-10 py-6
-              font-text text-xs leading-4
-              flex flex-col gap-y-3">
-    <p class="pt-2">We suggest you choose the</p>
-    <a href="/landing" on:click={() => version.set('lite')}>
-      <button class="font-display px-4 py-2 bg-black text-white">
-        Lite Version
-      </button>
-    </a>
-    <p class="pt-2">if you have low bandwidth for a smoother experience.</p>
+  <div class="h-2/5 w-full flex flex-col items-center justify-start">
+    <div class="bg-white w-3/4
+      rounded-lg flex flex-col items-center">
+      <div class="w-full py-5
+                  flex flex-col justify-around gap-y-6
+                  font-display text-contrast text-xs">
+        <p class="font-text text-base">Are you a storyteller or a listener?</p>
+        <div class="flex flex-col justify-between gap-y-4">
+          <a href="/storyteller">
+            <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
+              Storyteller
+            </button>
+          </a>
+          <a href="/lite">
+            <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
+              Listener
+            </button>
+          </a>
+          
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="py-8
-              font-display text-xxs">
-    
-    <p>For best experience use the adventure version</p>
-  </div>
-
-  <div class="mt-auto pb-6
-              font-display text-xs">
-    <p>Turn on sound for a more immersive experience</p>
-  </div>
-</div>
+<style>
+  section {
+    background-image: url("/img/Main Illustration - Green.png");  
+  }
+</style>
