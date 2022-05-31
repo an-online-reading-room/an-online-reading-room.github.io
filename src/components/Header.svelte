@@ -24,17 +24,17 @@
 <header>
   <div>
     <div class="flex-initial flex flex-row justify-between gap-x-2
-                pt-4 px-4">
+                pt-6 px-6">
 
       <!-- menu card start -->
       {#if openMenu}
       <div class="absolute inset-0 w-screen h-full
                   bg-menu-primary text-menu-accent
-                  pt-4 px-4 z-10">
+                  pt-6 px-6 z-10">
 
         <div class="flex flex-row justify-end gap-x-2">
           
-          <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
+          <button class="w-10 h-10 focus:outline-none stroke-menu-accent"
                   on:click={() => openMenu = !openMenu}>
             <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
@@ -54,7 +54,7 @@
             openMenu = !openMenu; 
           }}>
             <div class="w-full h-16 pb-6 pt-4">
-              <div class="w-8 h-8 mx-auto stroke-menu-accent">
+              <div class="w-10 h-10 mx-auto stroke-menu-accent">
                 <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
                 <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke-width="1.5"/>
@@ -67,45 +67,32 @@
           </a>
 
           <nav class="flex flex-col divide-y divide-current">
-            <div class="py-3 cursor-pointer" on:click={() => openAboutMenu = !openAboutMenu}>
+            <div class="cursor-pointer text-center w-full py-4" on:click={() => openAboutMenu = !openAboutMenu}>
               About
             </div>
-            <div class="py-3 cursor-pointer" on:click={() => openFAQMenu = !openFAQMenu}>
+            <div class="cursor-pointer text-center w-full py-4" on:click={() => openFAQMenu = !openFAQMenu}>
               FAQ
             </div>
-            <!-- <a href={pathPrefix} on:click={() => { 
-              openMenu = !openMenu 
-              const newVersion = $version === 'lite' ? 'adventure' : 'lite'
-              version.set(newVersion)
-            }}>
-              <div class="py-3 cursor-pointer">
-                {#if $version === 'lite'}
-                  Adventure Version
-                {:else}
-                  Lite Version
-                {/if}
-              </div>
-            </a> -->
-            <a href="{$mode === 'listener' ? '/storyteller' : $version === 'lite' ? '/stories' : '/adventure/listener'}" 
-            on:click={() => { 
-              openMenu = !openMenu 
-              const newMode = $mode === 'listener' ? 'storyteller' : 'listener'
-              mode.set(newMode)
-            }}>
-              <div class="py-3 cursor-pointer">
-                {#if $mode === 'listener'}
-                  Storyteller
-                {:else}
-                  Listener
-                {/if}
-              </div>
+            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/lite">
+              Lite Version
+            </a>
+            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/adventure">
+              Adventure Version
+            </a>           
+            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/storyteller">
+              Storyteller
+            </a>  
+            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/">
+              Reading List
             </a>
           </nav>
+
+          
           
           <div class="w-full h-16 pb-6 pt-4">
-            <div class="w-8 h-8 mx-auto stroke-menu-accent">
+            <div class="w-10 h-10 mx-auto stroke-menu-accent" on:click={changeTheme}>
               <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" fill="none" stroke-width="1.5"/>
+                <circle class="fill-current" cx="20" cy="20" r="19.25" />
               </svg>
             </div>
           </div>
@@ -115,54 +102,58 @@
         {#if openAboutMenu}
         <div class="absolute inset-0 w-screen 
                   bg-accent text-menu-accent h-full
-                  py-4 px-4 z-20 overflow-y-scroll">
+                  py-6 px-6 z-20 overflow-y-scroll
+                  flex flex-col gap-y-6">
 
-          <div class="flex flex-row justify-between gap-x-2">
-            <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
-                    on:click={() => openAboutMenu = !openAboutMenu}>
-              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
-              <path d="M15 20L24.9485 12" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M15.0518 20L25.0002 28" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
+            <div class="flex flex-row justify-between gap-x-2">
+                <h1 class="font-medium text-2xl self-center">About</h1>
+                <button class="w-10 h-10 focus:outline-none stroke-menu-accent ml-auto" 
+                      on:click={() => openAboutMenu = !openAboutMenu}>
+                    <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+                    <path d="M15 20L24.9485 12" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M15.0518 20L25.0002 28" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
 
-            </button>
+                </button>
 
-            <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
-                    on:click={() => openMenu = !openMenu}>
-              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
-              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
-
-          <div class="flex flex-col gap-y-4
-                      text-center font-display text-sm leading-4">
-            <h1 class="font-medium text-base">About</h1>
-            <main class="flex flex-col gap-y-3">
-              <p>The Reading Room is a collaborative placemaking and location-based project that is being developed by contributors from across the world. We hope  you find meaningful connections through these stories. We hope your time is filled with joy and curiosity as you go through the room. You can view these stories using our lite version, web version, or AR version.</p>
-              <p class="text-xxs">◆</p>
-              <h2 class="font-bold">Lite Version</h2>
-              <p>This version ensures you can smoothly view stories on a low-bandwidth. Unfortunately, some stories may not be accessible or can take a few minutes to load based on your internet speed. </p>
-              <p class="text-xxs">◆</p>
-              <h2 class="font-bold">Adventure Version</h2>
-              <p>This version is a Choose Your Own Adventure experience where you choose which stories or streets you’d like to walk down in order to read more stories. To navigate smoothly, please check our infographic on navigating.</p>
-              <p class="text-xxs">◆</p>
-              <h2 class="font-bold">AR Version</h2>
-              <p>This version is best experienced while walking around your neighbourhood. It is an augmented reality retelling that allows you to view stories through your phone screen. These stories can be played at physical locations in your neighbourhood.</p>
-              <p class="text-xxs">◆</p>
-              <p>While The Reading Room promotes outdoor interaction, please be aware that with the ongoing pandemic everyone must be careful while doing so or use our web version. </p>
-            </main>
-            <div>
-              <p on:click={() => openTermsMenu = !openTermsMenu} class="underline cursor-pointer">Terms and Conditions</p>
+                
+                <button class="w-10 h-10 focus:outline-none stroke-menu-accent"
+                        on:click={() => openMenu = !openMenu}>
+                    <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
+                    <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
             </div>
-            <div>
-              <p on:click={() => openWorldbuildersMenu = !openWorldbuildersMenu} class="underline cursor-pointer">Worldbuilders</p>
+
+            <div class="flex flex-col gap-y-6
+                        font-display text-sm leading-4">
+            
+                <main class="flex flex-col gap-y-4">
+                    <p>The Reading Room is a collaborative placemaking and location-based project that is being developed by contributors from across the world. We hope  you find meaningful connections through these stories. We hope your time is filled with joy and curiosity as you go through the room. You can view these stories using our lite version, web version, or AR version.</p>
+                    <p class="text-xxs">◆</p>
+                    <div>
+                        <h2 class="font-bold text-lg">Lite Version</h2>
+                        <p>This version ensures you can smoothly view stories on a low-bandwidth. Unfortunately, some stories may not be accessible or will take a few minutes to load based on your internet speed.</p>
+                    </div>
+                    <p class="text-xxs">◆</p>
+                    <div>
+                        <h2 class="font-bold text-lg">Adventure Version</h2>
+                        <p>This version is a Choose Your Own Adventure experience where you choose which stories or streets you’d like to walk down in order to read more stories. To navigate smoothly, please check our <a href="/" class="underline font-bold">infographic</a>.</p>
+                    </div>
+                    <p class="text-xxs">◆</p>
+                    <div>
+                        <h2 class="font-bold text-lg">AR Version</h2>
+                        <p>This version is best experienced while walking around your neighbourhood. It is an augmented reality application that allows you to view stories through your phone screen. These stories can be played at physical locations in your neighbourhood.</p>
+                    </div>
+                    <p class="text-xxs">◆</p>
+                    <p>While The Reading Room promotes outdoor interaction, please be aware that with the ongoing pandemic everyone must be careful while doing so or use our web version.</p>
+                </main>
             </div>
-          </div>
         </div>
         {/if}
         <!-- About Menu Card End -->
@@ -171,10 +162,12 @@
         {#if openFAQMenu}
         <div class="absolute inset-0 w-screen h-full
                   bg-accent text-menu-accent
-                  py-4 px-4 z-20 overflow-y-scroll">
+                  py-6 px-6 z-20 overflow-y-scroll
+                  flex flex-col gap-y-6">
 
           <div class="flex flex-row justify-between gap-x-2">
-            <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
+            <h1 class="font-medium text-2xl self-center">FAQ</h1>
+            <button class="w-10 h-10 focus:outline-none stroke-menu-accent ml-auto"
                     on:click={() => openFAQMenu = !openFAQMenu}>
               <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
@@ -184,7 +177,7 @@
 
             </button>
 
-            <button class="w-8 h-8 focus:outline-none stroke-menu-accent"
+            <button class="w-10 h-10 focus:outline-none stroke-menu-accent"
                     on:click={() => openMenu = !openMenu}>
               <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
@@ -195,61 +188,43 @@
             </button>
           </div>
 
-          <div class="flex flex-col gap-y-4
-                      text-center font-display text-sm leading-4">
-            <h1 class="font-medium text-base">FAQ</h1>
-            <main class="flex flex-col gap-y-3">
+          <div class="flex flex-col gap-y-6
+                      font-display text-sm leading-4">
+            <main class="flex flex-col gap-y-4">
               <section>
-                <h2 class="font-bold">How can I be a part of The Reading Room?</h2>
+                <h2 class="font-bold text-base">How can I be a part of The Reading Room?</h2>
                 <p>We welcome all to contribute as storytellers. We look specifically for stories that are rooted in a place. Every story is important as they add on to how your neighbourhood is seen and experienced by others. It is important to remember to be kind and responsible while sharing, and receive permission if sharing stories that are not your own. If you aren’t sure of what to say, here are our prompts to get you started.</p>
               </section>
               <p class="text-xxs">◆</p>
               <section>
-                <h2 class="font-bold">What is an annotated story?</h2>
-                <p>An annotated story is a version of a story that has comments and shared experiences of its listeners. You can press on
-                
-                <!-- <img class="inline w-4 h-4" src="/icons/Comment Button - White on Black.svg" alt="show comments" /> -->
-                <svg class="inline w-4 h-4" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" fill="black"/>
-                <rect width="24" height="24" transform="translate(8 8)" fill="black"/>
-                <path d="M12 20C12 15.5817 15.5817 12 20 12V12C24.4183 12 28 15.5817 28 20V25.0909C28 25.9375 28 26.3608 27.8739 26.6989C27.6712 27.2425 27.2425 27.6712 26.6989 27.8739C26.3608 28 25.9375 28 25.0909 28H20C15.5817 28 12 24.4183 12 20V20Z" stroke="#EEE2D2" stroke-width="2.0"/>
-                <path d="M17 19L23 19" stroke="#EEE2D2" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M20 23H23" stroke="#EEE2D2" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                  
-                
-                to view it, add your own drawings and comments, and share your favourite snippets with others.</p>
+                <h2 class="font-bold text-base">What is a Choose Your Own Adventure experience?</h2>
+                <p>As a listener, we have recreated the experience of navigating a new neighbourhood yourself. After you view a story, you can choose any hyperlink to read a new story. Thereafter, each story leads to a new set of stories. You know what they say, if you don't know where you're going, any road will get you there. Here is an <a href="/" class="underline font-bold">infographic</a> on how to use it.</p>
               </section>
               <p class="text-xxs">◆</p>
               <section>
-                <h2 class="font-bold">How do I upload stories?</h2>
-                <p>Our story form will ask you to share a story title, summary, username(s), and location, along with your story. Please email us at anonlinereadingroom@gmail.com if you have any trouble.</p>
+                <h2 class="font-bold text-base">How do I create hyperlinks?</h2>
+                <p>On highlighting text, you can look for an existing story to hyperlink the same text. Please choose your hyperlinked text with care so other listeners can </p>
               </section>
               <p class="text-xxs">◆</p>
               <section>
-                <h2 class="font-bold">Can I share these stories?</h2>
-                <p>Yes, please do! We hope sharing will gather more storytellers to share with us. Please ensure you credit the authors appropriately. Go through our terms and conditions for a further grasp on what can be shared.</p>
+                <h2 class="font-bold text-base">How do I upload stories?</h2>
+                Our <a href="/" class="underline">story form</a> will ask you to share a story title, summary, username(s), and location, along with your story. Please email us at anonlinereadingroom@gmail.com if you have any trouble.
               </section>
               <p class="text-xxs">◆</p>
               <section>
-                <h2 class="font-bold">What is a Choose Your Own Adventure experience?</h2>
-                <p>As a listener, we have recreated the experience of navigating a new neighbourhood yourself. After you view a story, you are offered three new stories to view. Thereafter, each story leads to a new set of stories. The paths offered are never the same. You know what they say, if you don't know where you're going, any road will get you there. Here is an infographic on how to use it.</p>
+                <h2 class="font-bold text-base">Can I share these stories?</h2>
+                <p>Yes, please do! We hope sharing will gather more storytellers to share with us. Please ensure you credit the authors appropriately. Go through our terms and conditions for a further grasp on what can be shared. </p>
               </section>
               <p class="text-xxs">◆</p>
               <section>
-                <h2 class="font-bold">How do I use the AR version?</h2>
-                <p>We are currently developing our AR version. We’ll let you know when we’re ready on our instagram page! Follow us for more updates. @thereadingroom.online</p>
+                <h2 class="font-bold text-base">How do I use the AR version?</h2>
+                <p>We are currently developing our AR version. We’ll let you know when we’re ready on our instagram page! Follow us for more updates. <a href="https://www.instagram.com/thereadingroom.online/" class="underline font-bold">@thereadingroom.online</a></p>
                 <p>Our AR version is available only on mobile devices with internet connections. </p>
               </section>
               <p class="text-xxs">◆</p>
               <section>
-                <p class="font-bold">The Adventure Version is too frugal with stories, I’d like to view all the stories and choose from there.</p>
-                <p>Our lite version has all stories listed with filters available for quick views. However, The Reading Room’s agenda is to promote slow media. We hope you make use of the Adventure Version and AR version for this reason.</p>
-              </section>
-              <p class="text-xxs">◆</p>
-              <section>
-                <h2 class="font-bold">How can I support The Reading Room?</h2>
-                <p>We are dependent on grants and crowdfunding for support. Please email us at anonlinereadingroom@gmail if you would like to become a patron.</p>
+                <h2 class="font-bold text-base">How can I support The Reading Room?</h2>
+                <p>We are dependent on grants and crowdfunding for support. Please email us at <a href="mailto:anonlinereadingroom@gmail.com">anonlinereadingroom@gmail.com</a> if you would like to become a patron.</p>
               </section>
             </main>
           </div>
@@ -451,16 +426,17 @@
       {/if}
       <!-- menu card end -->
       
-      <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}">
+      <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}" class="self-center">
         <h1 class="text-2xl text-contrast">The Reading Room</h1>
       </a>
       
-      <button class="w-8 h-8 focus:outline-none ml-auto text-accent" on:click={changeTheme}>
-        <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle class="fill-current" cx="20" cy="20" r="19.25" />
-        </svg>
+      <button class="w-10 h-10 focus:outline-none ml-auto text-accent">
+        <svg class="stroke-current" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20.5" r="19.25" stroke="black" stroke-width="1.5"/>
+          <path d="M20.0129 7.07943C19.0822 7.06154 18.1549 7.19681 17.2684 7.4802C15.2107 8.13668 13.455 9.50665 12.3179 11.3431C11.1807 13.1795 10.7369 15.3616 11.0664 17.4965C11.3403 19.324 11.8802 21.1018 12.6689 22.773C13.8577 25.2838 15.337 27.6465 17.0762 29.8127C17.8375 30.7822 18.6546 31.7118 19.4803 32.6413H19.48C19.5909 32.8162 19.7838 32.9221 19.9909 32.9221C20.198 32.9221 20.3908 32.8162 20.5017 32.6413C21.9807 31.018 23.346 29.2951 24.5885 27.4847C26.1764 25.2542 27.4316 22.8046 28.3144 20.2128C28.8988 18.543 29.1134 16.7658 28.9435 15.0046C28.6794 12.8208 27.6252 10.8093 25.98 9.34939C24.335 7.88972 22.2124 7.08226 20.0129 7.07947L20.0129 7.07943ZM19.9888 20.794C18.7415 20.7928 17.5457 20.2959 16.665 19.4128C15.7842 18.5293 15.2906 17.3324 15.2931 16.0851C15.2956 14.8374 15.7939 13.6424 16.6781 12.7626C17.5624 11.8828 18.7602 11.3907 20.0075 11.3946C21.2548 11.3985 22.4495 11.8982 23.3282 12.7833C24.2068 13.6687 24.6976 14.8671 24.6923 16.1144C24.6861 17.3578 24.1875 18.5478 23.3064 19.4248C22.4249 20.3018 21.2321 20.794 19.9887 20.794H19.9888Z" fill="black"/>
+          </svg>
       </button>
-      <button class="w-8 h-8 focus:outline-none text-contrast"
+      <button class="w-10 h-10 focus:outline-none text-contrast"
               on:click={() => {
                 openMenu = !openMenu; 
                 openAboutMenu = false; 

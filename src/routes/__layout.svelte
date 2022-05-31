@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
 
-  import { theme } from '../stores/theme'
+  import { theme } from '$stores/theme'
 </script>
 
 
