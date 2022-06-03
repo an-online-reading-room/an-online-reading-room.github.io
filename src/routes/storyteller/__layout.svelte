@@ -1,20 +1,14 @@
 <script>
     import Header from "$components/Header.svelte";
     import { user } from "$stores/user";
-    import { goto, beforeNavigate } from "$app/navigation";
+    import { goto } from "$app/navigation";
     import { browser } from "$app/env";
 
     if (browser) {
         if ($user.jwt) {
             console.log("logged in as user", $user.username);
         } else {
-            //goto("/auth/login");
-    
-            if (confirm("Please login")) {
-                goto("/auth/login")
-            } else {
-                goto("/")
-            }
+            goto("/auth/login");
         }
     }
 </script>
