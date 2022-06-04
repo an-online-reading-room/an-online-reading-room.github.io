@@ -1,12 +1,10 @@
 <script>
     import { page } from "$app/stores";
-
-
+    import Background from "$components/utils/Background.svelte";
 </script>
 
 <div class="max-w-screen-sm h-full mx-auto shadow-2xl ">
-    <div
-        class="w-full h-full bg-contain bg-no-repeat bg-bottom bg-[url('/img/main-illustration-green-cropped.png')]">
+    <Background>
         <div class="flex flex-col items-center gap-y-5 py-16">
             <h1 class="text-2xl text-contrast mb-2">The Reading Room</h1>
             <slot />
@@ -20,7 +18,7 @@
                 {/if}
             </div>
         </div>
-    </div>
+    </Background>
 </div>
 
 <style lang="postcss">

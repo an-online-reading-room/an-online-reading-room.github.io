@@ -8,6 +8,7 @@
         //console.log($user.jwt)
         try {
             const userData = await api.get("api/users/me", $user.jwt);
+            stories = userData?.stories;
         } catch (error) {
             console.error(error);
         }
