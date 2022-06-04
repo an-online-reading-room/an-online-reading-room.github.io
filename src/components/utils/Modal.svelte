@@ -12,7 +12,7 @@
         <div
             class="fixed w-10/12 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
             <div
-                class="font-text text-left text-sm bg-accent text-primary px-4 py-5 rounded shadow-xl">
+                class="font-text text-left text-sm bg-accent text-primary px-4 py-5 rounded shadow-2xl">
                 {#if showCloseButton}
                     <button
                         class="absolute top-3 right-2"
