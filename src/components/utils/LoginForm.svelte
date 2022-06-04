@@ -7,12 +7,12 @@
     let isLinkSent = false;
     $: buttonText = isLinkSent ? "Resend MagicLink" : "Send MagicLink";
 
-
     async function submitForm() {
+        const context_string = JSON.stringify({ redirectUrl: $context });
         const response = await post(`/auth/register`, {
             email,
             username,
-            context,
+            context_string,
         });
         if (response.error) errors = response.error.message;
         if (response.sent) {
@@ -20,8 +20,6 @@
             errors = "Email sent";
         }
     }
-    $: console.log($context);
-
 </script>
 
 <form
@@ -35,7 +33,8 @@
                 bind:value={username}
                 name="username"
                 placeholder="Enter Username"
-                required />
+                required
+                autocomplete="username" />
         </label>
 
         <label>
@@ -45,7 +44,8 @@
                 bind:value={email}
                 name="email"
                 placeholder="Enter email id"
-                required />
+                required
+                autocomplete="email" />
         </label>
     </fieldset>
     <slot name="checkbox" />
