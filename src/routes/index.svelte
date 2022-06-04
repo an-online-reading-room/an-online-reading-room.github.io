@@ -1,25 +1,6 @@
 <script>
-    import Header from "../components/Header.svelte";
+    import Header from "$components/Header.svelte";
     import { user } from "$stores/user";
-    import Modal from "$components/Modal.svelte";
-    import { goto } from "$app/navigation";
-    function checkLogin() {
-        if ($user.jwt) {
-            goto("/storyteller");
-        } else {
-            openModal();
-        }
-    }
-
-    let isOpenModal = false;
-
-    function openModal() {
-        isOpenModal = true;
-    }
-
-    function closeModal() {
-        isOpenModal = false;
-    }
 </script>
 
 <div
@@ -64,7 +45,7 @@
                     Listener
                 </button>
             </a>
-            <a href="/storyteller" on:click|preventDefault={checkLogin}>
+            <a href="/storyteller">
                 <button
                     class="font-display text-sm px-4 py-2 bg-contrast text-primary">
                     Storyteller
@@ -72,5 +53,4 @@
             </a>
         </div>
     </div>
-    <Modal {isOpenModal} on:closeModal={closeModal} />
 </div>

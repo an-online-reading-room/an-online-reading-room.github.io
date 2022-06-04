@@ -4,8 +4,8 @@
     import { getSuggestions } from "../../services/geocode";
     import { theme } from "$stores/theme";
     import { user } from "$stores/user.js";
-    import TopNav from "$components/TopNav.svelte";
-    import Time from "$components/Time.svelte";
+    import TopNav from "$components/navigation/TopNav.svelte";
+    import Time from "$components/utils/Time.svelte";
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
