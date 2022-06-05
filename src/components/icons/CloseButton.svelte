@@ -1,5 +1,5 @@
 <svg
-    class="stroke-primary w-5 h-5"
+    class="stroke-primary w-auto h-5"
     viewBox="0 0 20 21"
     fill="none"
     xmlns="http://www.w3.org/2000/svg">

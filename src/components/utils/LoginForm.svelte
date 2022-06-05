@@ -1,6 +1,7 @@
 <script>
     import { post } from "$lib/utils.js";
     import { context } from "$stores/context.js";
+    import Exclamation from "$components/icons/Exclamation.svelte";
     let email = "";
     let username = "";
     let errors = "";
@@ -14,7 +15,7 @@
             username,
             context_string,
         });
-        if (response.error) errors = response.error.message;
+        if (response.error) errors = "Error. Please try again.";
         if (response.sent) {
             isLinkSent = true;
             errors = "Email sent";
@@ -25,7 +26,7 @@
 <form
     on:submit|preventDefault={submitForm}
     class="flex flex-col w-full items-center text-sm">
-    <fieldset class="w-1/2 mb-4">
+    <fieldset class="w-1/2 mb-1">
         <label class="block mb-3.5"
             ><p>Username</p>
             <input
@@ -48,15 +49,16 @@
                 autocomplete="email" />
         </label>
     </fieldset>
+    {#if errors}
+    <div class="inline-flex items-center">
+        <Exclamation />
+        <span class="pt-0.5 px-2 font-text text-accent text-xs">{errors}</span>
+    </div>
+    {/if}
     <slot name="checkbox" />
     <button
         class="w-fit bg-accent text-sm text-primary mt-4 px-4 py-2"
         type="submit">{buttonText}</button>
-    {#if errors}
-        <p class="font-text text-accent">
-            {errors}
-        </p>
-    {/if}
 </form>
 
 <style lang="postcss">

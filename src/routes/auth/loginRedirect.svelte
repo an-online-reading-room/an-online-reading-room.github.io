@@ -25,7 +25,7 @@
                     });
                     return {
                         status: 302,
-                        redirect: "/",
+                        redirect: response.context?.redirectUrl ?? "/",
                     };
                 }
             }
