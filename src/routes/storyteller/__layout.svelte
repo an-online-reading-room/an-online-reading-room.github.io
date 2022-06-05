@@ -5,17 +5,21 @@
     import { user } from "$stores/user";
     import { browser } from "$app/env";
 
+    let isAwaiting = true;
     let isLoggedIn = false;
     if (browser) {
         if ($user.jwt) {
             console.log("logged in as user", $user.username);
             isLoggedIn = true;
         }
+        isAwaiting = false;
     }
 </script>
 
 <div class="relative flex flex-col max-w-screen-sm h-full mx-auto shadow-2xl">
-    {#if isLoggedIn}
+    {#if isAwaiting}
+        <Background />
+    {:else if isLoggedIn}
         <Header />
         <main class="overflow-y-auto flex-1 border-t border-contrast pb-16">
             <slot />

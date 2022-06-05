@@ -34,6 +34,9 @@ module.exports = function({ addUtilities, variants, theme, e }) {
             property: "stroke",
             name: "stroke"
         },{
+            property: "fill",
+            name: "fill"
+        },{
             property: "accent-color",
             name: "accent"
         }
