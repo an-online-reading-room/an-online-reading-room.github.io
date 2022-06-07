@@ -37,7 +37,7 @@ export default {
     if (noMoreData) return
 
     const query = qs.stringify({
-      populate: ['author', 'categories'],
+      populate: ['users_permissions_user','categories'],
       pagination: {
         page: page,
         pageSize: 10,
@@ -53,7 +53,7 @@ export default {
     let list = (await response.json()).data
     noMoreData = list.length === 0
     list = list.map(story => {
-      const author_name = story.attributes.author.data.attributes.username
+      const author_name = story.attributes.users_permissions_user.data.attributes.username
       const regexLocation = /([A-Za-z\s]+,*)/g;
       let location = story.attributes.location.trim()
       const match = location.match(regexLocation)

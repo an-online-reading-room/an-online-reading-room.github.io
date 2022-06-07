@@ -20,10 +20,10 @@ const slugify = (str) => {
 };
 
 export async function get(): Promise<RequestHandlerOutput> {
-  const res = await fetch(`${variables.strapi_url}/api/stories?populate=author,categories,annotations`)
+  const res = await fetch(`${variables.strapi_url}/api/stories?populate=categories,users_permissions_user`)
   let data = await res.json()
   data = data.data.map(story => {
-    const author_name = story.attributes.author.data.attributes.username
+    const author_name = story.attributes.users_permissions_user.data.attributes.username
     const regexLocation = /([A-Za-z\s]+,*)/g;
     let location = story.attributes.location.trim()
     const match = location.match(regexLocation)
@@ -41,7 +41,7 @@ export async function get(): Promise<RequestHandlerOutput> {
       author_name: author_name,
       url: slugify(author_name + '-' + story.attributes.title),
       categories: story.attributes.categories.data.map(category => category.attributes.name),
-      annotations: story.attributes.annotations.data.map(annotation => {
+      /*annotations: story.attributes.annotations.data.map(annotation => {
         return {
           content: annotation.attributes.content,
           targetText: annotation.attributes.targetText,
@@ -49,7 +49,7 @@ export async function get(): Promise<RequestHandlerOutput> {
           length: annotation.attributes.length,
           blockID: annotation.attributes.blockID,
         }
-      })
+      })*/
     }
   })
   
