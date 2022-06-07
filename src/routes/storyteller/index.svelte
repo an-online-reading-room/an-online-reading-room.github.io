@@ -15,7 +15,7 @@
     });
 </script>
 
-<div class="flex flex-col gap-y-2 px-8 py-3.5">
+<div class="overflow-y-auto flex-column gap-y-2 px-8 py-3.5 pb-12 border-t border-contrast">
     <a href="/storyteller/editor">
         <div class="btn">Create a new story</div>
     </a>

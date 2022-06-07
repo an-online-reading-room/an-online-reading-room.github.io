@@ -3,7 +3,7 @@
     export let next;
 </script>
 
-<div class="flex h-9 border-b border-contrast text-contrast px-6 justify-between">
+<div class="flex h-9 border-y border-contrast text-contrast px-6 justify-between">
     <a href={back} class="navBtn">
         <svg
             width="7"

@@ -16,14 +16,12 @@
     }
 </script>
 
-<div class="relative flex flex-col max-w-screen-sm h-full mx-auto shadow-2xl">
+<div class="relative flex flex-col max-w-screen-md h-full mx-auto shadow-2xl">
     {#if isAwaiting}
-        <Background />
+        <div />
     {:else if isLoggedIn}
         <Header />
-        <main class="overflow-y-auto flex-1 border-t border-contrast pb-16">
-            <slot />
-        </main>
+        <slot />
     {:else}
         <Background>
             <Modal isOpenModal={true} showCloseButton={false}>
