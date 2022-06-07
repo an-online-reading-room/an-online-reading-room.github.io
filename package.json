@@ -33,7 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@editorjs/editorjs": "^2.24.3",
+		"@editorjs/editorjs": "^2.23.2",
 		"@recogito/recogito-js": "^1.7.1",
 		"dayjs": "^1.11.2",
 		"dotenv": "^16.0.1",
