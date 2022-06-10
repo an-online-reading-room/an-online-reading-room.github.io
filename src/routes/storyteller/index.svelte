@@ -6,6 +6,9 @@
     import Modal from "$components/utils/Modal.svelte";
 
     let stories = [];
+
+    $: searchStories = stories;
+
     let query = "";
     let isOpenModal = false;
     let deletingStory;
@@ -36,7 +39,7 @@
 
     const search = (e) => {
         query = query.toLowerCase();
-        stories = stories.filter((story) => {
+        searchStories = stories.filter((story) => {
             return (
                 story.title.toLowerCase().includes(query) ||
                 story.location.toLowerCase().includes(query)
@@ -44,6 +47,7 @@
         });
         //query = "";
     };
+    $: search(query);
 </script>
 
 <div
@@ -82,12 +86,13 @@
         </button>
     </div>
     {#if stories}
-        {#each stories as story}
+        {#each searchStories as story}
             <a
                 href="storyteller/editor?story={story.id}"
                 class="relative flex flex-col gap-y-3 border-2 border-contrast px-3.5 py-2 font-display text-contrast">
                 <div class="inline-flex items-center absolute top-2 right-2">
-                    <span class="italic text-xs px-2">{story.publishedAt ? "published" : "draft" }</span>
+                    <span class="italic text-xs px-2"
+                        >{story.publishedAt ? (story.draft ? "published | draft" : "published") : "draft"}</span>
                     <button on:click|preventDefault={openDeleteModal(story.id)}>
                         <Delete />
                     </button>
@@ -100,7 +105,9 @@
                     {story.location !== "" ? story.location : "No location"}
                 </p>
                 <p class="text-sm font-text">
-                    {story.description !== "" ? story.description : "No description"}
+                    {story.description !== ""
+                        ? story.description
+                        : "No description"}
                 </p>
             </a>
         {/each}
