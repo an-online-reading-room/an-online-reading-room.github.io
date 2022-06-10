@@ -86,27 +86,32 @@
             <a
                 href="storyteller/editor?story={story.id}"
                 class="relative flex flex-col gap-y-3 border-2 border-contrast px-3.5 py-2 font-display text-contrast">
-                <button
-                    on:click|preventDefault={openDeleteModal(story.id)}
-                    class="absolute top-3 right-2">
-                    <Delete />
-                </button>
-                <p class="text-base font-medium">{story?.title ?? "Untitled"}</p>
-                <p class="text-sm font-text">{story?.location ?? "No location"}</p>
-                <p class="text-sm font-text">{story?.description ?? "No description"}</p>
+                <div class="inline-flex items-center absolute top-2 right-2">
+                    <span class="italic text-xs px-2">{story.publishedAt ? "published" : "draft" }</span>
+                    <button on:click|preventDefault={openDeleteModal(story.id)}>
+                        <Delete />
+                    </button>
+                </div>
+
+                <p class="text-base font-medium">
+                    {story.title !== "" ? story.title : "Untitled"}
+                </p>
+                <p class="text-sm font-text">
+                    {story.location !== "" ? story.location : "No location"}
+                </p>
+                <p class="text-sm font-text">
+                    {story.description !== "" ? story.description : "No description"}
+                </p>
             </a>
-            
         {/each}
     {/if}
 </div>
 <Modal {isOpenModal} showCloseButton={false}>
     <p>Are you sure you want to delete this story?</p>
     <div class="flex justify-around mt-6">
-        <button
-            class="btn btn-modal"
-            on:click={deleteStory(deletingStory)}>Yes</button>
-        <button class="btn btn-modal" on:click={closeDeleteModal}
-            >No</button>
+        <button class="btn btn-modal" on:click={deleteStory(deletingStory)}
+            >Yes</button>
+        <button class="btn btn-modal" on:click={closeDeleteModal}>No</button>
     </div>
 </Modal>
 

@@ -13,19 +13,17 @@
     import "leaflet/dist/leaflet.css";
 
     export let prevStoryData;
-    console.log(prevStoryData);
+    export let draft;
+    export let form;
+    //console.log(prevStoryData);
+    console.log(form)
     let isOpenModal = false;
     let autosave_newStoryCreated = false;
     let autosave_newStoryId;
     let currTime;
 
-    let form = {
-        title: prevStoryData?.attributes.title ?? "",
-        description: prevStoryData?.attributes.description ?? "",
-    };
     let editor;
-
-    let locationInput = prevStoryData?.attributes.location ?? "";
+    let locationInput = form.location;
     let locationSuggestions = [];
 
     $: {
@@ -37,9 +35,11 @@
     async function submitStory() {
         const storyData = getStoryData();
 
+        console.log(storyData)
         editor.save().then((data) => {
             storyData.data.submission = data;
             let res;
+            storyData.data.publishedAt = new Date().toISOString();
             if (prevStoryData) {
                 res = api.put(
                     `api/stories/${prevStoryData.id}`,
