@@ -1,9 +1,11 @@
-
+// TODO: relation fields do not get flattened
 const flattenStrapiResponse = (res) => {
-    const result = {
-        id: res.data[0].id,
-        ...res.data[0].attributes
-    }
+    const result = res.data.map(entity => {
+        return {
+            id: entity.id,
+            ...entity.attributes   
+        }
+    })
     
     return result
 }
