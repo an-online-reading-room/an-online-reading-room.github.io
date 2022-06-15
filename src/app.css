@@ -4,26 +4,30 @@
 
 @layer components {
     .highlight {
-        @apply bg-accent text-primary
+        @apply underline 
     }
 
-    .arrow-up.theme-cream {
-        @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#6A735A] mx-0 ml-2 mr-0
+    .soft-highlight {
+        @apply bg-opacity-25 bg-accent text-contrast;
+      }
+
+    .theme-cream .arrow-up {
+        @apply w-0 h-0 border-l-[8px] border-r-[8px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#6A735A] mx-0 ml-2 mr-0
     }
 
-    .arrow-up.theme-green {
+    .theme-green .arrow-up {
         @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#EEE2D2] mx-0 ml-2 mr-0
     }
 
-    .arrow-up.theme-red {
+    .theme-red .arrow-up {
         @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#EEE2D2] mx-0 ml-2 mr-0
     }
 
-    .arrow-up.theme-teal {
+    .theme-teal .arrow-up {
         @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#6A735A] mx-0 ml-2 mr-0
     }
 
-    .arrow-up.theme-grey {
+    .theme-grey .arrow-up {
         @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#BC6E4D] mx-0 ml-2 mr-0
     }
 
@@ -71,34 +75,6 @@ body>div:first-child {
     overflow: hidden;
 }
 
-/* storybuilder 
-
-#selection-controls {
-  width: 85%;
-}
-
-.cdx-block {
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-  border: 1.5px black solid;
-  background-color: white;
-  text-align: left;
-  line-height: 1rem;
-}
-
-.cdx-block[data-placeholder]:empty::before {
-  color: black;
-}
-
-.ce-block {
-  margin-top: 1rem;
-}
-
-.ce-block:nth-of-type(1) {
-  margin-top: 0;
-}
-
-
-*/
 .leaflet-popup {
     background-color: #6A735A;
 

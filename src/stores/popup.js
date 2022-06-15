@@ -3,7 +3,8 @@ import { browser } from '$app/env'
 
 const defaultValue = JSON.stringify({
     lite: false,
-    adventure: false
+    adventure: false,
+    linkingModal: false
 })
 const stored = browser ? window.localStorage.popup ?? defaultValue : defaultValue
 
