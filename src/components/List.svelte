@@ -21,15 +21,16 @@
 	});
 
 	onDestroy(async () => {
-			console.log("posting to db");
-			console.log($visited);
-			const res = await api.put(
-					`api/users/${$user.id}`,
-					{
-							visited: $visited,
-					},
-					$user.jwt
-			);
+		listStoreUnsubscribe
+		console.log("posting to db");
+		console.log($visited);
+		const res = await api.put(
+				`api/users/${$user.id}`,
+				{
+						visited: $visited,
+				},
+				$user.jwt
+		);
 			// console.log(res);
 	});
 
@@ -40,7 +41,7 @@
 	let query = '';
 
 	listStore.fetchNextPage();
-	listStore.subscribe((value) => {
+	const listStoreUnsubscribe = listStore.subscribe((value) => {
 		loading = value.loading;
 		noMoreData = value.noMoreData;
 		listItems = value.data;

@@ -1,6 +1,6 @@
 <script>
     import dayjs from "dayjs";
-    import AdvancedFormat from "dayjs/plugin/advancedFormat";
+    import AdvancedFormat from "dayjs/plugin/advancedFormat.js";
     dayjs.extend(AdvancedFormat);
 
     export let currTime
