@@ -1,5 +1,4 @@
 <script>
-  import Icon from '$components/Icon.svelte'
 </script>
 
 <div class="h-52 w-52 pt-2 self-center">

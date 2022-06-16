@@ -1,16 +1,20 @@
 <script>
 	import storyList from "$stores/storyList";
 	import List from "$components/List.svelte";
-	import Modal from "$components/utils/Modal.svelte";
-	import { popup } from "$stores/popup";
+	import Modal from "$components/Modal.svelte";
+	import modal from "$stores/modal";
+import { onDestroy } from "svelte";
+
+	let modalStore
+	const modalStoreUnsubscribe = modal.subscribe(value => modalStore = value)
+
+	onDestroy(() => modalStoreUnsubscribe)
 
 	const checkVisited = () => {
-		return !JSON.parse($popup).lite 
+		return modalStore.lite
 	}
 	const markVisited = () => {
-		const update = JSON.parse($popup)
-		update.lite = true
-		popup.set(JSON.stringify(update))
+		modal.set('lite')
 	}
 	let isOpenModal = checkVisited()
 	
@@ -20,7 +24,7 @@
 <List listStore={storyList}></List>
 
 
-<Modal {isOpenModal} showCloseButton={true} on:closeModal={() => {isOpenModal = false; markVisited()}}>
+<Modal isOpenModal={!isOpenModal} name="lite" on:closeModal={() => {isOpenModal = false; markVisited()}}>
 	<p class="font-bold text-base mb-4">Welcome to the lite version!</p>
 	<p class="text-base leading-[18px]">Find stories in your location, and travel across states and countries. Find your map in the top right corner</p>
 </Modal>

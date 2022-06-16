@@ -2,6 +2,7 @@
   import { version } from '$stores/version'
   import { theme } from '$stores/theme'
   import { mode } from '$stores/mode'
+import { onDestroy } from 'svelte';
 
   let openMenu = false
   let openAboutMenu = false
@@ -10,7 +11,7 @@
   let openWorldbuildersMenu = false
   let pathPrefix
 
-  version.subscribe(value => {
+  const versionUnsubscribe = version.subscribe(value => {
     pathPrefix = value === 'lite' ? '/adventure/landing' : '/'
   })
 
@@ -19,6 +20,8 @@
     const newTheme = themes[Math.floor(Math.random()*themes.length)]
     theme.set(newTheme)
   }
+
+  onDestroy(() => versionUnsubscribe)
 </script>
 
 <header>
@@ -30,7 +33,7 @@
       {#if openMenu}
       <div class="absolute inset-0 w-screen h-full
                   bg-menu-primary text-menu-accent
-                  pt-6 px-6 z-10">
+                  pt-6 px-6 z-40">
 
         <div class="flex flex-row justify-end gap-x-2">
           
@@ -102,7 +105,7 @@
         {#if openAboutMenu}
         <div class="absolute inset-0 w-screen 
                   bg-accent text-menu-accent h-full
-                  py-6 px-6 z-20 overflow-y-scroll
+                  py-6 px-6 z-50 overflow-y-scroll
                   flex flex-col gap-y-6">
 
             <div class="flex flex-row justify-between gap-x-2">
@@ -162,7 +165,7 @@
         {#if openFAQMenu}
         <div class="absolute inset-0 w-screen h-full
                   bg-accent text-menu-accent
-                  py-6 px-6 z-20 overflow-y-scroll
+                  py-6 px-6 z-50 overflow-y-scroll
                   flex flex-col gap-y-6">
 
           <div class="flex flex-row justify-between gap-x-2">
@@ -236,7 +239,7 @@
         {#if openWorldbuildersMenu}
         <div class="absolute inset-0 w-screen h-full
                 bg-accent text-menu-accent
-                py-4 px-4 z-20 overflow-y-scroll">
+                py-4 px-4 z-50 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
             <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
@@ -304,7 +307,7 @@
         {#if openTermsMenu}
         <div class="absolute inset-0 w-screen h-full
                 bg-accent text-menu-accent
-                py-4 px-4 z-20 overflow-y-scroll">
+                py-4 px-4 z-50 overflow-y-scroll">
 
           <div class="flex flex-row justify-between gap-x-2">
             <button class="w-8 h-8 focus:outline-none stroke-menu-accent" 
