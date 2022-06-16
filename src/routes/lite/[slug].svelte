@@ -13,7 +13,7 @@
 </script>
 
 <script>
-    import TopNav from '$components/TopNav.svelte';
+    import TopNav from '$components/navigation/TopNav.svelte';
 
     export let story
 

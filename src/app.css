@@ -7,6 +7,10 @@
         @apply bg-accent text-primary
     }
 
+    .flex-column {
+        @apply flex flex-col
+    }
+
     .arrow-up.theme-cream {
         @apply w-0 h-0 border-l-[12px] border-r-[12px] border-b-[12px] border-l-transparent border-r-transparent border-b-[#6A735A] mx-0 ml-2 mr-0
     }

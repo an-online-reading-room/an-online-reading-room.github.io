@@ -1,7 +1,7 @@
 <script>
   import Header from "$components/Header.svelte";
   import { user } from "$stores/user";
-  import Modal from "$components/Modal.svelte";
+  import Modal from "$components/utils/Modal.svelte";
   import { goto } from "$app/navigation";
   function checkLogin() {
       if ($user.jwt) {

@@ -4,7 +4,7 @@ export async function post({ request }) {
     const json = await request.json();
     const body = await api.post(
         `api/passwordless/send-link`,
-        { email: json.email, username: json.username, context: json.context },
+        { email: json.email, username: json.username, context: json.context_string },
         null
     );
     console.log('DBG passwordless response post: ', body);
