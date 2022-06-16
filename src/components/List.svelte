@@ -2,13 +2,36 @@
 	import { visited } from '$stores/visited';
 	import storyList from '$stores/storyList.js';
 	import { theme } from '$stores/theme.js';
-
+	import { user } from "$stores/user";
+	import { onDestroy, onMount } from "svelte";
+	import * as api from "$lib/api.js";
+  
 	const visitStory = (id) => {
 		if($visited.includes(id) === true) return
 		visited.set([...$visited, id]);
 	};
 
 	export let listStore;
+
+	onMount(async () => {
+			//console.log($visited);
+			const res = await api.get("api/users/me", $user.jwt);
+			console.log(res.visited); // CHECK: throws error when visited = null
+			$visited = res.visited;
+	});
+
+	onDestroy(async () => {
+			console.log("posting to db");
+			console.log($visited);
+			const res = await api.put(
+					`api/users/${$user.id}`,
+					{
+							visited: $visited,
+					},
+					$user.jwt
+			);
+			// console.log(res);
+	});
 
 	let listItems,
 		filteredListItems,
@@ -113,3 +136,32 @@
 		</button>
 	{/if}
 </div>
+
+
+<!-- {#each listItems as story}
+    <div>
+        <a href="/stories/{story.url}" on:click={() => visitStory(story.id)}>
+            <div
+                class="px-3 py-3 w-full 
+								border border-contrast border-1
+								text-center font-text
+								inline-flex flex-col gap-y-1
+								{$visited.includes(story.id) == true
+                    ? 'bg-story-accent text-menu-accent'
+                    : 'bg-primary'}">
+                <div class="text-base font-display">
+                    <h1>{story.title}</h1>
+                </div>
+                <div class="text-sm">
+                    <p>{story.author_name}</p>
+                </div>
+                <div class="text-sm">
+                    <p>{story.location}</p>
+                </div>
+                <div class="text-sm">
+                    <p>{story.description}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+{/each} -->

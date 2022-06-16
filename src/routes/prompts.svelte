@@ -1,6 +1,6 @@
 <script>
   import Header from '$components/Header.svelte'
-  import TopNav from '$components/TopNav.svelte';
+  import TopNav from '$components/navigation/TopNav.svelte';
 </script>
 
 <div class="flex flex-col align-items-center 

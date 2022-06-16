@@ -3,7 +3,7 @@ const base = import.meta.env.VITE_STRAPI_URL;
 async function send({ method, path, data, token }) {
     const opts = { method, headers: {} };
 
-    if (path ==="api/upload" && data) {
+    if (path === "api/upload" && data) {
         opts.headers['Accept'] = '*/*';
         opts.body = data;
     }
@@ -15,18 +15,17 @@ async function send({ method, path, data, token }) {
     if (token) {
         opts.headers['Authorization'] = `Bearer ${token}`;
     }
-    console.log(opts)
+    //console.log(opts)
     return fetch(`${base}/${path}`, opts)
-        .then((r) => r.text())
+        .then(r => r.text())
         .then((json) => {
             try {
-                
                 return JSON.parse(json);
             } catch (err) {
-                //console.log(json)
                 return json;
             }
         });
+
 }
 
 export function get(path, token) {

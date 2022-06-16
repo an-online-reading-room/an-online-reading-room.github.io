@@ -13,7 +13,7 @@ module.exports = {
         'menu-accent': '#EEE2D2',
         'story-accent': '#6A735A',
         'contrast': '#000002',
-      }, 
+      },
       green: {
         'primary': '#6A735A',
         'accent': '#EEE2D2',
@@ -47,49 +47,49 @@ module.exports = {
         'contrast': '#000000',
       }
     },
-    colors: {
-      'transparent': 'transparent',
-      'current': 'currentColor',
-
-      'primary': '#EEE2D2',
-      'accent': '#6A735A',
-      'menu-primary': '#6A735A',
-      'menu-accent': '#EEE2D2',
-      'story-accent': '#6A735A',
-      'contrast': '#000000',
-
-      'black': '#000000',
-      'white': '#ffffff',
-    },
-    stroke: {
-      'transparent': 'transparent',
-      'current': 'currentColor',
-
-      'primary': '#EEE2D2',
-      'accent': '#6A735A',
-      'menu-primary': '#6A735A',
-      'menu-accent': '#EEE2D2',
-      'story-accent': '#6A735A',
-      'contrast': '#00000',
-
-      'black': '#000000',
-      'white': '#ffffff',
-    },
-    divideColor: {
-      'transparent': 'transparent',
-      'current': 'currentColor',
-
-      'primary': '#EEE2D2',
-      'accent': '#6A735A',
-      'menu-primary': '#6A735A',
-      'menu-accent': '#EEE2D2',
-      'story-accent': '#6A735A',
-      'contrast': '#00000',
-
-      'black': '#000000',
-      'white': '#ffffff',
-    },
     extend: {
+      colors: {
+        'transparent': 'transparent',
+        'current': 'currentColor',
+
+        'primary': '#EEE2D2',
+        'accent': '#6A735A',
+        'menu-primary': '#6A735A',
+        'menu-accent': '#EEE2D2',
+        'story-accent': '#6A735A',
+        'contrast': '#000002',
+
+        'black': '#000000',
+        'white': '#ffffff',
+      },
+      stroke: {
+        'transparent': 'transparent',
+        'current': 'currentColor',
+
+        'primary': '#EEE2D2',
+        'accent': '#6A735A',
+        'menu-primary': '#6A735A',
+        'menu-accent': '#EEE2D2',
+        'story-accent': '#6A735A',
+        'contrast': '#000002',
+
+        'black': '#000000',
+        'white': '#ffffff',
+      },
+      divideColor: {
+        'transparent': 'transparent',
+        'current': 'currentColor',
+
+        'primary': '#EEE2D2',
+        'accent': '#6A735A',
+        'menu-primary': '#6A735A',
+        'menu-accent': '#EEE2D2',
+        'story-accent': '#6A735A',
+        'contrast': '#000002',
+
+        'black': '#000000',
+        'white': '#ffffff',
+      },
       fontSize: {
         'xxs': '0.5rem'
       },
@@ -109,6 +109,6 @@ module.exports = {
     },
   },
   plugins: [
-    require('tailwind-theme-switcher')
+    require('./scripts/theme-switcher.cjs')
   ],
 }
