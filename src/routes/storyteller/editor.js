@@ -1,7 +1,4 @@
 import * as api from '$lib/api.js';
-import qs from 'qs';
-import { variables } from '$lib/variables';
-import { flattenStrapiResponse } from '$lib/utils/api';
 
 export async function get({ url }) {
     let form ={ 
@@ -10,33 +7,22 @@ export async function get({ url }) {
         description : ""
     };
     if (url.searchParams.has("story")) {
-        const query = qs.stringify({
-            filters: {
-              slug: {
-                $eq: url.searchParams.get("story"),
-              },
-            },
-          }, {
-            encodeValuesOnly: true,
-        });
+        const res = await api.get(`api/stories/${url.searchParams.get("story")}`);
+        const prevStoryData = res.data
+        const attr = res.data.attributes
+        const draft = attr.draft
 
-        // const res = await api.get(`api/stories/${url.searchParams.get("story")}`);
-        const res = await (await fetch(`${variables.strapi_url}/api/stories?${query}`)).json()
-        const story = flattenStrapiResponse(res)
-        console.log(story)
-        const draft = res.draft
-  
         //console.log(res.data)
         if(draft) {
             form = draft.form
         } else  {
-            form.title = story.title
-            form.location = story.location
-            form.description = story.description
+            form.title = attr.title
+            form.location = attr.location
+            form.description = attr.description
         }
 
         return {
-            body: { story, draft, form }
+            body: { prevStoryData, draft, form }
         };
     } else {
         return {
@@ -44,5 +30,4 @@ export async function get({ url }) {
             body: { form }
         };
     }
-
 }
