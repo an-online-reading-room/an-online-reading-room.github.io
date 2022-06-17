@@ -88,7 +88,7 @@
     {#if stories}
         {#each searchStories as story}
             <a
-                href="storyteller/editor?story={story.slug}"
+                href="storyteller/editor?story={story.id}"
                 class="relative flex flex-col gap-y-3 border-2 border-contrast px-3.5 py-2 font-display text-contrast">
                 <div class="inline-flex items-center absolute top-2 right-2">
                     <span class="italic text-xs px-2"
