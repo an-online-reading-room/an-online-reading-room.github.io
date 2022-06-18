@@ -50,7 +50,7 @@ export default {
         title: story.attributes.title,
         location: location,
         description: story.attributes.description,
-        author_name: username,
+        username: username,
         submission: story.attributes.submission,
         slug: story.attributes.slug,
       }

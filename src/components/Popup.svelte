@@ -1,23 +1,20 @@
 <script>
 
   export let popupElement
-  export let storyName
-  export let storyUrl
+  export let story
+  export let url
 </script>
 
 <section bind:this={popupElement} 
         class="text-center 
-              font-text text-sm leading-4
-              bg-accent text-primary relative">
-  <a href={storyUrl}>
-    <p class="underline text-primary">{storyName}</p>
+              font-text text-sm flex flex-col gap-y-2
+              bg-accent text-primary">
+  <a class="underline underline-offset-2 font-text font-bold text-base text-primary" href={url}>
+    <p>{story.title}</p>
   </a>
 
-  <p>You have already viewed this story</p>
-
-  <a href={storyUrl}>
-    <button class="px-3 py-2 bg-black text-white font-display">
-      Visit the story again!
-    </button>
-  </a>
+  <div class="font-text text-xs">
+    <p>by {story.username}</p>
+    <p>at {story.location}</p>
+  </div>
 </section>

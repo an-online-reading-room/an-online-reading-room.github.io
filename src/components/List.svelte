@@ -53,7 +53,7 @@
 		filteredListItems = listItems.filter((story) => {
 			return (
 				story.title.toLowerCase().includes(query) ||
-				story.author_name.toLowerCase().includes(query) ||
+				story.username.toLowerCase().includes(query) ||
 				story.location.toLowerCase().includes(query)
 			);
 		});
@@ -61,7 +61,7 @@
 	};
 </script>
 
-<main class="flex flex-col align-items-center gap-y-4 px-6 pt-6 pb-10 overflow-y-scroll text-contrast min-h-full">
+<main class="flex flex-col align-items-center gap-y-4 px-6 pt-6 pb-10 overflow-y-scroll text-contrast min-h-full pb-40">
 	<div
 		class="flex flex-row justify-between 
 	w-full gap-x-base divide-x
@@ -105,7 +105,7 @@
 								<h1>{story.title}</h1>
 							</div>
 							<div class="text-sm">
-								<p>{story.author_name}</p>
+								<p>{story.username}</p>
 							</div>
 							<div class="text-sm">
 								<p>{story.location}</p>
@@ -137,32 +137,3 @@
 		</button>
 	{/if}
 </div>
-
-
-<!-- {#each listItems as story}
-    <div>
-        <a href="/stories/{story.url}" on:click={() => visitStory(story.id)}>
-            <div
-                class="px-3 py-3 w-full 
-								border border-contrast border-1
-								text-center font-text
-								inline-flex flex-col gap-y-1
-								{$visited.includes(story.id) == true
-                    ? 'bg-story-accent text-menu-accent'
-                    : 'bg-primary'}">
-                <div class="text-base font-display">
-                    <h1>{story.title}</h1>
-                </div>
-                <div class="text-sm">
-                    <p>{story.author_name}</p>
-                </div>
-                <div class="text-sm">
-                    <p>{story.location}</p>
-                </div>
-                <div class="text-sm">
-                    <p>{story.description}</p>
-                </div>
-            </div>
-        </a>
-    </div>
-{/each} -->
