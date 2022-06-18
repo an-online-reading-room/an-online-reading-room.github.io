@@ -5,6 +5,8 @@
     import { theme } from "$stores/theme";
     import { user } from "$stores/user.js";
     import TopNav from "$components/navigation/TopNav.svelte";
+    import BottomNav from "$components/navigation/BottomNav.svelte";
+
     import Time from "$components/utils/Time.svelte";
     import AutosaveTime from "$components/utils/AutosaveTime.svelte";
 
@@ -17,11 +19,12 @@
     export let draft;
     export let form;
     //console.log(prevStoryData);
-    console.log(form)
+    console.log(form);
     let isOpenModal = false;
+    let isPublished = false;
     let autosave_newStoryCreated = false;
     let autosave_newStoryId;
-    let currTime;
+    let currTime = null;
 
     let editor;
     let locationInput = form.location;
@@ -36,7 +39,7 @@
     async function submitStory() {
         const storyData = getStoryData();
 
-        console.log(storyData)
+        console.log(storyData);
         editor.save().then((data) => {
             storyData.data.submission = data;
             let res;
@@ -54,7 +57,9 @@
             //Catch errors here if story not submitted
             res.then((data) => {
                 console.log(data);
-                isOpenModal = true;
+                isPublished = true;
+                clearInterval(autosaveFn);
+
             });
         });
     }
@@ -71,7 +76,7 @@
                     location: locationInput,
                 };
 
-                console.log("Autosaving previusly existing");
+                console.log("Autosaving previously existing");
                 currTime = Date.now();
                 api.put(
                     `api/stories/${prevStoryData.id}`,
@@ -89,13 +94,13 @@
                         $user.jwt
                     );
                     autosave_newStoryCreated = true;
-                    console.log("Autosaving newly existing");
+                    console.log("Autosaving newly created story");
 
                     console.log(res);
                     currTime = Date.now();
                     autosave_newStoryId = res.data.id;
                 } else {
-                    console.log("Autosaving newly existing");
+                    console.log("Autosaving and updating newly created story");
 
                     const res = await api.put(
                         `api/stories/${autosave_newStoryId}`,
@@ -125,6 +130,11 @@
         form.title = "";
         form.location = "";
         form.description = "";
+    }
+
+    async function discardDraft() {
+        editor.data = prevStoryData.attributes.submission;
+        //form.title = prevStoryData.attributes
     }
 
     onMount(async () => {
@@ -182,6 +192,8 @@
 <div class="overflow-y-auto">
     <TopNav back="/storyteller" next="" />
     <main class="py-3.5 px-8">
+
+        {#if !isPublished}
         <Time />
         <form
             on:submit|preventDefault={submitStory}
@@ -217,40 +229,65 @@
                 class="focus:outline-none placeholder:font-bold placeholder:text-contrast" />
         </form>
         <section class="placeholder:text-contrast" id="editor" />
-        <div
-            class="fixed inset-x-0 bottom-0 z-10 flex flex-col gap-y-2 bg-primary">
-            <p
-                on:click={autosaveDraft}
-                class="self-center text-xs font-light italic">
-                Autosaved at <AutosaveTime {currTime} />
-            </p>
-            <label class="self-center  font-text text-contrast text-xs">
-                <input
-                    class="accent-accent w-2.5 h-2.5"
-                    type="checkbox"
-                    name="accept"
-                    form="story"
-                    required />
-                I accept the
-                <a class="underline" href="/terms-and-conditions">
-                    terms and conditions</a>
-            </label>
-            <div class="flex h-11 bg-accent text-primary">
-                <button class="w-1/2" type="submit" form="story"
-                    >Publish</button>
-                <button class="w-1/2" on:click={clearStory}>Clear</button>
-            </div>
-        </div>
+        {:else}
+        <p class="text-4xl font-bold">
+            You have successfully published your story!
+        </p>
+        {/if}
+
+        <BottomNav faded={isPublished}>
+            <svelte:fragment slot="editor-extras">
+                {#if currTime}
+                    <p
+                        on:click={autosaveDraft}
+                        class="self-center text-xs font-light italic">
+                        Autosaved at <AutosaveTime {currTime} />
+                    </p>
+                {/if}
+                <label class="self-center  font-text text-contrast text-xs">
+                    <input
+                        class="accent-accent w-2.5 h-2.5"
+                        type="checkbox"
+                        name="accept"
+                        form="story"
+                        required />
+                    I accept the
+                    <a class="underline" href="/terms-and-conditions">
+                        terms and conditions</a>
+                </label>
+            </svelte:fragment>
+            <svelte:fragment  slot="bottom-bar">
+                {#if !isPublished}
+                <button class="w-1/2" type="submit" form="story">
+                    Publish
+                </button>
+                <button class="w-1/2" on:click={clearStory}>
+                    Clear
+                </button>
+                {:else if draft}
+                <button class="w-1/2" type="submit" form="story">
+                    Republish
+                </button>
+                <button class="w-1/2" on:click={discardDraft}>
+                    Discard draft
+                </button>
+
+                {:else}
+                <button class="w-full"  disabled>Published!</button>
+                {/if}
+            </svelte:fragment>
+        </BottomNav>
     </main>
 </div>
 
+<!--
 <Modal {isOpenModal} showCloseButton={false}>
     Thanks for submitting!
     <a href="/storyteller">
         <p class="underline font-bold">Go back</p>
     </a>
 </Modal>
-
+-->
 <style lang="postcss">
     #story input {
         @apply w-full bg-primary text-contrast cursor-text;
@@ -258,12 +295,6 @@
     textarea {
         @apply w-full h-auto bg-primary text-contrast cursor-text;
     }
-    /*:global(.ce-toolbar__plus) {
-        @apply rounded-full bg-primary border border-contrast shadow-sm;
-    }
-    :global(.ce-toolbar__settings-btn) {
-        //@apply rounded-full bg-primary border border-contrast shadow-sm;
-    }*/
     :global(.ce-paragraph[data-placeholder]:empty::before) {
         @apply text-contrast;
     }

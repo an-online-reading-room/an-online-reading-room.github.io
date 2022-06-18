@@ -114,11 +114,12 @@
     {/if}
 </div>
 <Modal {isOpenModal} showCloseButton={false}>
-    <p>Are you sure you want to delete this story?</p>
-    <div class="flex justify-around mt-6">
-        <button class="btn btn-modal" on:click={() => deleteStory(deletingStory)}
+    <p class="font-bold"> Are you sure you want to delete your story?</p>
+    <p>We’ll miss it!</p>
+    <div class="flex justify-between mt-3">
+        <button class="btn-modal" on:click={() => deleteStory(deletingStory)}
             >Yes</button>
-        <button class="btn btn-modal" on:click={closeDeleteModal}>No</button>
+        <button class="btn-modal" on:click={closeDeleteModal}>No</button>
     </div>
 </Modal>
 
@@ -127,6 +128,6 @@
         @apply bg-accent text-primary text-sm px-4 py-3;
     }
     .btn-modal {
-        @apply w-16 h-fit border border-primary px-4 py-2;
+        @apply bg-primary text-accent font-display font-bold text-sm h-fit px-8 py-2;
     }
 </style>
