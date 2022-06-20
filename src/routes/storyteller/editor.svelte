@@ -2,15 +2,16 @@
     import { onDestroy, onMount } from "svelte";
     import { dev } from "$app/env";
     import { getSuggestions } from "$lib/services/geocode";
-    import { theme } from "$stores/theme";
     import { user } from "$stores/user.js";
+
     import TopNav from "$components/navigation/TopNav.svelte";
     import BottomNav from "$components/navigation/BottomNav.svelte";
-
-    import Time from "$components/utils/Time.svelte";
-    import AutosaveTime from "$components/utils/AutosaveTime.svelte";
-
     import Modal from "$components/utils/Modal.svelte";
+
+
+    import Time from "./_components/Time.svelte";
+    import AutosaveTime from "./_components/AutosaveTime.svelte";
+
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
@@ -21,6 +22,7 @@
     //console.log(prevStoryData);
     console.log(form);
     let isOpenModal = false;
+    //let modals = [clear, discard, republish];
     let isPublished = false;
     let autosave_newStoryCreated = false;
     let autosave_newStoryId;
@@ -133,7 +135,11 @@
     }
 
     async function discardDraft() {
-        editor.data = prevStoryData.attributes.submission;
+        console.log(prevStoryData)
+        editor.render(prevStoryData.attributes.submission);
+        form.title = prevStoryData.attributes.title
+        form.location = prevStoryData.attributes.location
+        form.description = prevStoryData.attributes.description
         //form.title = prevStoryData.attributes
     }
 
@@ -181,7 +187,7 @@
 
     let autosaveFn;
     onMount(() => {
-        autosaveFn = setInterval(autosaveDraft, 5000);
+        autosaveFn = setInterval(autosaveDraft, dev? 5000 : 60000);
     });
 
     onDestroy(() => {
@@ -257,37 +263,31 @@
                 </label>
             </svelte:fragment>
             <svelte:fragment  slot="bottom-bar">
-                {#if !isPublished}
-                <button class="w-1/2" type="submit" form="story">
-                    Publish
-                </button>
-                <button class="w-1/2" on:click={clearStory}>
-                    Clear
-                </button>
-                {:else if draft}
+                {#if isPublished}
+                <button class="w-full" disabled>Published!</button>
+                {:else if prevStoryData}
                 <button class="w-1/2" type="submit" form="story">
                     Republish
                 </button>
                 <button class="w-1/2" on:click={discardDraft}>
                     Discard draft
                 </button>
-
                 {:else}
-                <button class="w-full"  disabled>Published!</button>
+                <button class="w-1/2" type="submit" form="story">
+                    Publish
+                </button>
+                <button class="w-1/2" on:click={clearStory}>
+                    Clear
+                </button>
                 {/if}
             </svelte:fragment>
         </BottomNav>
     </main>
 </div>
 
-<!--
-<Modal {isOpenModal} showCloseButton={false}>
-    Thanks for submitting!
-    <a href="/storyteller">
-        <p class="underline font-bold">Go back</p>
-    </a>
+<Modal {isOpenModal} showCloseButton={true}>
+    
 </Modal>
--->
 <style lang="postcss">
     #story input {
         @apply w-full bg-primary text-contrast cursor-text;
