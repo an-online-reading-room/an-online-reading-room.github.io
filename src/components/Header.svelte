@@ -5,6 +5,11 @@ import { mode } from '$stores/mode'
 import { onDestroy } from 'svelte';
 import MenuItem from '$components/MenuItem.svelte';
 import { goto } from '$app/navigation';
+import CloseButton from '$components/icons/CloseButton.svelte'
+import HomeIcon from '$components/icons/HomeIcon.svelte'
+import ThemeSwitcherIcon from './icons/ThemeSwitcherIcon.svelte';
+import MapIcon from './icons/MapIcon.svelte';
+import MenuIcon from './icons/MenuIcon.svelte';
 
   let openMenu = false
   let openAboutMenu = false
@@ -42,12 +47,7 @@ import { goto } from '$app/navigation';
           
           <button class="w-10 h-10 focus:outline-none stroke-menu-accent"
                   on:click={() => openMenu = !openMenu}>
-            <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
-            <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+            <CloseButton />
           </button>
         </div>
 
@@ -61,13 +61,7 @@ import { goto } from '$app/navigation';
           }}>
             <div class="w-full h-16 pb-6 pt-4">
               <div class="w-10 h-10 mx-auto stroke-menu-accent">
-                <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
-                <path d="M10.4165 15.5625V27.4167C10.4165 28.3595 10.4165 28.8309 10.7094 29.1238C11.0023 29.4167 11.4737 29.4167 12.4165 29.4167H27.3748C28.3176 29.4167 28.789 29.4167 29.0819 29.1238C29.3748 28.8309 29.3748 28.3595 29.3748 27.4167V15.5625" stroke-width="1.5"/>
-                <path d="M32.2917 17.75L20.4725 9.40707C20.1268 9.16303 19.6649 9.16303 19.3192 9.40707L7.5 17.75" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M23.5417 28.6875V21.9375C23.5417 20.8329 22.6462 19.9375 21.5417 19.9375H18.25C17.1454 19.9375 16.25 20.8329 16.25 21.9375V28.6875" stroke-width="1.5" stroke-linejoin="round"/>
-                <path d="M27.9165 14.1042V9" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
+                <HomeIcon />
               </div>
             </div>
           </a>
@@ -97,9 +91,7 @@ import { goto } from '$app/navigation';
           
           <div class="w-full h-16 pb-6 pt-4">
             <div class="w-10 h-10 mx-auto stroke-menu-accent" on:click={changeTheme}>
-              <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle class="fill-current" cx="20" cy="20" r="19.25" />
-              </svg>
+              <ThemeSwitcherIcon />
             </div>
           </div>
         </div>
@@ -341,18 +333,8 @@ import { goto } from '$app/navigation';
       </a>
       
       <button class="w-10 h-10 focus:outline-none ml-auto text-accent">
-          <a href={openMap ? "/lite/map" : "/lite"} on:click={() => openMap = !openMap}>
-            {#if openMap}
-            <svg class="stroke-black fill-primary" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="19.25" fill="black" stroke="black" stroke-width="1.5"/>
-            <path d="M20.0135 6.57945C19.0828 6.56156 18.1555 6.69683 17.2691 6.98022C15.2113 7.6367 13.4556 9.00667 12.3185 10.8431C11.1814 12.6795 10.7375 14.8617 11.067 16.9966C11.3409 18.824 11.8809 20.6018 12.6695 22.273C13.8584 24.7838 15.3376 27.1465 17.0768 29.3127C17.8382 30.2823 18.6553 31.2118 19.4809 32.1413H19.4806C19.5916 32.3162 19.7844 32.4222 19.9915 32.4222C20.1986 32.4222 20.3914 32.3162 20.5024 32.1413C21.9814 30.5181 23.3466 28.7951 24.5891 26.9847C26.1771 24.7542 27.4322 22.3047 28.3151 19.7129C28.8994 18.043 29.1141 16.2658 28.9442 14.5046C28.6801 12.3208 27.6259 10.3094 25.9806 8.84941C24.3356 7.38974 22.213 6.58228 20.0136 6.57949L20.0135 6.57945ZM19.9895 20.294C18.7421 20.2929 17.5463 19.796 16.6657 18.9128C15.7848 18.0294 15.2912 16.8324 15.2937 15.5851C15.2962 14.3375 15.7945 13.1424 16.6788 12.2627C17.563 11.3829 18.7609 10.8907 20.0081 10.8946C21.2555 10.8985 22.4502 11.3982 23.3288 12.2833C24.2075 13.1687 24.6983 14.3671 24.6929 15.6144C24.6868 16.8578 24.1882 18.0478 23.307 18.9248C22.4256 19.8018 21.2328 20.294 19.9894 20.294H19.9895Z" />
-            </svg>
-            {:else}
-            <svg class="stroke-black" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20.5" r="19.25" stroke="black" stroke-width="1.5"/>
-            <path d="M20.0129 7.07943C19.0822 7.06154 18.1549 7.19681 17.2684 7.4802C15.2107 8.13668 13.455 9.50665 12.3179 11.3431C11.1807 13.1795 10.7369 15.3616 11.0664 17.4965C11.3403 19.324 11.8802 21.1018 12.6689 22.773C13.8577 25.2838 15.337 27.6465 17.0762 29.8127C17.8375 30.7822 18.6546 31.7118 19.4803 32.6413H19.48C19.5909 32.8162 19.7838 32.9221 19.9909 32.9221C20.198 32.9221 20.3908 32.8162 20.5017 32.6413C21.9807 31.018 23.346 29.2951 24.5885 27.4847C26.1764 25.2542 27.4316 22.8046 28.3144 20.2128C28.8988 18.543 29.1134 16.7658 28.9435 15.0046C28.6794 12.8208 27.6252 10.8093 25.98 9.34939C24.335 7.88972 22.2124 7.08226 20.0129 7.07947L20.0129 7.07943ZM19.9888 20.794C18.7415 20.7928 17.5457 20.2959 16.665 19.4128C15.7842 18.5293 15.2906 17.3324 15.2931 16.0851C15.2956 14.8374 15.7939 13.6424 16.6781 12.7626C17.5624 11.8828 18.7602 11.3907 20.0075 11.3946C21.2548 11.3985 22.4495 11.8982 23.3282 12.7833C24.2068 13.6687 24.6976 14.8671 24.6923 16.1144C24.6861 17.3578 24.1875 18.5478 23.3064 19.4248C22.4249 20.3018 21.2321 20.794 19.9887 20.794H19.9888Z" fill="black"/>
-            </svg>
-            {/if}
+          <a class={openMap ? "stroke-black fill-primary" : "fill-black"} href={openMap ? "/lite/map" : "/lite"} on:click={() => openMap = !openMap}>
+            <MapIcon />
           </a>
       </button>
       <button class="w-10 h-10 focus:outline-none text-contrast"
@@ -363,12 +345,7 @@ import { goto } from '$app/navigation';
                 openTermsMenu = false;
                 openWorldbuildersMenu = false; 
               }}>
-        <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
-          <path d="M12 13H28" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M12 20H28" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M12 27H28" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
+        <MenuIcon />
       </button>
       
     </div>
