@@ -294,7 +294,7 @@
     </main>
 </div>
 
-<Modal {isOpenModal} showCloseButton={true} on:close={closeModal}>
+<Modal {isOpenModal} showCloseButton={false} on:close={closeModal}>
     <svelte:component
         this={openedModal}
         on:close
