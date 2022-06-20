@@ -3,26 +3,23 @@
     import { dev } from "$app/env";
     import { getSuggestions } from "$lib/services/geocode";
     import { user } from "$stores/user.js";
+    import { Clear, Discard, Republish } from "./_modals/modals.js";
 
     import TopNav from "$components/navigation/TopNav.svelte";
     import BottomNav from "$components/navigation/BottomNav.svelte";
     import Modal from "$components/utils/Modal.svelte";
 
-
     import Time from "./_components/Time.svelte";
     import AutosaveTime from "./_components/AutosaveTime.svelte";
-
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
 
-    export let prevStoryData;
-    export let draft;
-    export let form;
+    export let prevStoryData, form;
     //console.log(prevStoryData);
     console.log(form);
     let isOpenModal = false;
-    //let modals = [clear, discard, republish];
+    let openedModal;
     let isPublished = false;
     let autosave_newStoryCreated = false;
     let autosave_newStoryId;
@@ -61,7 +58,6 @@
                 console.log(data);
                 isPublished = true;
                 clearInterval(autosaveFn);
-
             });
         });
     }
@@ -127,19 +123,29 @@
         return storyData;
     }
 
+    function openModal(comp) {
+        isOpenModal = true;
+        openedModal = comp;
+    }
+
+    function closeModal() {
+        isOpenModal = false;
+    }
+
     async function clearStory() {
         editor.clear();
         form.title = "";
         form.location = "";
         form.description = "";
+        closeModal();
     }
 
     async function discardDraft() {
-        console.log(prevStoryData)
+        console.log(prevStoryData);
         editor.render(prevStoryData.attributes.submission);
-        form.title = prevStoryData.attributes.title
-        form.location = prevStoryData.attributes.location
-        form.description = prevStoryData.attributes.description
+        form.title = prevStoryData.attributes.title;
+        form.location = prevStoryData.attributes.location;
+        form.description = prevStoryData.attributes.description;
         //form.title = prevStoryData.attributes
     }
 
@@ -149,8 +155,8 @@
         editor = new EditorJS({
             holder: "editor",
             minHeight: 120,
-            placeholder: "Add your story",
             logLevel: "ERROR",
+            placeholder: "Add your story",
             data: prevStoryData
                 ? prevStoryData.attributes.draft ??
                   prevStoryData.attributes.submission
@@ -187,7 +193,7 @@
 
     let autosaveFn;
     onMount(() => {
-        autosaveFn = setInterval(autosaveDraft, dev? 5000 : 60000);
+        autosaveFn = setInterval(autosaveDraft, dev ? 5000 : 60000);
     });
 
     onDestroy(() => {
@@ -198,47 +204,46 @@
 <div class="overflow-y-auto">
     <TopNav back="/storyteller" next="" />
     <main class="py-3.5 px-8">
-
         {#if !isPublished}
-        <Time />
-        <form
-            on:submit|preventDefault={submitStory}
-            id="story"
-            class="space-y-3">
-            <input
-                type="text"
-                name="title"
-                placeholder="Title"
-                required
-                bind:value={form.title}
-                class="text-3xl font-bold focus:outline-none placeholder:text-contrast" />
-            <input
-                bind:value={locationInput}
-                type="text"
-                name="location"
-                placeholder="Add Location"
-                required
-                list="location-suggestions"
-                class="text-sm focus:outline-none placeholder:text-contrast" />
-            <datalist id="location-suggestions">
-                {#each locationSuggestions as suggestion}
-                    <option value={suggestion}> {suggestion} </option>
-                {/each}
-            </datalist>
+            <Time />
+            <form
+                on:submit|preventDefault={submitStory}
+                id="story"
+                class="space-y-3">
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    required
+                    bind:value={form.title}
+                    class="text-3xl font-bold focus:outline-none placeholder:text-contrast" />
+                <input
+                    bind:value={locationInput}
+                    type="text"
+                    name="location"
+                    placeholder="Add Location"
+                    required
+                    list="location-suggestions"
+                    class="text-sm focus:outline-none placeholder:text-contrast" />
+                <datalist id="location-suggestions">
+                    {#each locationSuggestions as suggestion}
+                        <option value={suggestion}> {suggestion} </option>
+                    {/each}
+                </datalist>
 
-            <textarea
-                name="description"
-                placeholder="Add Summary"
-                bind:value={form.description}
-                maxlength="400"
-                required
-                class="focus:outline-none placeholder:font-bold placeholder:text-contrast" />
-        </form>
-        <section class="placeholder:text-contrast" id="editor" />
+                <textarea
+                    name="description"
+                    placeholder="Add Summary"
+                    bind:value={form.description}
+                    maxlength="400"
+                    required
+                    class="focus:outline-none placeholder:font-bold placeholder:text-contrast" />
+            </form>
+            <section class="placeholder:text-contrast" id="editor" />
         {:else}
-        <p class="text-4xl font-bold">
-            You have successfully published your story!
-        </p>
+            <p class="text-4xl font-bold">
+                You have successfully published your story!
+            </p>
         {/if}
 
         <BottomNav faded={isPublished}>
@@ -262,32 +267,42 @@
                         terms and conditions</a>
                 </label>
             </svelte:fragment>
-            <svelte:fragment  slot="bottom-bar">
+            <svelte:fragment slot="bottom-bar">
                 {#if isPublished}
-                <button class="w-full" disabled>Published!</button>
+                    <button class="w-full" disabled>Published!</button>
                 {:else if prevStoryData}
-                <button class="w-1/2" type="submit" form="story">
-                    Republish
-                </button>
-                <button class="w-1/2" on:click={discardDraft}>
-                    Discard draft
-                </button>
+                    <button
+                        class="w-1/2"
+                        type="submit"
+                        form="story"
+                        on:click|preventDefault={() => openModal(Republish)}>
+                        Republish
+                    </button>
+                    <button class="w-1/2" on:click={() => openModal(Discard)}>
+                        Discard draft
+                    </button>
                 {:else}
-                <button class="w-1/2" type="submit" form="story">
-                    Publish
-                </button>
-                <button class="w-1/2" on:click={clearStory}>
-                    Clear
-                </button>
+                    <button class="w-1/2" type="submit" form="story">
+                        Publish
+                    </button>
+                    <button class="w-1/2" on:click={() => openModal(Clear)}>
+                        Clear
+                    </button>
                 {/if}
             </svelte:fragment>
         </BottomNav>
     </main>
 </div>
 
-<Modal {isOpenModal} showCloseButton={true}>
-    
+<Modal {isOpenModal} showCloseButton={true} on:close={closeModal}>
+    <svelte:component
+        this={openedModal}
+        on:close
+        on:clear={clearStory}
+        on:republish={submitStory}
+        on:discard={discardDraft} />
 </Modal>
+
 <style lang="postcss">
     #story input {
         @apply w-full bg-primary text-contrast cursor-text;
