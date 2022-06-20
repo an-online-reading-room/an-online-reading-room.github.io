@@ -1,5 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
+import BackIcon from "./icons/BackIcon.svelte";
+import CloseButton from "./icons/CloseButton.svelte";
 
 
 
@@ -31,45 +33,13 @@ const closeMenu = () => {
         <button
             class="w-10 h-10 focus:outline-none stroke-menu-accent ml-auto"
             on:click={closeMe}>
-            <svg
-                class="stroke-current"
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" stroke-width="1.5" />
-                <path
-                    d="M15 20L24.9485 12"
-                    stroke-width="1.5"
-                    stroke-linecap="round" />
-                <path
-                    d="M15.0518 20L25.0002 28"
-                    stroke-width="1.5"
-                    stroke-linecap="round" />
-            </svg>
+            <BackIcon />
         </button>
 
         <button
             class="w-10 h-10 focus:outline-none stroke-menu-accent"
             on:click={closeMenu}>
-            <svg
-                class="stroke-current"
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19.25" stroke-width="1.5" />
-                <path
-                    d="M14 25.3137L25.3137 14"
-                    stroke-width="1.5"
-                    stroke-linecap="round" />
-                <path
-                    d="M14.3433 14.3431L25.657 25.6568"
-                    stroke-width="1.5"
-                    stroke-linecap="round" />
-                <path
-                    d="M14 25.3137L25.3137 14"
-                    stroke-width="1.5"
-                    stroke-linecap="round" />
-            </svg>
+            <CloseButton />
         </button>
     </div>
 

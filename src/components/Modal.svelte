@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher, onDestroy, onMount } from "svelte";
+import CloseIcon from "./icons/CloseIcon.svelte";
   
   export let isOpenModal = false;
   export let name;
@@ -31,12 +32,7 @@
       </div>
 
       <button class="fixed top-3 right-9 w-6 h-6 focus:outline-none ml-auto text-primary" on:click={closeModal}>
-          <svg class="stroke-current" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="19.25" stroke-width="1.5"/>
-          <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M14.3433 14.3431L25.657 25.6568" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M14 25.3137L25.3137 14" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+          <CloseIcon />
       </button>
   </div>
 </div>
