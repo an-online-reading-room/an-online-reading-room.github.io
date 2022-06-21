@@ -16,11 +16,10 @@
     import "leaflet/dist/leaflet.css";
 
     export let prevStoryData, form;
-    //console.log(prevStoryData);
-    console.log(form);
+
     let isOpenModal = false;
     let openedModal;
-    let isPublished = false;
+
     let autosave_newStoryCreated = false;
     let autosave_newStoryId;
     let currTime = null;
@@ -62,9 +61,10 @@
 
             //Catch errors here if story not submitted
             res.then((data) => {
-                console.log(data);
-                isPublished = true;
+                //console.log(data);
+                //isPublished = true;
                 clearInterval(autosaveFn);
+                goto("/storyteller")
             });
         });
     }
@@ -208,7 +208,6 @@
 <div class="overflow-y-auto">
     <TopNav back="/storyteller" next="" />
     <main class="py-3.5 px-8">
-        {#if !isPublished}
             <Time />
             <form
                 on:submit|preventDefault={submitStory}
@@ -244,13 +243,8 @@
                     class="focus:outline-none placeholder:font-bold placeholder:text-contrast" />
             </form>
             <section class="placeholder:text-contrast" id="editor" />
-        {:else}
-            <p class="text-4xl font-bold">
-                You have successfully published your story!
-            </p>
-        {/if}
 
-        <BottomNav faded={isPublished}>
+        <BottomNav>
             <svelte:fragment slot="editor-extras">
                 {#if currTime}
                     <p
@@ -272,9 +266,7 @@
                 </label>
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
-                {#if isPublished}
-                    <button class="w-full" disabled>Published!</button>
-                {:else if prevStoryData}
+                {#if prevStoryData}
                     <button
                         class="w-1/2"
                         type="submit"
