@@ -12,6 +12,7 @@
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
+import { LogLevels } from "@editorjs/editorjs";
 
     export let prevStoryData;
     export let draft;
@@ -134,7 +135,7 @@
             holder: "editor",
             minHeight: 120,
             placeholder: "Add your story",
-            logLevel: "ERROR",
+            logLevel: LogLevels.ERROR,
             data: prevStoryData
                 ? prevStoryData.attributes.draft ??
                   prevStoryData.attributes.submission
