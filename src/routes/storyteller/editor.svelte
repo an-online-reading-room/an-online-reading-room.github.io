@@ -15,7 +15,6 @@
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
-import { LogLevels } from "@editorjs/editorjs";
 
     export let prevStoryData, form;
 
@@ -157,11 +156,11 @@ import { LogLevels } from "@editorjs/editorjs";
     onMount(async () => {
         const EditorJS = (await import("@editorjs/editorjs")).default;
         const ImageTool = (await import("@editorjs/image")).default;
+
         editor = new EditorJS({
             holder: "editor",
             minHeight: 120,
             placeholder: "Add your story",
-            logLevel: LogLevels.ERROR,
             data: prevStoryData
                 ? prevStoryData.attributes.draft ??
                   prevStoryData.attributes.submission
@@ -267,7 +266,7 @@ import { LogLevels } from "@editorjs/editorjs";
                 </label>
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
-                {#if prevStoryData}
+                {#if prevStoryData.attributes.publishedAt}
                     <button
                         class="w-1/2"
                         type="submit"
