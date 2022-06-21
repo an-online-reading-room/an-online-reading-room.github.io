@@ -30,8 +30,6 @@
     onDestroy(async () => {
         listStoreUnsubscribe;
         if ($user.jwt) {
-            //console.log("posting to db");
-            //console.log($visited);
             const res = await api.put(
                 `api/users/${$user.id}`,
                 {
