@@ -1,10 +1,15 @@
 <script>
     import CloseButton from "$components/icons/CloseButton.svelte";
+    import { createEventDispatcher } from "svelte";
+
     export let isOpenModal;
     export let showCloseButton;
-    const closeModal = () => {
-        isOpenModal = false;
-    };
+
+    const dispatch = createEventDispatcher();
+
+    function close() {
+        dispatch("close");
+    }
 </script>
 
 {#if isOpenModal}
@@ -14,9 +19,7 @@
             <div
                 class="font-text text-left text-sm bg-accent text-primary px-4 py-5 rounded shadow-2xl">
                 {#if showCloseButton}
-                    <button
-                        class="absolute top-3 right-2"
-                        on:click={closeModal}>
+                    <button class="absolute top-3 right-2" on:click={close}>
                         <CloseButton />
                     </button>
                 {/if}

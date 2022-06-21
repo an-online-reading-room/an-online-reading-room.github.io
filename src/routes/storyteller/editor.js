@@ -22,7 +22,7 @@ export async function get({ url }) {
         }
 
         return {
-            body: { prevStoryData, draft, form }
+            body: { prevStoryData, form }
         };
     } else {
         return {
