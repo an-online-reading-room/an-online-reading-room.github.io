@@ -4,13 +4,20 @@ import InstagramIcon from "./icons/InstagramIcon.svelte";
 import MailIcon from "./icons/MailIcon.svelte";
 import SmsIcon from "./icons/SmsIcon.svelte";
 import CopyLinkIcon from "./icons/CopyLinkIcon.svelte";
+import { createEventDispatcher } from "svelte";
 
 export let open
 export let title
-let shareTextWhatsapp
-let shareTextEmail
-let copyPageLink
-let captureScreen
+
+const dispatch = createEventDispatcher()
+
+const share = (type) => {
+    open = false
+    console.log("sharing through ", type)
+    dispatch('share', {
+        type
+    })
+}
 
 
 </script>
@@ -26,37 +33,34 @@ let captureScreen
             {title}
         </div>
         <div
-            class="
-                    p-1">
+            class="p-1">
             <div class="flex flex-row flex-nowrap justify-between">
-                <a
-                    href={"whatsapp://send?text=" + shareTextWhatsapp}
+                <button
+                    on:click={() => share('whatsapp')}
                     data-action="share/whatsapp/share"
                     class="stroke-primary fill-primary">
                     <WhatsAppIcon />
-                </a>
+                </button>
                 <button
-                    on:click={captureScreen}
+                    on:click={() => share('instagram')}
                     class="stroke-primary fill-primary">
                     <InstagramIcon />
                 </button>
-                <a
-                    href={"mailto:?subject=Read this story on The Reading Room&body=" +
-                        shareTextEmail}
+                <button
+                    on:click={() => share('email')}
                     class="stroke-primary fill-primary">
                     <MailIcon />
-                </a>
-                <a
-                    href={"sms:?body=" + shareTextEmail}
+                </button>
+                <button
+                    on:click={() => share('sms')}
                     class="stroke-primary fill-primary">
                     <SmsIcon />
-                </a>
-                <a
-                    href={window.location.href}
-                    on:click={copyPageLink}
+                </button>
+                <button
+                    on:click={() => share('copy-link')}
                     class="stroke-primary fill-primary">
                     <CopyLinkIcon />
-                </a>
+                </button>
             </div>
         </div>
     </div>

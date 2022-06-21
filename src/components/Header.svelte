@@ -333,8 +333,8 @@ import MenuIcon from './icons/MenuIcon.svelte';
       </a>
       
       <button class="w-10 h-10 focus:outline-none ml-auto text-accent">
-          <a class={openMap ? "stroke-black fill-primary" : "fill-black"} href={openMap ? "/lite/map" : "/lite"} on:click={() => openMap = !openMap}>
-            <MapIcon />
+          <a class={openMap ? "stroke-black fill-black" : "fill-black"} href={openMap ? "/lite/map" : "/lite"} on:click={() => openMap = !openMap}>
+            <MapIcon active={openMap}/>
           </a>
       </button>
       <button class="w-10 h-10 focus:outline-none text-contrast"
