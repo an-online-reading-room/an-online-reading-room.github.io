@@ -4,6 +4,7 @@
     import { getSuggestions } from "$lib/services/geocode";
     import { user } from "$stores/user.js";
     import { Clear, Discard, Republish } from "./_modals/modals.js";
+    import { goto } from "$app/navigation";
 
     import TopNav from "$components/navigation/TopNav.svelte";
     import BottomNav from "$components/navigation/BottomNav.svelte";
@@ -53,9 +54,7 @@
                     storyData,
                     $user.jwt
                 );
-            }
-    
-            else {
+            } else {
                 res = api.post("api/stories", storyData, $user.jwt);
             }
 
@@ -64,7 +63,7 @@
                 //console.log(data);
                 //isPublished = true;
                 clearInterval(autosaveFn);
-                goto("/storyteller")
+                goto("/storyteller");
             });
         });
     }
@@ -151,6 +150,7 @@
         form.title = prevStoryData.attributes.title;
         form.location = prevStoryData.attributes.location;
         form.description = prevStoryData.attributes.description;
+        closeModal();
     }
 
     onMount(async () => {
@@ -208,41 +208,41 @@
 <div class="overflow-y-auto">
     <TopNav back="/storyteller" next="" />
     <main class="py-3.5 px-8">
-            <Time />
-            <form
-                on:submit|preventDefault={submitStory}
-                id="story"
-                class="space-y-3">
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="Title"
-                    required
-                    bind:value={form.title}
-                    class="text-3xl font-bold focus:outline-none placeholder:text-contrast" />
-                <input
-                    bind:value={locationInput}
-                    type="text"
-                    name="location"
-                    placeholder="Add Location"
-                    required
-                    list="location-suggestions"
-                    class="text-sm focus:outline-none placeholder:text-contrast" />
-                <datalist id="location-suggestions">
-                    {#each locationSuggestions as suggestion}
-                        <option value={suggestion}> {suggestion} </option>
-                    {/each}
-                </datalist>
+        <Time />
+        <form
+            on:submit|preventDefault={submitStory}
+            id="story"
+            class="space-y-3">
+            <input
+                type="text"
+                name="title"
+                placeholder="Title"
+                required
+                bind:value={form.title}
+                class="text-3xl font-bold focus:outline-none placeholder:text-contrast" />
+            <input
+                bind:value={locationInput}
+                type="text"
+                name="location"
+                placeholder="Add Location"
+                required
+                list="location-suggestions"
+                class="text-sm focus:outline-none placeholder:text-contrast" />
+            <datalist id="location-suggestions">
+                {#each locationSuggestions as suggestion}
+                    <option value={suggestion}> {suggestion} </option>
+                {/each}
+            </datalist>
 
-                <textarea
-                    name="description"
-                    placeholder="Add Summary"
-                    bind:value={form.description}
-                    maxlength="400"
-                    required
-                    class="focus:outline-none placeholder:font-bold placeholder:text-contrast" />
-            </form>
-            <section class="placeholder:text-contrast" id="editor" />
+            <textarea
+                name="description"
+                placeholder="Add Summary"
+                bind:value={form.description}
+                maxlength="400"
+                required
+                class="focus:outline-none font-bold placeholder:font-bold placeholder:text-contrast" />
+        </form>
+        <section class="placeholder:text-contrast" id="editor" />
 
         <BottomNav>
             <svelte:fragment slot="editor-extras">
@@ -293,7 +293,7 @@
 <Modal {isOpenModal} showCloseButton={false} on:close={closeModal}>
     <svelte:component
         this={openedModal}
-        on:close
+        on:close={closeModal}
         on:clear={clearStory}
         on:republish={submitStory}
         on:discard={discardDraft} />
