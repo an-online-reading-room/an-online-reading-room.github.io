@@ -15,7 +15,7 @@
 
     onMount(async () => {
         //console.log($visited);
-        if ($user) {                            //Fix 401 error for for non-logged in user
+        if ($user.jwt) {                            //Fix 401 error for for non-logged in user
             const res = await api.get("api/users/me", $user.jwt);
             console.log(res.visited);           // CHECK: throws error when visited = null
             $visited = res.visited ?? [];       //Initialize as empty array in case visited is null
@@ -25,7 +25,7 @@
     onDestroy(async () => {
         listStoreUnsubscribe;
 
-        if ($user) {
+        if ($user.jwt) {
             console.log("posting to db");
             console.log($visited);
             const res = await api.put(
