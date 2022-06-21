@@ -38,7 +38,6 @@
     async function submitStory() {
         const storyData = getStoryData();
 
-        console.log(storyData);
         editor.save().then((data) => {
             storyData.data.submission = data;
             let res;
@@ -49,7 +48,15 @@
                     storyData,
                     $user.jwt
                 );
-            } else {
+            } else if (autosave_newStoryId) {
+                res = api.put(
+                    `api/stories/${autosave_newStoryId}`,
+                    storyData,
+                    $user.jwt
+                );
+            }
+    
+            else {
                 res = api.post("api/stories", storyData, $user.jwt);
             }
 
@@ -93,8 +100,6 @@
                     );
                     autosave_newStoryCreated = true;
                     console.log("Autosaving newly created story");
-
-                    console.log(res);
                     currTime = Date.now();
                     autosave_newStoryId = res.data.id;
                 } else {
@@ -146,7 +151,6 @@
         form.title = prevStoryData.attributes.title;
         form.location = prevStoryData.attributes.location;
         form.description = prevStoryData.attributes.description;
-        //form.title = prevStoryData.attributes
     }
 
     onMount(async () => {
