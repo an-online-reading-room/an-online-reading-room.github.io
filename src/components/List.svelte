@@ -3,36 +3,28 @@
 	import storyList from '$stores/storyList.js';
 	import { theme } from '$stores/theme.js';
 	import { user } from "$stores/user";
-	import { onDestroy, onMount } from "svelte";
+	import { createEventDispatcher, onDestroy, onMount } from "svelte";
 	import * as api from "$lib/api.js";
 	import SearchIcon from './icons/SearchIcon.svelte';
   
+	const dispatch = createEventDispatcher()
+
 	const visitStory = (id) => {
-		if($visited.includes(id) === true) return
-		visited.set([...$visited, id]);
+		if($visited.includes(id) !== true) {
+			visited.set([...$visited, id]);
+		} 
+
+		dispatch('visit', { story: id })
+
 	};
 
 	export let listStore;
 
 	onMount(async () => {
-			//console.log($visited);
-			const res = await api.get("api/users/me", $user.jwt);
-			console.log(res.visited); // CHECK: throws error when visited = null
-			$visited = res.visited;
 	});
 
 	onDestroy(async () => {
 		listStoreUnsubscribe
-		console.log("posting to db");
-		console.log($visited);
-		const res = await api.put(
-				`api/users/${$user.id}`,
-				{
-						visited: $visited,
-				},
-				$user.jwt
-		);
-			// console.log(res);
 	});
 
 	let listItems,

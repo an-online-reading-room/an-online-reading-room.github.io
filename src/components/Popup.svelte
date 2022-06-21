@@ -1,8 +1,14 @@
 <script>
+import { onMount } from "svelte";
+
+
 
   export let popupElement
   export let story
   export let url
+
+  onMount(() => {
+  })
 </script>
 
 <section bind:this={popupElement} 
@@ -14,7 +20,7 @@
   </a>
 
   <div class="font-text text-xs">
-    <p>by {story.username}</p>
+    <p>by {story.users_permissions_user.username}</p>
     <p>at {story.location}</p>
   </div>
 </section>
