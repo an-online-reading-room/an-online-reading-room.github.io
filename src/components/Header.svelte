@@ -5,18 +5,19 @@ import { mode } from '$stores/mode'
 import { onDestroy } from 'svelte';
 import MenuItem from '$components/MenuItem.svelte';
 import { goto } from '$app/navigation';
-import CloseButton from '$components/icons/CloseButton.svelte'
+import CloseIcon from '$components/icons/CloseIcon.svelte'
 import HomeIcon from '$components/icons/HomeIcon.svelte'
 import ThemeSwitcherIcon from './icons/ThemeSwitcherIcon.svelte';
 import MapIcon from './icons/MapIcon.svelte';
 import MenuIcon from './icons/MenuIcon.svelte';
+import { page } from '$app/stores'
 
   let openMenu = false
   let openAboutMenu = false
   let openFAQMenu = false
   let openTermsMenu = false
   let openWorldbuildersMenu = false
-  let openMap = false
+  let openMap = $page.url.pathname === '/lite/map'
   let pathPrefix
 
   const versionUnsubscribe = version.subscribe(value => {
@@ -27,6 +28,14 @@ import MenuIcon from './icons/MenuIcon.svelte';
     const themes = ['cream', 'green', 'red', 'teal', 'grey'].filter(value => value != $theme)
     const newTheme = themes[Math.floor(Math.random()*themes.length)]
     theme.set(newTheme)
+  }
+
+  const viewMap = () => {
+    if($page.url.pathname !== '/lite/map') {
+      // toggle
+      openMap = !openMap
+    } 
+    if(openMap === true) goto('/lite/map')
   }
 
   onDestroy(() => versionUnsubscribe)
@@ -47,7 +56,7 @@ import MenuIcon from './icons/MenuIcon.svelte';
           
           <button class="w-10 h-10 focus:outline-none stroke-menu-accent"
                   on:click={() => openMenu = !openMenu}>
-            <CloseButton />
+            <CloseIcon />
           </button>
         </div>
 
@@ -90,9 +99,9 @@ import MenuIcon from './icons/MenuIcon.svelte';
           
           
           <div class="w-full h-16 pb-6 pt-4">
-            <div class="w-10 h-10 mx-auto stroke-menu-accent" on:click={changeTheme}>
+            <button class="w-10 h-10 mx-auto stroke-menu-accent" on:click={changeTheme}>
               <ThemeSwitcherIcon />
-            </div>
+            </button>
           </div>
         </div>
 
@@ -199,6 +208,7 @@ import MenuIcon from './icons/MenuIcon.svelte';
               <li>Ishwari Arambam</li>
               <li>Shreya Pidikiti</li>
               <li>Oshin Padhye</li>
+              <li>Himanshu Erande</li>
             </ul>
           </section>
           <section class="flex flex-col gap-y-3">
@@ -332,11 +342,12 @@ import MenuIcon from './icons/MenuIcon.svelte';
         <h1 class="text-2xl text-contrast">The Reading Room</h1>
       </a>
       
-      <button class="w-10 h-10 focus:outline-none ml-auto text-accent">
-          <a class={openMap ? "stroke-black fill-black" : "fill-black"} href={openMap ? "/lite/map" : "/lite"} on:click={() => openMap = !openMap}>
+      <div class="w-10 h-10 focus:outline-none ml-auto text-accent">
+          <button 
+            on:click={viewMap}>
             <MapIcon active={openMap}/>
-          </a>
-      </button>
+          </button>
+      </div>
       <button class="w-10 h-10 focus:outline-none text-contrast"
               on:click={() => {
                 openMenu = !openMenu; 
