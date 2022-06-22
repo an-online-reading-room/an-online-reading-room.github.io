@@ -1,45 +1,15 @@
 <script>
-	import { visited } from '$stores/visited';
 	import storyList from '$stores/storyList.js';
 	import { theme } from '$stores/theme.js';
-	import { user } from "$stores/user";
 	import { createEventDispatcher, onDestroy, onMount } from "svelte";
-	import * as api from "$lib/api.js";
 	import SearchIcon from './icons/SearchIcon.svelte';
+import mapStore from '$stores/mapStore';
   
 	const dispatch = createEventDispatcher()
 
 	const visitStory = (id) => {
-		if($visited.includes(id) !== true) {
-			visited.set([...$visited, id]);
-		} 
-
 		dispatch('visit', { story: id })
-
 	};
-    
-    export let listStore;
-    
-    onMount(async () => {
-        if ($user.jwt) {                            //Fix 401 error for for non-logged in user
-            const res = await api.get("api/users/me", $user.jwt);
-            console.log(res.visited);           // CHECK: throws error when visited = null
-            $visited = res.visited ?? [];       //Initialize as empty array in case visited is null
-        }
-	});
-    onDestroy(async () => {
-        listStoreUnsubscribe;
-        if ($user.jwt) {
-            const res = await api.put(
-                `api/users/${$user.id}`,
-                {
-                    visited: $visited ?? [],
-                },
-                $user.jwt
-            );
-        }
-        // console.log(res);
-    });
 
     let listItems,
         filteredListItems,
@@ -47,6 +17,7 @@
         noMoreData = false;
     let query = "";
 
+    export let listStore;
     listStore.fetchNextPage();
     const listStoreUnsubscribe = listStore.subscribe((value) => {
         loading = value.loading;
@@ -54,6 +25,7 @@
         listItems = value.data;
         filteredListItems = listItems;
     });
+    onDestroy(() => listStoreUnsubscribe);
 
     const search = (e) => {
         query = query.toLowerCase();
@@ -100,7 +72,7 @@
                             border border-contrast border-1
                             text-left font-text
                             inline-flex flex-col gap-y-2
-                            {$visited.includes(story.id) == true
+                            {$mapStore.stories.includes(story.id) 
                                 ? 'bg-story-accent text-menu-accent'
                                 : 'bg-primary'}">
                             <div class="text-base font-medium font-display">

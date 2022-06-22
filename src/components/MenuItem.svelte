@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import BackIcon from "./icons/BackIcon.svelte";
-import CloseButton from "./icons/CloseButton.svelte";
+import CloseIcon from "./icons/CloseIcon.svelte";
 
 
 
@@ -39,7 +39,7 @@ const closeMenu = () => {
         <button
             class="w-10 h-10 focus:outline-none stroke-menu-accent"
             on:click={closeMenu}>
-            <CloseButton />
+            <CloseIcon />
         </button>
     </div>
 
