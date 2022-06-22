@@ -266,7 +266,7 @@
                 </label>
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
-                {#if prevStoryData.attributes.publishedAt}
+                {#if prevStoryData?.attributes.publishedAt}
                     <button
                         class="w-1/2"
                         type="submit"
