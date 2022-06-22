@@ -1,6 +1,9 @@
 <script context="module">
     import { browser } from "$app/env";
+import { getMap } from "$lib/api/lite";
+import mapStore from "$stores/mapStore";
     import { user } from "$stores/user";
+    import { get } from 'svelte/store'
 
 
     export async function load({ url, fetch }) {
@@ -23,6 +26,14 @@
                         username: response.user.username,
                         id: response.user.id,
                     });
+
+                    const defaultMap = await getMap()
+                    mapStore.set({
+                        id: defaultMap.id,
+                        visits: [],
+                        stories: []
+                    })
+                    console.log("set mapStore :", get(mapStore))
                     return {
                         status: 302,
                         redirect: response.context?.redirectUrl ?? "/",
