@@ -1,46 +1,44 @@
 import qs from 'qs'
 import * as api from '$lib/api'
 import user from '$stores/user';
-import visited from '$stores/visited';
 import { get } from 'svelte/store'
 import { flattenStrapiResponse } from '$lib/utils/api';
+import mapStore from '$stores/mapStore';
+import { adjectives, colors, uniqueNamesGenerator } from 'unique-names-generator';
 
 const getMap = async () => {
   const res = await api.get(`api/users/me`, get(user).jwt);
-  let defaultMap = res.maps[0]
-  if(defaultMap == null) {
-    // make new defaultMap
-
-    const newMap = await api.post(
-      'api/maps',
-      {
-        data: {
-          type: "lite",
-          user: get(user).id
-        }
-      },
-      get(user).jwt
-    )
-
-    defaultMap = newMap.data
-  }
+  let defaultMap = res.maps[0] // NOTE: make sure only one default map 
 
   console.log("default map id: ", defaultMap.id)
   return defaultMap
 }
 
-const updateMap = async (id, title) => {
-  const res = await api.put(
-    `api/maps/${id}`,
+const saveMap = async (isShared, title) => {
+  if(!title) {
+    title = uniqueNamesGenerator({
+      dictionaries: [adjectives, colors],
+      length: 2,
+      separator: '-'
+    })
+  }
+
+  // clone default map as new map and post
+  const res = await api.post(
+    `api/maps`,
     {
       data: {
         title: title,
-        shared: true
+        type: "lite",
+        shared: isShared,
+        user: get(user).id,
+        visits: get(mapStore).visits
       }
     },
     get(user).jwt
   )
 
+  console.log("saved map with id: ", res.id)
   return res
 } 
 
@@ -59,16 +57,17 @@ const insertVisit = async (map, story) => {
   })
 
   // TODO: findOne how ?
+  let newVisit  
   let prevVisit = await api.get(
     `api/visits?${prevVisitQuery}`, 
     get(user).jwt
   )
-  prevVisit = prevVisit.data[0]
   
-  if(prevVisit != null) {
+  if(prevVisit.data.length > 0) {
+    prevVisit = prevVisit.data[0]
     // update visit
 
-    const updatedVisit = await api.put(
+    const res = await api.put(
       `api/visits/${prevVisit.id}`,
       {
         data: {
@@ -77,12 +76,12 @@ const insertVisit = async (map, story) => {
       }
     )
 
-    return updatedVisit.data
+    newVisit = res.data
 
   } else {
     // create visit
 
-    const newVisit = await api.post(
+    const res = await api.post(
       'api/visits',
       {
         data: {
@@ -94,12 +93,18 @@ const insertVisit = async (map, story) => {
       get(user).jwt
     )
 
-    return newVisit.data
+    newVisit = res.data
   }
+
+  return newVisit
 
 }
 
 const getVisitedStories = async () => {
+  if(get(mapStore).stories.length === 0) {
+    return []
+  }
+
   const visitedStoriesQuery = qs.stringify({
     fields: ['title', 'location', 'slug'],
     populate: {
@@ -108,7 +113,7 @@ const getVisitedStories = async () => {
       }
     },
     filters: {
-      id: { $in: get(visited) } 
+      id: { $in: get(mapStore).stories } 
     }
   }, {
     encodeValuesOnly: true,
@@ -125,7 +130,7 @@ const getVisitedStories = async () => {
 
 export { 
   getMap, 
-  updateMap,
+  saveMap,
   insertVisit,
   getVisitedStories
 }
