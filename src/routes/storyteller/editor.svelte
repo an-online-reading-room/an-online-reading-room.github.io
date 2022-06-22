@@ -2,26 +2,28 @@
     import { onDestroy, onMount } from "svelte";
     import { dev } from "$app/env";
     import { getSuggestions } from "$lib/services/geocode";
-    import { theme } from "$stores/theme";
     import { user } from "$stores/user.js";
-    import TopNav from "$components/navigation/TopNav.svelte";
-    import Time from "$components/utils/Time.svelte";
-    import AutosaveTime from "$components/utils/AutosaveTime.svelte";
+    import { Clear, Discard, Republish } from "./_modals/modals.js";
+    import { goto } from "$app/navigation";
 
+    import TopNav from "$components/navigation/TopNav.svelte";
+    import BottomNav from "$components/navigation/BottomNav.svelte";
     import Modal from "$components/utils/Modal.svelte";
+
+    import Time from "./_components/Time.svelte";
+    import AutosaveTime from "./_components/AutosaveTime.svelte";
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
 
-    export let prevStoryData;
-    export let draft;
-    export let form;
-    //console.log(prevStoryData);
-    console.log(form)
+    export let prevStoryData, form;
+
     let isOpenModal = false;
+    let openedModal;
+
     let autosave_newStoryCreated = false;
     let autosave_newStoryId;
-    let currTime;
+    let currTime = null;
 
     let editor;
     let locationInput = form.location;
@@ -36,7 +38,6 @@
     async function submitStory() {
         const storyData = getStoryData();
 
-        console.log(storyData)
         editor.save().then((data) => {
             storyData.data.submission = data;
             let res;
@@ -47,14 +48,22 @@
                     storyData,
                     $user.jwt
                 );
+            } else if (autosave_newStoryId) {
+                res = api.put(
+                    `api/stories/${autosave_newStoryId}`,
+                    storyData,
+                    $user.jwt
+                );
             } else {
                 res = api.post("api/stories", storyData, $user.jwt);
             }
 
             //Catch errors here if story not submitted
             res.then((data) => {
-                console.log(data);
-                isOpenModal = true;
+                //console.log(data);
+                //isPublished = true;
+                clearInterval(autosaveFn);
+                goto("/storyteller");
             });
         });
     }
@@ -71,7 +80,7 @@
                     location: locationInput,
                 };
 
-                console.log("Autosaving previusly existing");
+                console.log("Autosaving previously existing");
                 currTime = Date.now();
                 api.put(
                     `api/stories/${prevStoryData.id}`,
@@ -89,13 +98,11 @@
                         $user.jwt
                     );
                     autosave_newStoryCreated = true;
-                    console.log("Autosaving newly existing");
-
-                    console.log(res);
+                    console.log("Autosaving newly created story");
                     currTime = Date.now();
                     autosave_newStoryId = res.data.id;
                 } else {
-                    console.log("Autosaving newly existing");
+                    console.log("Autosaving and updating newly created story");
 
                     const res = await api.put(
                         `api/stories/${autosave_newStoryId}`,
@@ -120,21 +127,40 @@
         return storyData;
     }
 
+    function openModal(comp) {
+        isOpenModal = true;
+        openedModal = comp;
+    }
+
+    function closeModal() {
+        isOpenModal = false;
+    }
+
     async function clearStory() {
         editor.clear();
         form.title = "";
         form.location = "";
         form.description = "";
+        closeModal();
+    }
+
+    async function discardDraft() {
+        console.log(prevStoryData);
+        editor.render(prevStoryData.attributes.submission);
+        form.title = prevStoryData.attributes.title;
+        form.location = prevStoryData.attributes.location;
+        form.description = prevStoryData.attributes.description;
+        closeModal();
     }
 
     onMount(async () => {
         const EditorJS = (await import("@editorjs/editorjs")).default;
         const ImageTool = (await import("@editorjs/image")).default;
+
         editor = new EditorJS({
             holder: "editor",
             minHeight: 120,
             placeholder: "Add your story",
-            logLevel: "ERROR",
             data: prevStoryData
                 ? prevStoryData.attributes.draft ??
                   prevStoryData.attributes.submission
@@ -171,7 +197,7 @@
 
     let autosaveFn;
     onMount(() => {
-        autosaveFn = setInterval(autosaveDraft, 5000);
+        autosaveFn = setInterval(autosaveDraft, dev ? 5000 : 60000);
     });
 
     onDestroy(() => {
@@ -214,41 +240,63 @@
                 bind:value={form.description}
                 maxlength="400"
                 required
-                class="focus:outline-none placeholder:font-bold placeholder:text-contrast" />
+                class="focus:outline-none font-bold placeholder:font-bold placeholder:text-contrast" />
         </form>
         <section class="placeholder:text-contrast" id="editor" />
-        <div
-            class="fixed inset-x-0 bottom-0 z-10 flex flex-col gap-y-2 bg-primary">
-            <p
-                on:click={autosaveDraft}
-                class="self-center text-xs font-light italic">
-                Autosaved at <AutosaveTime {currTime} />
-            </p>
-            <label class="self-center  font-text text-contrast text-xs">
-                <input
-                    class="accent-accent w-2.5 h-2.5"
-                    type="checkbox"
-                    name="accept"
-                    form="story"
-                    required />
-                I accept the
-                <a class="underline" href="/terms-and-conditions">
-                    terms and conditions</a>
-            </label>
-            <div class="flex h-11 bg-accent text-primary">
-                <button class="w-1/2" type="submit" form="story"
-                    >Publish</button>
-                <button class="w-1/2" on:click={clearStory}>Clear</button>
-            </div>
-        </div>
+
+        <BottomNav>
+            <svelte:fragment slot="editor-extras">
+                {#if currTime}
+                    <p
+                        on:click={autosaveDraft}
+                        class="self-center text-xs font-light italic">
+                        Autosaved at <AutosaveTime {currTime} />
+                    </p>
+                {/if}
+                <label class="self-center  font-text text-contrast text-xs">
+                    <input
+                        class="accent-accent w-2.5 h-2.5"
+                        type="checkbox"
+                        name="accept"
+                        form="story"
+                        required />
+                    I accept the
+                    <a class="underline" href="/terms-and-conditions">
+                        terms and conditions</a>
+                </label>
+            </svelte:fragment>
+            <svelte:fragment slot="bottom-bar">
+                {#if prevStoryData.attributes.publishedAt}
+                    <button
+                        class="w-1/2"
+                        type="submit"
+                        form="story"
+                        on:click|preventDefault={() => openModal(Republish)}>
+                        Republish
+                    </button>
+                    <button class="w-1/2" on:click={() => openModal(Discard)}>
+                        Discard draft
+                    </button>
+                {:else}
+                    <button class="w-1/2" type="submit" form="story">
+                        Publish
+                    </button>
+                    <button class="w-1/2" on:click={() => openModal(Clear)}>
+                        Clear
+                    </button>
+                {/if}
+            </svelte:fragment>
+        </BottomNav>
     </main>
 </div>
 
-<Modal {isOpenModal} showCloseButton={false}>
-    Thanks for submitting!
-    <a href="/storyteller">
-        <p class="underline font-bold">Go back</p>
-    </a>
+<Modal {isOpenModal} showCloseButton={false} on:close={closeModal}>
+    <svelte:component
+        this={openedModal}
+        on:close={closeModal}
+        on:clear={clearStory}
+        on:republish={submitStory}
+        on:discard={discardDraft} />
 </Modal>
 
 <style lang="postcss">
@@ -258,12 +306,6 @@
     textarea {
         @apply w-full h-auto bg-primary text-contrast cursor-text;
     }
-    /*:global(.ce-toolbar__plus) {
-        @apply rounded-full bg-primary border border-contrast shadow-sm;
-    }
-    :global(.ce-toolbar__settings-btn) {
-        //@apply rounded-full bg-primary border border-contrast shadow-sm;
-    }*/
     :global(.ce-paragraph[data-placeholder]:empty::before) {
         @apply text-contrast;
     }

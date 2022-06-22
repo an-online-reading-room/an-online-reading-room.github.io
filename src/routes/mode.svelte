@@ -1,25 +1,5 @@
 <script>
-  import Header from "$components/Header.svelte";
-  import { user } from "$stores/user";
-  import Modal from "$components/utils/Modal.svelte";
-  import { goto } from "$app/navigation";
-  function checkLogin() {
-      if ($user.jwt) {
-          goto("/storyteller");
-      } else {
-          openModal();
-      }
-  }
-
-  let isOpenModal = false;
-
-  function openModal() {
-      isOpenModal = true;
-  }
-
-  function closeModal() {
-      isOpenModal = false;
-  }
+  import Header from "$components/Header.svelte";  
 </script>
 
 
@@ -37,7 +17,7 @@
                   font-display text-contrast text-xs">
         <p class="font-text text-base">Are you a storyteller or a listener?</p>
         <div class="flex flex-col justify-between gap-y-4">
-          <a href="/storyteller" on:click|preventDefault={checkLogin}>
+          <a href="/storyteller">
             <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
               Storyteller
             </button>
@@ -53,7 +33,7 @@
     </div>
   </div>
 
-  <Modal {isOpenModal} on:closeModal={closeModal}>
+ <!-- <Modal {isOpenModal} showCloseButton={true} on:close={closeModal}>
     <p class="font-bold mb-2">Tell us your story!</p>
     <p>
         Please <a class="font-bold underline" href="/auth/login"
@@ -61,6 +41,7 @@
     </p>
     <p>Worried about what story to share? Check out our prompts.</p>
   </Modal>
+  -->
 </section>
 
 <style>
