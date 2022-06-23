@@ -102,6 +102,7 @@ const insertVisit = async (map, story) => {
 
 const getVisitedStories = async () => {
   if(get(mapStore).stories.length === 0) {
+    console.log("got no stories in mapstore")
     return []
   }
 
@@ -124,6 +125,8 @@ const getVisitedStories = async () => {
     get(user).jwt
   )
   res = flattenStrapiResponse(res)
+  console.log("visited stories: ")
+  console.log(res)
 
   return res  
 }

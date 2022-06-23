@@ -67,6 +67,7 @@ onMount(async () => {
     }
   }))
   visitedLatLngs = visitedLatLngs.filter(e => e != null)
+  console.log("visited lat long: ", visitedLatLngs)
 
   let travelledPath = L.polyline(visitedLatLngs, {color: 'black'}).addTo(map)
   let travelledDistInMtrs = 0
