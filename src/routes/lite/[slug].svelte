@@ -1,26 +1,46 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit';
-    import { variables } from '$lib/variables';
     import { flattenStrapiResponse } from '$lib/utils/api'
     import qs from 'qs'
   
     export const load: Load = async ({ params, fetch, session, stuff }) => {
         const query = qs.stringify({
-        filters: {
-            slug: {
-            $eq: params.slug,
+            filters: {
+                slug: { $eq: params.slug },
             },
-        },
-        }, {
-        encodeValuesOnly: true,
+            }, {
+            encodeValuesOnly: true,
         });
 
-      const strapiRes = await (await fetch(`${variables.strapi_url}/api/stories?${query}`)).json()
-      console.log(strapiRes)
+      let res = await api.get(
+        `api/stories?${query}`,
+        get(user).jwt
+      )
+      const story = flattenStrapiResponse(res)[0]
+      //   console.log(data)
 
-      const data = flattenStrapiResponse(strapiRes)[0]
-    //   console.log(data)
-      return { props: { story: data } }
+        const randomSlugQuery = qs.stringify({
+            fields: ['slug']
+        }, {
+            encodeValuesOnly: true,
+        })
+        res = await api.get(
+            `api/stories?${randomSlugQuery}`,
+            get(user).jwt
+        )
+        let nextData = flattenStrapiResponse(res)
+        let next = nextData[Math.floor(Math.random() * nextData.length)]
+        console.log(story)
+        while(next.id === story.id) {
+            next = nextData[Math.floor(Math.random() * nextData.length)]
+            console.log(next)
+        }
+
+
+      return { props: { 
+        story: story,
+        next: next
+    }}
         
     };
 </script>
@@ -33,25 +53,26 @@ import Story from '$components/Story.svelte';
 import ShareCard from '$components/ShareCard.svelte';
 import Footer from '$components/Footer.svelte';
 import user from '$stores/user';
-import modal from '$stores/modal';
-import { onDestroy, onMount } from 'svelte';
+import modalStore from '$stores/modal';
+import { onMount } from 'svelte';
 import * as api from "$lib/api"
 import ShareIcon from '$components/icons/ShareIcon.svelte';
 import LinkIcon from '$components/icons/LinkIcon.svelte';
 import BookmarkIcon from '$components/icons/BookmarkIcon.svelte';
+import { get } from 'svelte/store';
+import { insertVisit } from '$lib/api/lite'
+import mapStore from '$stores/mapStore';
+import { page } from '$app/stores';
+import { browser } from '$app/env';
+import { afterNavigate } from '$app/navigation';
 
     export let story
-    let editor
+    export let next
     let linkingMode = false
     let openShareCard = false
 
-    let modalStore 
-    const modalStoreUnsubscribe = modal.subscribe(value => modalStore = value)
-   
     let linkingModal = false
 	let loginModal = false
-
-    onDestroy(() => modalStoreUnsubscribe)
 
     const formatDate = (dateString) => {
         const date = new Date(dateString)
@@ -67,9 +88,9 @@ import BookmarkIcon from '$components/icons/BookmarkIcon.svelte';
     const enableLinkingMode = () => {
         if($user.jwt) {
             linkingMode = true
-            if(modalStore.linkingModal === false) {
+            if($modalStore.linkingModal === false) {
                 linkingModal = true
-                modal.set('linkingModal')
+                modalStore.set('linkingModal')
             }
         } else {
             loginModal = true
@@ -86,13 +107,37 @@ import BookmarkIcon from '$components/icons/BookmarkIcon.svelte';
         linkingMode = false
     }
 
-    onMount(async () => {
+    const currentMap = $mapStore.id
+    const addVisit = async (story) => {
+        const newVisit = await insertVisit(currentMap, story)
+        
+        // add visit to mapStore 
+        mapStore.update(value => {  
+            const updatedVisits = value.visits.includes(newVisit.id)
+                ? value.visits
+                : [...value.visits, newVisit.id] 
+            const updatedStories = value.stories.includes(story) 
+                ? value.stories
+                : [...value.stories, story]
+
+            return {
+                id: value.id,
+                visits: updatedVisits,
+                stories: updatedStories
+            }
+        })
+        console.log(`you just visited story ${story} with visit id ${newVisit.id}`)
+    }
+
+    afterNavigate((navigation) => {
+        addVisit(story.id)
     })
+
 </script>
 
 
     
-<TopNav back="/lite" next="/lite"></TopNav>
+<TopNav back="/lite" next='/lite/{next.slug}'></TopNav>
 
 <div class="px-8 overflow-y-scroll">
     <article class="flex flex-col gap-y-3 py-2 text-left">
