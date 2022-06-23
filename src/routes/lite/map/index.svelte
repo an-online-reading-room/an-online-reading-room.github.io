@@ -8,6 +8,7 @@ import LiteMap from '$components/LiteMap.svelte';
 import Modal from '$components/Modal.svelte';
 import AddIcon from '$components/icons/AddIcon.svelte';
 import mapStore from '$stores/mapStore';
+import { flattenStrapiResponse } from '$lib/utils/api';
 
 
   let travelledDistance
@@ -16,6 +17,7 @@ import mapStore from '$stores/mapStore';
   
   let openLinkModal = false
   let shareLink
+  let stories = []
   
   onMount(async () => {
     setTimeout(() => {
@@ -23,8 +25,10 @@ import mapStore from '$stores/mapStore';
       openInfoModal = false
       openTitleModal = true
     }, 5000)
-
+    
+    stories = await getVisitedStories()
   })
+
 
   const shareMap = async (event) => {
     const mapForm = document.querySelector('#map-form')
@@ -56,11 +60,9 @@ import mapStore from '$stores/mapStore';
 
 </script>
 
-{#await getVisitedStories()}
-<p></p>
-{:then stories}
+{#if stories.length > 0}
 <LiteMap {stories} on:distcalcend={(ev) => travelledDistance = ev.detail.value} />
-{/await}
+{/if}
 
 <section 
   class="absolute top-20 left-0 w-full
