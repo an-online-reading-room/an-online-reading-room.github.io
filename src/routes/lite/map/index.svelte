@@ -40,7 +40,7 @@ import { flattenStrapiResponse } from '$lib/utils/api';
     const newMap = await saveMap(true, title)
     console.log("updated ", newMap)
 
-    shareLink = `http://localhost:3000/map/${newMap.data.attributes.slug}`
+    shareLink = `/map/${newMap.data.attributes.slug}`
     openLinkModal = true
   }
     

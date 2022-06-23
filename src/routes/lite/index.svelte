@@ -14,33 +14,9 @@ const markVisited = () => {
 }
 let isOpenModal = checkVisited()
 
-let currentMap = $mapStore.id
-
-const addVisit = async (event) => {
-	const story = event.detail.story 
-	const newVisit = await insertVisit(currentMap, story)
-	
-	// add visit to mapStore 
-	mapStore.update(value => {
-		console.log(value)
-		const updatedVisits = [...value.visits, newVisit.id]
-		const updatedStories = value.stories.includes(story) 
-			? value.stories
-			: [...value.stories, story]
-
-		return {
-			id: value.id,
-			visits: updatedVisits,
-			stories: updatedStories
-		}
-	})
-
-	console.log(`you just visited story ${story} with visit id ${newVisit.id}`)
-}
-
 </script>
 
-<List listStore={storyList} on:visit={addVisit}></List>
+<List listStore={storyList}></List>
 
 
 <Modal isOpenModal={!isOpenModal} name="lite" on:closeModal={() => {isOpenModal = false; markVisited()}}>

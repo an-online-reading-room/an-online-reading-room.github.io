@@ -261,7 +261,7 @@
                         form="story"
                         required />
                     I accept the
-                    <a class="underline" href="/terms-and-conditions">
+                    <a class="underline" href="/about/terms-and-conditions">
                         terms and conditions</a>
                 </label>
             </svelte:fragment>

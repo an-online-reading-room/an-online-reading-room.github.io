@@ -1,11 +1,19 @@
 <script>
-    export let back;
-    export let next;
+import { afterNavigate, goto } from '$app/navigation'
+
+export let back;
+export let next;
+
+afterNavigate((navigation) => {
+    if(navigation.from != null) {
+        back = navigation.from.pathname
+    }
+})
 </script>
 
 <div class="flex h-9 border-y border-contrast text-contrast px-6 justify-between">
     {#if back}
-    <a href={back} class="navBtn">
+    <button on:click={() => goto(back)} class="navBtn">
         <svg
             width="7"
             height="11"
@@ -17,10 +25,10 @@
                 stroke="black" />
         </svg>
         Back
-    </a>
+    </button>
     {/if}
     {#if next}
-    <a href={next} class="navBtn">
+    <button on:click={() => goto(next)} class="navBtn">
         Next
         <svg
             width="7"
@@ -32,7 +40,7 @@
                 d="M1.00081 10.0825L5.73828 5.34563L1.00081 0.608165"
                 stroke="black" />
         </svg>
-    </a>
+    </button>
     {/if}
 </div>
 
