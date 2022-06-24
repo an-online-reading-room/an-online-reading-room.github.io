@@ -15,6 +15,7 @@
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
+import { variables } from "$lib/variables";
 
     export let prevStoryData, form;
 
@@ -176,13 +177,13 @@
                                 return api
                                     .post("api/upload", uploadData, $user.jwt)
                                     .then((data) => {
+                                        console.log(data)
                                         return {
                                             success: 1,
                                             file: {
                                                 url: dev
-                                                    ? "http://0.0.0.0:1337" +
-                                                      data[0].url
-                                                    : data[0].url,
+                                                    ? `http://localhost:1337${data[0].url}`
+                                                    : `${variables.strapi_url}${data[0].url}`,
                                                 // any other image data you want to store, such as width, height, color, extension, etc
                                             },
                                         };
