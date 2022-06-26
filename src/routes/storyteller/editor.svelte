@@ -15,7 +15,7 @@
 
     import * as api from "$lib/api.js";
     import "leaflet/dist/leaflet.css";
-import { variables } from "$lib/variables";
+    import { variables } from "$lib/variables";
 
     export let prevStoryData, form;
 
@@ -177,7 +177,7 @@ import { variables } from "$lib/variables";
                                 return api
                                     .post("api/upload", uploadData, $user.jwt)
                                     .then((data) => {
-                                        console.log(data)
+                                        console.log(data);
                                         return {
                                             success: 1,
                                             file: {
@@ -199,11 +199,21 @@ import { variables } from "$lib/variables";
     let autosaveFn;
     onMount(() => {
         autosaveFn = setInterval(autosaveDraft, dev ? 5000 : 60000);
+        const ta = document.getElementsByTagName("textarea")[0]
+        console.log(ta)
+        ta.style.height = ""
+        ta.style.height = ta.scrollHeight + "px";
     });
 
     onDestroy(() => {
         clearInterval(autosaveFn);
     });
+
+    function resizeTextarea({ target }) {
+        //console.log(e.target.clientHeight)
+        target.style.height = "";
+        target.style.height = target.scrollHeight + "px";
+    }
 </script>
 
 <div class="overflow-y-auto">
@@ -239,9 +249,10 @@ import { variables } from "$lib/variables";
                 name="description"
                 placeholder="Add Summary"
                 bind:value={form.description}
-                maxlength="400"
+                maxlength="160"
                 required
-                class="focus:outline-none font-bold placeholder:font-bold placeholder:text-contrast" />
+                class="focus:outline-none font-bold placeholder:font-bold placeholder:text-contrast resize-none"
+                on:input={resizeTextarea} />
         </form>
         <section class="placeholder:text-contrast" id="editor" />
 
