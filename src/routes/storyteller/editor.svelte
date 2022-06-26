@@ -63,7 +63,7 @@
             res.then((data) => {
                 //console.log(data);
                 //isPublished = true;
-                clearInterval(autosaveFn);
+                //clearInterval(autosaveFn);
                 goto("/storyteller");
             });
         });
@@ -146,7 +146,7 @@
     }
 
     async function discardDraft() {
-        console.log(prevStoryData);
+        //console.log(prevStoryData);
         editor.render(prevStoryData.attributes.submission);
         form.title = prevStoryData.attributes.title;
         form.location = prevStoryData.attributes.location;
@@ -166,6 +166,10 @@
                 ? prevStoryData.attributes.draft ??
                   prevStoryData.attributes.submission
                 : {},
+            onChange: (api, event) => {
+                //console.log("Now I know that Editor's content changed!", event);
+                autosaveDraft();
+            },
             tools: {
                 image: {
                     class: ImageTool,
@@ -196,17 +200,17 @@
         });
     });
 
-    let autosaveFn;
+    //let autosaveFn;
     onMount(() => {
-        autosaveFn = setInterval(autosaveDraft, dev ? 5000 : 60000);
-        const ta = document.getElementsByTagName("textarea")[0]
-        console.log(ta)
-        ta.style.height = ""
+        //autosaveFn = setInterval(autosaveDraft, dev ? 5000 : 60000);
+        const ta = document.getElementsByTagName("textarea")[0];
+
+        ta.style.height = "";
         ta.style.height = ta.scrollHeight + "px";
     });
 
     onDestroy(() => {
-        clearInterval(autosaveFn);
+        //clearInterval(autosaveFn);
     });
 
     function resizeTextarea({ target }) {
@@ -279,11 +283,7 @@
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
                 {#if prevStoryData?.attributes.publishedAt}
-                    <button
-                        class="w-1/2"
-                        type="submit"
-                        form="story"
-                        on:click|preventDefault={() => openModal(Republish)}>
+                    <button class="w-1/2" type="submit" form="story">
                         Republish
                     </button>
                     <button class="w-1/2" on:click={() => openModal(Discard)}>
