@@ -92,7 +92,7 @@ const showLinks = (links) => {
 
 </script>
 
-<main>
+<main class="text-left font-display text-base">
   {#each story.submission.blocks as block}
     {#if block.type == "paragraph"}
         <p data-blockid={block.id}>

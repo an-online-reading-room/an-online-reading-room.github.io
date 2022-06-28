@@ -1,7 +1,10 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/env';
 
-const defaultValue = JSON.stringify({});
+const defaultValue = JSON.stringify({
+    stories: [],
+    visits: []
+});
 const stored = browser ? window.localStorage.mapStore ?? defaultValue : defaultValue;
 
 export const mapStore = writable(JSON.parse(stored));
