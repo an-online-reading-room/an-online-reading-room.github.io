@@ -7,7 +7,7 @@ const target = $page.params.slug
 
 onMount(() => {
   setTimeout(() => {
-    goto(`/lite/${target}`)
+    goto(`/adventure/read?story=${target}`)
   }, 2000)
 })
 

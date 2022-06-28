@@ -21,7 +21,7 @@ import { page } from '$app/stores'
   let pathPrefix
 
   const versionUnsubscribe = version.subscribe(value => {
-    pathPrefix = value === 'lite' ? '/adventure/landing' : '/'
+    pathPrefix = value === 'lite' ? '/adventure/read' : '/'
   })
 
   const changeTheme = () => {
@@ -65,7 +65,7 @@ import { page } from '$app/stores'
                     h-3/4
                     divide-y divide-current
                     text-display text-base text-center">
-          <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}" on:click={() => {
+          <a href="{pathPrefix === '/' ? '/adventure/read' : '/'}" on:click={() => {
             openMenu = !openMenu; 
           }}>
             <div class="w-full h-16 pb-6 pt-4">
@@ -338,7 +338,7 @@ import { page } from '$app/stores'
       {/if}
       <!-- menu card end -->
       
-      <a href="{pathPrefix === '/' ? '/adventure/landing' : '/'}" class="self-center">
+      <a href="{pathPrefix === '/' ? '/mode' : '/'}" class="self-center">
         <h1 class="text-2xl text-contrast">The Reading Room</h1>
       </a>
       

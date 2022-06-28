@@ -1,5 +1,6 @@
 <script>
   import Header from "$components/Header.svelte";  
+import version from "$stores/version";
 </script>
 
 
@@ -22,7 +23,11 @@
               Storyteller
             </button>
           </a>
-          <a href="/lite">
+          <a href={
+            $version === 'lite' 
+            ? '/lite'
+            : '/adventure/read'
+          }>
             <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
               Listener
             </button>
