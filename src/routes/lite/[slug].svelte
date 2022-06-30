@@ -68,10 +68,9 @@ import { afterNavigate } from '$app/navigation';
 
     export let story
     export let next
-    let linkingMode = false
+
     let openShareCard = false
 
-    let linkingModal = false
 	let loginModal = false
 
     const formatDate = (dateString) => {
@@ -83,28 +82,6 @@ import { afterNavigate } from '$app/navigation';
         const month = date.toLocaleDateString('en-US', {month: "long"})
         const year = date.getFullYear()
         return `${day}${suffix} ${month} ${year}`
-    }
-
-    const enableLinkingMode = () => {
-        if($user.jwt) {
-            linkingMode = true
-            if($modalStore.linkingModal === false) {
-                linkingModal = true
-                modalStore.set('linkingModal')
-            }
-        } else {
-            loginModal = true
-        }
-    }
-
-    const saveLink = async (event) => {
-        
-        const data = {
-            data: event.detail
-        }
-        const res = await api.post(`api/links`, data, $user.jwt)
-        
-        linkingMode = false
     }
 
     const currentMap = $mapStore.id
@@ -147,15 +124,11 @@ import { afterNavigate } from '$app/navigation';
             <h2 class="font-display font-normal text-xs">{story.location}</h2>
         </hgroup>
     
-        {#if linkingMode}
-        <Linker {story} on:linkend={saveLink}>
-            
-        </Linker>
-        {:else}
+       
         <Story {story}>
 
         </Story>
-        {/if}
+   
 
     </article>
 </div>
@@ -166,19 +139,10 @@ import { afterNavigate } from '$app/navigation';
         <BookmarkIcon />
     </button>
     
-    <button class="stroke-current w-6 h-6" on:click={enableLinkingMode}>
-        <LinkIcon />
-    </button>
     <button class="stroke-current w-6 h-6" on:click={() => openShareCard = !openShareCard}>
         <ShareIcon />
     </button>
 </Footer>
-
-
-<Modal isOpenModal={linkingModal} name="linkingModal" on:closeModal={() => linkingModal = false}>
-    <p class="font-bold">Link a story</p>
-    <p><span class="font-bold">Long press</span> to <span class="font-bold">highlight</span> and hyperlink text to another story. If the story doesn’t exist yet, head over to our storyteller section so you can add it in.</p>
-</Modal>
 
 <Modal isOpenModal={loginModal} name="loginModal">
     <p class="font-bold mb-2">Tell us your story!</p>

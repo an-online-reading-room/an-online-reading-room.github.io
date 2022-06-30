@@ -1,14 +1,20 @@
 <script context="module">
 
 
-  export async function load({ url, fetch }) {
+  export async function load({ url, session }) {
 
     let data = null
+    let pointA = null
 
     if(url.searchParams.has('story')) {
       const query = qs.stringify({
         filters: {
             slug: { $eq: url.searchParams.get('story') }
+        },
+        populate: {
+            users_permissions_user: {
+                fields: ['username']
+            }
         }
       }, {
         encodeValuesOnly: true
@@ -18,6 +24,10 @@
         get(user).jwt
       )
       data = flattenStrapiResponse(story)[0]
+      pointA = {
+            slug: url.searchParams.get('story'),
+            location: data.location
+        }
 
     } else {
       
@@ -28,8 +38,15 @@
 
       console.log(story)
       data = story
+      pointA = {
+        slug: story.slug,
+        location: story.location
+      }
 
     }
+
+    session.pointA = pointA
+    console.log(data)
 
     return {
       status: 200,
@@ -45,7 +62,6 @@ import Story from "$components/Story.svelte";
 import TopNav from "$components/navigation/TopNav.svelte";
 import Linker from "$components/Linker.svelte";
 import Footer from "$components/Footer.svelte";
-import BookmarkIcon from "$components/icons/BookmarkIcon.svelte";
 import LinkIcon from "$components/icons/LinkIcon.svelte";
 import ShareIcon from "$components/icons/ShareIcon.svelte";
 import Modal from "$components/Modal.svelte";
@@ -61,10 +77,14 @@ import { get } from "svelte/store";
 import * as api from '$lib/api'
 import qs from 'qs'
 import { flattenStrapiResponse } from "$lib/utils/api";
+import InfoIcon from "$components/icons/InfoIcon.svelte";
+import InfoCard from "$components/InfoCard.svelte";
 
 export let story
 let linkingMode = false
 let openShareCard = false
+let openInfoCard = false
+let infoModal = $modalStore.adventure
 
 let linkingModal = false
 let loginModal = false
@@ -156,18 +176,22 @@ afterNavigate((navigation) => {
 
 
 <Footer>
-    <button class="stroke-current w-6 h-6">
-        <BookmarkIcon />
+    <button class="stroke-current w-6 h-6" on:click={() => {openInfoCard = !openInfoCard; openShareCard = false}}>
+        <InfoIcon open={openInfoCard}/>
     </button>
     
     <button class="stroke-current w-6 h-6" on:click={enableLinkingMode}>
         <LinkIcon />
     </button>
-    <button class="stroke-current w-6 h-6" on:click={() => openShareCard = !openShareCard}>
-        <ShareIcon />
+    <button class="stroke-current w-6 h-6" on:click={() => {openShareCard = !openShareCard; openInfoCard = false}}>
+        <ShareIcon open={openShareCard}/>
     </button>
 </Footer>
 
+<Modal isOpenModal={infoModal} on:closeModal={() => infoModal = false} name="Welcome to the adventure version">
+    <p class="font-bold">Welcome to the adventure version!</p>
+    <p>Explore places through stories, navigate through hyperlinks, and create maps of your own. Read more about the version in the <a class="underline" href="/about/faq"><span class="font-bold">FAQ</span></a>.</p>
+</Modal>
 
 <Modal isOpenModal={linkingModal} name="linkingModal" on:closeModal={() => linkingModal = false}>
     <p class="font-bold">Link a story</p>
@@ -183,5 +207,5 @@ afterNavigate((navigation) => {
     <p>Worried about what story to share? Check out our prompts.</p>
 </Modal>
 
-<ShareCard title="Share this story" open={openShareCard}></ShareCard>
-
+<ShareCard title="Share this story" open={openShareCard} />
+<InfoCard info={story} open={openInfoCard}/>
