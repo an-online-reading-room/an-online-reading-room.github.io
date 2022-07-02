@@ -3,7 +3,7 @@
     import { dev } from "$app/env";
     import { getSuggestions } from "$lib/services/geocode";
     import { user } from "$stores/user.js";
-    import { Clear, Discard, Republish } from "./_modals/modals.js";
+    import { Clear, Discard, Republish, AddTitle } from "./_modals/modals.js";
     import { goto, beforeNavigate } from "$app/navigation";
 
     import TopNav from "$components/navigation/TopNav.svelte";
@@ -17,7 +17,7 @@
     import "leaflet/dist/leaflet.css";
     import { variables } from "$lib/variables";
 
-    export let prevStoryData, form;
+    export let prevStoryData, form, isNew;
 
     let isOpenModal = false;
     let openedModal;
@@ -29,6 +29,7 @@
     let editor;
     let locationInput = form.location;
     let locationSuggestions = [];
+    let timer;
 
     $: {
         getSuggestions(locationInput).then(
@@ -36,6 +37,14 @@
         );
     }
 
+    $: form && debouncedAutosave();
+
+    function debouncedAutosave() {
+        if (!isNew) {
+            clearTimeout(timer);
+            timer = setTimeout(autosaveDraft, 500);
+        }
+    }
     async function submitStory() {
         const storyData = getStoryData();
 
@@ -180,7 +189,7 @@
                 : {},
             onChange: (api, event) => {
                 //console.log("Now I know that Editor's content changed!", event);
-                if (form.title) autosaveDraft();
+                autosaveDraft();
             },
             tools: {
                 image: {
@@ -219,10 +228,12 @@
     });
 
     beforeNavigate(({ from, to, cancel }) => {
-        if(!form.title) {
-            alert("Please enter title")
+
+        if (!form.title && autosave_newStoryCreated) {
             cancel();
+            openModal(AddTitle);
         }
+        //}
     });
     function resizeTextarea({ target }) {
         target.style.height = "";
