@@ -1,10 +1,10 @@
 <script>
-    import { onDestroy, onMount } from "svelte";
+    import { onMount } from "svelte";
     import { dev } from "$app/env";
     import { getSuggestions } from "$lib/services/geocode";
     import { user } from "$stores/user.js";
     import { Clear, Discard, Republish } from "./_modals/modals.js";
-    import { goto } from "$app/navigation";
+    import { goto, beforeNavigate } from "$app/navigation";
 
     import TopNav from "$components/navigation/TopNav.svelte";
     import BottomNav from "$components/navigation/BottomNav.svelte";
@@ -61,9 +61,6 @@
 
             //Catch errors here if story not submitted
             res.then((data) => {
-                //console.log(data);
-                //isPublished = true;
-                //clearInterval(autosaveFn);
                 goto("/storyteller");
             });
         });
@@ -80,7 +77,7 @@
                     title: form.title,
                     location: locationInput,
                 };
-
+                storyData.data.hasDraft = true;
                 console.log("Autosaving previously existing");
                 currTime = Date.now();
                 api.put(
@@ -146,11 +143,26 @@
     }
 
     async function discardDraft() {
-        //console.log(prevStoryData);
         editor.render(prevStoryData.attributes.submission);
         form.title = prevStoryData.attributes.title;
         form.location = prevStoryData.attributes.location;
         form.description = prevStoryData.attributes.description;
+        let storyData = {
+            data: {
+                hasDraft: false,
+            },
+        };
+
+        //  Discarding draft after timeout because editor.render above triggers another autosave which sets
+        //  hasDraft to true again. Waiting for the unintentional autosave to finish before updating hasDraft.
+        setTimeout(async () => {
+            const r = await api.put(
+                `api/stories/${prevStoryData.id}`,
+                storyData,
+                $user.jwt
+            );
+            console.log(r);
+        }, 1000);
         closeModal();
     }
 
@@ -168,7 +180,7 @@
                 : {},
             onChange: (api, event) => {
                 //console.log("Now I know that Editor's content changed!", event);
-                autosaveDraft();
+                if (form.title) autosaveDraft();
             },
             tools: {
                 image: {
@@ -200,21 +212,19 @@
         });
     });
 
-    //let autosaveFn;
     onMount(() => {
-        //autosaveFn = setInterval(autosaveDraft, dev ? 5000 : 60000);
         const ta = document.getElementsByTagName("textarea")[0];
-
         ta.style.height = "";
         ta.style.height = ta.scrollHeight + "px";
     });
 
-    onDestroy(() => {
-        //clearInterval(autosaveFn);
+    beforeNavigate(({ from, to, cancel }) => {
+        if(!form.title) {
+            alert("Please enter title")
+            cancel();
+        }
     });
-
     function resizeTextarea({ target }) {
-        //console.log(e.target.clientHeight)
         target.style.height = "";
         target.style.height = target.scrollHeight + "px";
     }
@@ -263,9 +273,7 @@
         <BottomNav>
             <svelte:fragment slot="editor-extras">
                 {#if currTime}
-                    <p
-                        on:click={autosaveDraft}
-                        class="self-center text-xs font-light italic">
+                    <p class="self-center text-xs font-light italic">
                         Autosaved at <AutosaveTime {currTime} />
                     </p>
                 {/if}
