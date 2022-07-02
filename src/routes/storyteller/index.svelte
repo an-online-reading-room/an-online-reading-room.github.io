@@ -18,7 +18,7 @@ import SearchIcon from "$components/icons/SearchIcon.svelte";
     async function getStories() {
         //console.log($user.jwt)
         try {
-            const userData = await api.get("api/users/me", $user.jwt);
+            const userData = await api.get("api/users/stories", $user.jwt);
             stories = userData?.stories.reverse();
         } catch (error) {
             console.error(error);
@@ -83,7 +83,7 @@ import SearchIcon from "$components/icons/SearchIcon.svelte";
                 class="relative flex flex-col gap-y-3 border-2 border-contrast px-3.5 py-2 font-display text-contrast">
                 <div class="inline-flex items-center absolute top-2 right-2">
                     <span class="italic text-xs px-2"
-                        >{story.publishedAt ? (story.draft ? "published | draft" : "published") : "draft"}</span>
+                        >{story.publishedAt ? (story.hasDraft ? "editing" : "published") : "draft"}</span>
                     <button on:click|preventDefault={() => openDeleteModal(story.id)}>
                         <Delete />
                     </button>
