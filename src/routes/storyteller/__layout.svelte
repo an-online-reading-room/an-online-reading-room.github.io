@@ -9,8 +9,13 @@
     let isLoggedIn = false;
     if (browser) {
         if ($user.jwt) {
-            console.log("logged in as user", $user.username);
-            isLoggedIn = true;
+            const expiry = JSON.parse(atob($user.jwt.split(".")[1])).exp * 1000;
+            if (Date.now() >= expiry) {
+                isLoggedIn = false;
+            } else {
+                console.log("logged in as user", $user.username);
+                isLoggedIn = true;
+            }
         }
         isAwaiting = false;
     }

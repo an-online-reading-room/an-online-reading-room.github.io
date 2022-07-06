@@ -1,10 +1,9 @@
 <script context="module">
     import { browser } from "$app/env";
-import { getMap } from "$lib/api/lite";
-import mapStore from "$stores/mapStore";
+    import { getMap } from "$lib/api/lite";
     import { user } from "$stores/user";
     import { get } from 'svelte/store'
-
+    import mapStore from "$stores/mapStore";
 
     export async function load({ url, fetch }) {
         if (browser) {
