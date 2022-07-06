@@ -22,12 +22,12 @@ export async function get({ url }) {
         }
 
         return {
-            body: { prevStoryData, form }
+            body: { isNew: false, prevStoryData, form }
         };
     } else {
         return {
             status:200,
-            body: { form }
+            body: { isNew: true, form }
         };
     }
 }
