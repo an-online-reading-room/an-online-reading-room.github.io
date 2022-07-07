@@ -27,7 +27,7 @@
 <form
     on:submit|preventDefault={submitForm}
     class="flex flex-col w-full items-center text-sm">
-    <fieldset class="w-1/2 mb-1">
+    <fieldset class="w-48 mb-1">
         {#if $page.routeId == "auth/signup"}
             <label class="block mb-3.5"
                 ><p>Username</p>
