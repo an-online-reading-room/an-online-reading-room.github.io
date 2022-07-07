@@ -1,7 +1,6 @@
 <script>
     import Header from "$components/Header.svelte";
     import Modal from "$components/utils/Modal.svelte";
-    import Background from "$components/utils/Background.svelte";
     import { user } from "$stores/user";
     import { browser } from "$app/env";
 
@@ -21,22 +20,28 @@
     }
 </script>
 
-<div class="relative flex flex-col max-w-screen-md h-full mx-auto shadow-2xl">
+<div class="relative flex flex-col h-full">
     {#if isAwaiting}
         <div />
     {:else if isLoggedIn}
         <Header />
         <slot />
     {:else}
-        <Background>
-            <Modal isOpenModal={true} showCloseButton={false}>
-                <p class="font-bold mb-2">Tell us your story!</p>
-                <p>
-                    Please <a class="font-bold underline" href="/auth/login"
-                        >log in</a> to use this feature.
-                </p>
-                <p>Worried about what story to share? Check out our prompts.</p>
-            </Modal>
-        </Background>
+    <div class="background h-full bg-top bg-cover">
+        <Modal isOpenModal={true} showCloseButton={false}>
+            <p class="font-bold mb-2">Tell us your story!</p>
+            <p>
+                Please <a class="font-bold underline" href="/auth/login"
+                    >log in</a> to use this feature.
+            </p>
+            <p>Worried about what story to share? Check out our prompts.</p>
+        </Modal>
+    </div>
     {/if}
 </div>
+
+<style>
+    .background {
+        background-image: url("/img/Full Size_Landing Page Illustration_Choose Version.png");
+    }
+</style>

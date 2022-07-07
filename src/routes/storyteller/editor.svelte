@@ -288,17 +288,11 @@
                         Autosaved at <AutosaveTime {currTime} />
                     </p>
                 {/if}
-                <label class="self-center  font-text text-contrast text-xs">
-                    <input
-                        class="accent-accent w-2.5 h-2.5"
-                        type="checkbox"
-                        name="accept"
-                        form="story"
-                        required />
-                    I accept the
-                    <a class="underline" href="/about/terms-and-conditions">
-                        terms and conditions</a>
-                </label>
+                <p class="self-center  font-text text-contrast text-xs">
+                    Read our
+                    <a class="underline" href="/about/code-of-conduct">
+                        code of conduct</a>. In short, be kind!
+                    </p>
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
                 {#if prevStoryData?.attributes.publishedAt}
