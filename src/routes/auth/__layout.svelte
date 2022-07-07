@@ -2,7 +2,7 @@
     import { page } from "$app/stores";
 </script>
 
-<div class="h-full mx-auto shadow-2xl background bg-cover bg-top">
+<div class="h-full background bg-cover bg-top">
     <div class="flex flex-col items-center gap-y-5 py-16">
         <h1 class="text-2xl text-contrast mb-2">The Reading Room</h1>
         <div class="bg-white/75 p-8 rounded-md">
