@@ -1,6 +1,5 @@
 <script>
     import { page } from "$app/stores";
-    import Background from "$components/utils/Background.svelte";
 </script>
 
 <div class="h-full mx-auto shadow-2xl background bg-cover bg-top">
