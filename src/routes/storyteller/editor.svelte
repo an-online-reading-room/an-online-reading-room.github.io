@@ -3,7 +3,7 @@
     import { dev } from "$app/env";
     import { getSuggestions } from "$lib/services/geocode";
     import { user } from "$stores/user.js";
-    import { Clear, Discard, Republish, AddTitle } from "./_modals/modals.js";
+    import { Clear, Discard, AddTitle } from "./_modals/modals.js";
     import { goto, beforeNavigate } from "$app/navigation";
 
     import TopNav from "$components/navigation/TopNav.svelte";
@@ -152,10 +152,10 @@
     }
 
     async function discardDraft() {
-        editor.render(prevStoryData.attributes.submission);
-        form.title = prevStoryData.attributes.title;
-        form.location = prevStoryData.attributes.location;
-        form.description = prevStoryData.attributes.description;
+        editor.render(prevStoryData.submission);
+        form.title = prevStoryData.title;
+        form.location = prevStoryData.location;
+        form.description = prevStoryData.description;
         let storyData = {
             data: {
                 hasDraft: false,
@@ -184,8 +184,8 @@
             minHeight: 120,
             placeholder: "Add your story",
             data: prevStoryData
-                ? prevStoryData.attributes.draft ??
-                  prevStoryData.attributes.submission
+                ? prevStoryData.draft ??
+                  prevStoryData.submission
                 : {},
             onChange: (api, event) => {
                 //console.log("Now I know that Editor's content changed!", event);
@@ -301,7 +301,7 @@
                 </label>
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
-                {#if prevStoryData?.attributes.publishedAt}
+                {#if prevStoryData?.publishedAt}
                     <button class="w-1/2" type="submit" form="story">
                         Republish
                     </button>
