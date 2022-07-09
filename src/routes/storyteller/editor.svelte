@@ -121,7 +121,7 @@
                 title: form.title,
                 location: locationInput,
                 description: form.description,
-                users_permissions_user: $user.id,
+                user: $user.id,
             },
         };
         return storyData;
