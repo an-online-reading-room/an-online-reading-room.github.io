@@ -20,7 +20,7 @@ import { onMount } from "svelte";
   </a>
 
   <div class="font-text text-xs">
-    <p>by {story.users_permissions_user.username}</p>
+    <p>by {story.user.username}</p>
     <p>at {story.location}</p>
   </div>
 </section>

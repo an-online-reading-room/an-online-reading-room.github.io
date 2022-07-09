@@ -1,6 +1,8 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { variables } from '$lib/variables' 
 import qs from 'qs'
+import * as api from '$lib/api'
+import user from "./user";
 
 let loading = true
 let noMoreData = false
@@ -20,7 +22,7 @@ export default {
     if (noMoreData) return
 
     const query = qs.stringify({
-      populate: ['users_permissions_user'],
+      populate: ['user'],
       pagination: {
         page: page,
         pageSize: 10,
@@ -28,35 +30,15 @@ export default {
     }, {
       encodeValuesOnly: true,
     })
-    // loading = true
-    // storyList.set({loading, data, noMoreData})
-    
-    const response = await fetch(`${variables.strapi_url}/api/stories?${query}`)
+  
     loading = false
-    let list = (await response.json()).data
-    noMoreData = list.length === 0
-    list = list.map(story => {
-      const username = story.attributes.users_permissions_user.data.attributes.username
-      const regexLocation = /([A-Za-z\s]+,*)/g;
-      let location = story.attributes.location.trim()
-      const match = location.match(regexLocation)
-      if(match != null) {
-        const len = match.length
-        if(len === 1) location = `${match[0]}`
-        else location = `${match[len-2]} ${match[len-1]}`
-      } 
-      return {
-        id: story.id,
-        title: story.attributes.title,
-        location: location,
-        description: story.attributes.description,
-        username: username,
-        submission: story.attributes.submission,
-        slug: story.attributes.slug,
-      }
-    }) 
-    
-    data.push(...list)
+    let res = await api.get(
+      `api/stories?${query}`,
+      get(user).jwt
+      )
+      
+    noMoreData = res.length === 0
+    data.push(...res)
     page += 1
 
     storyList.set({loading, data, noMoreData})

@@ -6,7 +6,9 @@ let open = true;
 let back;
 
 afterNavigate((navigation) => {
-    back = navigation.from.pathname;
+    if(navigation.from != null && back != null) {
+        back = navigation.from.pathname;
+    }
 });
 </script>
 
@@ -14,6 +16,7 @@ afterNavigate((navigation) => {
     name="FAQ"
     {open}
     openMenu={false}
+    inHeader={false}
     on:hide={() => goto(back)}
     on:hideMenu={() => goto(back)}>
     <section>
@@ -26,7 +29,7 @@ afterNavigate((navigation) => {
             they add on to how your neighbourhood is seen and experienced by
             others. It is important to remember to be kind and responsible while
             sharing, and receive permission if sharing stories that are not your
-            own. If you aren’t sure of what to say, here are our prompts to get
+            own. If you aren’t sure of what to say, here are our <a href="/prompts" class="underline">prompts</a> to get
             you started.
         </p>
     </section>

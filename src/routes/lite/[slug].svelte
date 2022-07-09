@@ -1,6 +1,5 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit';
-    import { flattenStrapiResponse } from '$lib/utils/api'
     import qs from 'qs'
   
     export const load: Load = async ({ params, fetch, session, stuff }) => {
@@ -8,6 +7,7 @@
             filters: {
                 slug: { $eq: params.slug },
             },
+            populate: ['targetLinks']
             }, {
             encodeValuesOnly: true,
         });
@@ -16,21 +16,22 @@
         `api/stories?${query}`,
         get(user).jwt
       )
-      const story = flattenStrapiResponse(res)[0]
-      //   console.log(data)
+      const story = res[0]
 
         const randomSlugQuery = qs.stringify({
             fields: ['slug']
         }, {
             encodeValuesOnly: true,
         })
-        res = await api.get(
+        let res2 = await api.get(
             `api/stories?${randomSlugQuery}`,
             get(user).jwt
         )
-        let nextData = flattenStrapiResponse(res)
+        let nextData = res2
+       
         let next = nextData[Math.floor(Math.random() * nextData.length)]
-        console.log(story)
+        // console.log(nextData)
+        // console.log(story)
         while(next.id === story.id) {
             next = nextData[Math.floor(Math.random() * nextData.length)]
             console.log(next)
@@ -47,31 +48,22 @@
 
 <script>
 import TopNav from '$components/navigation/TopNav.svelte';
-import Linker from '$components/Linker.svelte';
-import Modal from '$components/Modal.svelte';
 import Story from '$components/Story.svelte';
 import ShareCard from '$components/ShareCard.svelte';
 import Footer from '$components/Footer.svelte';
 import user from '$stores/user';
-import modalStore from '$stores/modal';
-import { onMount } from 'svelte';
 import * as api from "$lib/api"
 import ShareIcon from '$components/icons/ShareIcon.svelte';
-import LinkIcon from '$components/icons/LinkIcon.svelte';
 import BookmarkIcon from '$components/icons/BookmarkIcon.svelte';
 import { get } from 'svelte/store';
 import { insertVisit } from '$lib/api/lite'
 import mapStore from '$stores/mapStore';
-import { page } from '$app/stores';
-import { browser } from '$app/env';
 import { afterNavigate } from '$app/navigation';
 
     export let story
     export let next
 
     let openShareCard = false
-
-	let loginModal = false
 
     const formatDate = (dateString) => {
         const date = new Date(dateString)
@@ -87,7 +79,7 @@ import { afterNavigate } from '$app/navigation';
     const currentMap = $mapStore.id
     const addVisit = async (story) => {
         const newVisit = await insertVisit(currentMap, story)
-        
+
         // add visit to mapStore 
         mapStore.update(value => {  
             const updatedVisits = value.visits.includes(newVisit.id)
@@ -125,7 +117,7 @@ import { afterNavigate } from '$app/navigation';
         </hgroup>
     
        
-        <Story {story}>
+        <Story {story} isLite={true}>
 
         </Story>
    
@@ -143,14 +135,5 @@ import { afterNavigate } from '$app/navigation';
         <ShareIcon />
     </button>
 </Footer>
-
-<Modal isOpenModal={loginModal} name="loginModal">
-    <p class="font-bold mb-2">Tell us your story!</p>
-    <p>
-        Please <a class="font-bold underline" href="/auth/login"
-            >log in</a> to use this feature.
-    </p>
-    <p>Worried about what story to share? Check out our prompts.</p>
-</Modal>
 
 <ShareCard title="Share this story" open={openShareCard}></ShareCard>

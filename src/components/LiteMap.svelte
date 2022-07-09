@@ -1,5 +1,6 @@
 <script>
-import { createEventDispatcher, onDestroy, onMount } from "svelte";
+import { afterUpdate, createEventDispatcher, onDestroy, onMount } from "svelte";
+import { afterNavigate, beforeNavigate } from "$app/navigation";
 import { getCoordinates } from "$lib/services/geocode";
 import Popup from "./Popup.svelte";
 import "leaflet/dist/leaflet.css"
@@ -7,12 +8,13 @@ import "leaflet/dist/leaflet.css"
 const dispatch = createEventDispatcher()
 
 export let stories 
+let L 
 let map = null
+let iconVisited, iconUnvisited
 let travelledDistance
 
-onMount(async () => {
-
-  const L = (await import('leaflet')).default
+const initMap = async () => {
+  L = (await import('leaflet')).default
   // const geocoder = (await import('pelias-leaflet-plugin')).default
   
   map = L.map('map').setView([20.5937, 78.9629], 4);
@@ -28,7 +30,7 @@ onMount(async () => {
       accessToken: 'pk.eyJ1IjoidGhlcmVhZGluZ3Jvb20iLCJhIjoiY2t6NWNicmxlMHAyZzJucW9ydTNrenA0eiJ9.zQ2AECdzKcl5TrQXrGqPeA'
   }).addTo(map);
 
-  let iconUnvisited = L.icon({
+  iconUnvisited = L.icon({
     iconUrl: '/img/story-unvisited.png',
     shadowUrl: '/img/story-unvisited.png',
     iconSize:     [20, 20], // size of the icon
@@ -37,15 +39,16 @@ onMount(async () => {
     // shadowAnchor: [0, 0],  // the same for the shadow
     // popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
   })
-  let iconVisited = L.icon({
+  iconVisited = L.icon({
     iconUrl: '/img/story-visited.png',
     shadowUrl: '/img/story-visited.png',
     iconSize:     [20, 20], // size of the icon
     shadowSize:   [0, 0], // size of the shadow
     
   })
+}
 
-
+const markStories = async () => {
   let visitedLatLngs = await Promise.all(stories.map(async story => {
     const coords = await getCoordinates(story.location)
     if(coords != null) {
@@ -78,11 +81,18 @@ onMount(async () => {
   }
   travelledDistance = Math.round(travelledDistInMtrs/1000.0)
   dispatch('distcalcend', { value: travelledDistance })
+}
+
+afterUpdate(async () => {
+  markStories()
 })
 
-onDestroy(() => {
-  map = null
+onMount(async () => {
+  initMap()
+  markStories()
 })
+
+onDestroy(() => map = null)
 
 </script>
 

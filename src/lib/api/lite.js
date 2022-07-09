@@ -2,7 +2,6 @@ import qs from 'qs'
 import * as api from '$lib/api'
 import user from '$stores/user';
 import { get } from 'svelte/store'
-import { flattenStrapiResponse } from '$lib/utils/api';
 import mapStore from '$stores/mapStore';
 import { adjectives, colors, uniqueNamesGenerator } from 'unique-names-generator';
 
@@ -63,8 +62,8 @@ const insertVisit = async (map, story) => {
     get(user).jwt
   )
   
-  if(prevVisit.data.length > 0) {
-    prevVisit = prevVisit.data[0]
+  if(prevVisit.length > 0) {
+    prevVisit = prevVisit[0]
     // update visit
 
     const res = await api.put(
@@ -76,7 +75,7 @@ const insertVisit = async (map, story) => {
       }
     )
 
-    newVisit = res.data
+    newVisit = res
 
   } else {
     // create visit
@@ -93,9 +92,9 @@ const insertVisit = async (map, story) => {
       get(user).jwt
     )
 
-    newVisit = res.data
+    newVisit = res
   }
-
+  
   return newVisit
 
 }
@@ -109,7 +108,7 @@ const getVisitedStories = async () => {
   const visitedStoriesQuery = qs.stringify({
     fields: ['title', 'location', 'slug'],
     populate: {
-      users_permissions_user: {
+      user: {
         fields: ['username']
       }
     },
@@ -124,7 +123,6 @@ const getVisitedStories = async () => {
     `api/stories?${visitedStoriesQuery}`,
     get(user).jwt
   )
-  res = flattenStrapiResponse(res)
   console.log("visited stories: ")
   console.log(res)
 

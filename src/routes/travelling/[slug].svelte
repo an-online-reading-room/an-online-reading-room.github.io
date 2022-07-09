@@ -16,7 +16,7 @@ export async function load({ params, session }) {
     `api/stories?${query}`,
     get(user).jwt
   )
-  const data = flattenStrapiResponse(res)[0]
+  const data = res[0]
 
   return {
     status: 200,
@@ -42,7 +42,6 @@ import { getCoordinates } from "$lib/services/geocode";
 import { onMount } from "svelte";
 import { get } from "svelte/store";
 import user from "$stores/user";
-import { flattenStrapiResponse } from "$lib/utils/api";
 
 const target = $page.params.slug
 export let pointA
