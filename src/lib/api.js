@@ -17,12 +17,7 @@ async function send({ method, path, data, token }) {
     }
     //console.log(opts)
     return fetch(`${base}/${path}`, opts)
-        .then(res => {
-            if(res.ok) {
-                return res.json()
-            } 
-            throw new Error("api: something went wrong")
-        })
+        .then(async res => res.json())
         .then(json => transform(json))
         .catch(console.error)
 }
