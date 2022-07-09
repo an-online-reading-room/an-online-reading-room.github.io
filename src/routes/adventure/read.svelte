@@ -12,7 +12,7 @@
             slug: { $eq: url.searchParams.get('story') }
         },
         populate: {
-            users_permissions_user: {
+            user: {
                 fields: ['username']
             }
         }
@@ -162,7 +162,7 @@ afterNavigate((navigation) => {
             
         </Linker>
         {:else}
-        <Story {story}>
+        <Story {story} isLite={false}>
 
         </Story>
         {/if}
