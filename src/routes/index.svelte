@@ -17,12 +17,16 @@ import version from "$stores/version";
                   font-display text-contrast text-xs">
         <p class="font-text text-base">Choose a version!</p>
         <div class="flex flex-col justify-between gap-y-2">
-          <a href="/mode" on:click={() => version.set('lite')}>
+          <a href="/mode" on:click={() => {
+            version.set('lite')
+          }}>
             <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
               Lite
             </button>
           </a>
-          <a href="/mode" on:click={() => version.set('adventure')}>
+          <a href="/mode" on:click={() => {
+            version.set('adventure')
+          }}>
             <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
               Adventure
             </button>
