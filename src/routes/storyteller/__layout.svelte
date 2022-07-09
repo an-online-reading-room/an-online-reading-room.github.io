@@ -35,7 +35,7 @@
                     Please <a class="font-bold underline" href="/auth/login"
                         >log in</a> to use this feature.
                 </p>
-                <p>Worried about what story to share? Check out our prompts.</p>
+                <p>Worried about what story to share? Check out our <a href="/prompts" class="underline">prompts</a>.</p>
             </Modal>
         </Background>
     {/if}

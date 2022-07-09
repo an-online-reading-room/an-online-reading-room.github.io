@@ -1,32 +1,35 @@
 <script>
-import qs from 'qs'
 import { onMount } from 'svelte';
-import * as api from "$lib/api"
-import user from '$stores/user';
-import { flattenStrapiResponse } from '$lib/utils/api';
 import { goto } from '$app/navigation';
+import qs from 'qs'
+import * as api from '$lib/api'
+import user from '$stores/user';
 
 export let story
+export let isLite
 let links
 
 onMount(async () => {
-  const query = qs.stringify({
-    filters: {
-      source: {
-        id: {
-          $eq: story.id,
+  if(!isLite) {
+    
+    const query = qs.stringify({
+      filters: {
+        source: {
+          id: {
+            $eq: story.id,
+          },
         },
       },
-    },
-    populate: ['target'] 
-  }, {
-    encodeValuesOnly: true,
-  });
+      populate: ['target'] 
+    }, {
+      encodeValuesOnly: true,
+    });
+    const res = await api.get(`api/links?${query}`, $user.jwt)
 
-  const res = await api.get(`api/links?${query}`, $user.jwt)
-  links = flattenStrapiResponse(res)
-  // console.log(links)
-  showLinks(links)
+    links = res
+    showLinks(links)
+    
+  }
 })
 
 function getRangeFromInt(root, start, end){
@@ -83,7 +86,7 @@ const showLinks = (links) => {
     mark.classList.add('soft-highlight')
     mark.classList.add('bg-opacity-25')
     mark.style.cursor = 'pointer'
-    mark.onclick = () => goto(`/travelling/${link.target.data.attributes.slug}`)
+    mark.onclick = () => goto(`/travelling/${link.target.slug}`)
     mark.appendChild(range.extractContents())
 
     range.insertNode(mark)

@@ -11,6 +11,8 @@ import ThemeSwitcherIcon from './icons/ThemeSwitcherIcon.svelte';
 import MapIcon from './icons/MapIcon.svelte';
 import MenuIcon from './icons/MenuIcon.svelte';
 import { page } from '$app/stores'
+import user from '$stores/user';
+import Modal from './Modal.svelte';
 
   let openMenu = false
   let openAboutMenu = false
@@ -19,6 +21,7 @@ import { page } from '$app/stores'
   let openWorldbuildersMenu = false
   let openMap = $page.url.pathname === '/lite/map'
   let pathPrefix
+  let loginModal = false
 
   const versionUnsubscribe = version.subscribe(value => {
     pathPrefix = value === 'lite' ? '/adventure/read' : '/'
@@ -31,11 +34,16 @@ import { page } from '$app/stores'
   }
 
   const viewMap = () => {
-    if($page.url.pathname !== '/lite/map') {
-      // toggle
-      openMap = !openMap
-    } 
-    if(openMap === true) goto('/lite/map')
+    if($user.jwt) {
+      if($page.url.pathname !== '/lite/map') {
+        // toggle
+        openMap = !openMap
+      } 
+      if(openMap === true) goto('/lite/map')
+    }
+    else {
+      loginModal = true
+    }
   }
 
   onDestroy(() => versionUnsubscribe)
@@ -147,7 +155,7 @@ import { page } from '$app/stores'
         >
           <section>
             <h2 class="font-bold text-base">How can I be a part of The Reading Room?</h2>
-            <p>We welcome all to contribute as storytellers. We look specifically for stories that are rooted in a place. Every story is important as they add on to how your neighbourhood is seen and experienced by others. It is important to remember to be kind and responsible while sharing, and receive permission if sharing stories that are not your own. If you aren’t sure of what to say, here are our prompts to get you started.</p>
+            <p>We welcome all to contribute as storytellers. We look specifically for stories that are rooted in a place. Every story is important as they add on to how your neighbourhood is seen and experienced by others. It is important to remember to be kind and responsible while sharing, and receive permission if sharing stories that are not your own. If you aren’t sure of what to say, here are our <a href="/prompts" class="underline">prompts</a> to get you started.</p>
           </section>
           <p class="text-xxs">◆</p>
           <section>
@@ -338,7 +346,7 @@ import { page } from '$app/stores'
       {/if}
       <!-- menu card end -->
       
-      <a href="{pathPrefix === '/' ? '/mode' : '/'}" class="self-center">
+      <a href="{pathPrefix === '/' ? '/' : '/'}" class="self-center">
         <h1 class="text-2xl text-contrast">The Reading Room</h1>
       </a>
       
@@ -362,3 +370,11 @@ import { page } from '$app/stores'
     </div>
   </div>
 </header>
+
+<Modal isOpenModal={loginModal} on:closeModal={(e) => loginModal = e.detail.isOpenModal} name="loginModal">
+  <p class="font-bold mb-2">Tell us your story!</p>
+  <p>
+      Please <a class="font-bold underline" href="/auth/login"
+          >log in</a> to use this feature.
+  </p>
+</Modal>

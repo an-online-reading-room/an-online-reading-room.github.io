@@ -38,15 +38,6 @@ import version from "$stores/version";
     </div>
   </div>
 
- <!-- <Modal {isOpenModal} showCloseButton={true} on:close={closeModal}>
-    <p class="font-bold mb-2">Tell us your story!</p>
-    <p>
-        Please <a class="font-bold underline" href="/auth/login"
-            >log in</a> to use this feature.
-    </p>
-    <p>Worried about what story to share? Check out our prompts.</p>
-  </Modal>
-  -->
 </section>
 
 <style>

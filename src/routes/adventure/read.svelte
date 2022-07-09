@@ -23,7 +23,7 @@
         `api/stories?${query}`,
         get(user).jwt
       )
-      data = flattenStrapiResponse(story)[0]
+      data = story[0]
       pointA = {
             slug: url.searchParams.get('story'),
             location: data.location
@@ -59,7 +59,6 @@
 
 <script>
 import Story from "$components/Story.svelte";
-import TopNav from "$components/navigation/TopNav.svelte";
 import Linker from "$components/Linker.svelte";
 import Footer from "$components/Footer.svelte";
 import LinkIcon from "$components/icons/LinkIcon.svelte";
@@ -76,7 +75,6 @@ import { afterNavigate } from '$app/navigation';
 import { get } from "svelte/store";
 import * as api from '$lib/api'
 import qs from 'qs'
-import { flattenStrapiResponse } from "$lib/utils/api";
 import InfoIcon from "$components/icons/InfoIcon.svelte";
 import InfoCard from "$components/InfoCard.svelte";
 
@@ -151,8 +149,6 @@ afterNavigate((navigation) => {
 
 </script>
 
-<TopNav back="/adventure/read" next='/adventure/read'></TopNav>
-
 <div class="px-8 overflow-y-scroll">
     <article class="flex flex-col gap-y-3 py-2 text-left">
         <hgroup class="flex flex-col gap-y-1">
@@ -204,7 +200,7 @@ afterNavigate((navigation) => {
         Please <a class="font-bold underline" href="/auth/login"
             >log in</a> to use this feature.
     </p>
-    <p>Worried about what story to share? Check out our prompts.</p>
+    <p>Worried about what story to share? Check out our <a href="/prompts" class="underline">prompts</a>.</p>
 </Modal>
 
 <ShareCard title="Share this story" open={openShareCard} />

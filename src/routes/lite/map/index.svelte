@@ -8,7 +8,6 @@ import LiteMap from '$components/LiteMap.svelte';
 import Modal from '$components/Modal.svelte';
 import AddIcon from '$components/icons/AddIcon.svelte';
 import mapStore from '$stores/mapStore';
-import { flattenStrapiResponse } from '$lib/utils/api';
 
 
   let travelledDistance
@@ -27,6 +26,8 @@ import { flattenStrapiResponse } from '$lib/utils/api';
     }, 5000)
     
     stories = await getVisitedStories()
+    console.log("mounting map page")
+    console.log(stories)
   })
 
 
@@ -60,7 +61,7 @@ import { flattenStrapiResponse } from '$lib/utils/api';
 
 </script>
 
-{#if stories.length > 0}
+{#if stories.length >= 0}
 <LiteMap {stories} on:distcalcend={(ev) => travelledDistance = ev.detail.value} />
 {/if}
 
@@ -117,7 +118,10 @@ import { flattenStrapiResponse } from '$lib/utils/api';
   <p>fine</p>
 </Modal>
 
-<Modal name="Make a new map" isOpenModal={openNewMapModal}>
+<Modal 
+  name="Make a new map" 
+  isOpenModal={openNewMapModal}
+  on:closeModal={(e) => openNewMapModal = e.detail.isOpenModal}>
   <p>Your current map will be saved to your reading list if you are logged in.</p>
   <p>A new map will contain no read stories - tread carefully this time!</p>
 
