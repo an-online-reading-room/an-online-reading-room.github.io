@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { afterUpdate, onMount } from 'svelte';
   import ShareCard from '$components/ShareCard.svelte'
   import Footer from '$components/Footer.svelte';
 import ShareIcon from '$components/icons/ShareIcon.svelte';
@@ -41,7 +41,7 @@ import mapStore from '$stores/mapStore';
     const newMap = await saveMap(true, title)
     console.log("updated ", newMap)
 
-    shareLink = `/map/${newMap.data.attributes.slug}`
+    shareLink = `/map/${newMap.slug}`
     openLinkModal = true
   }
     
@@ -114,24 +114,24 @@ import mapStore from '$stores/mapStore';
 
 <!-- temp modal -->
 <Modal name="temp share modal" isOpenModal={openLinkModal}>
-  <a href={shareLink}>go to the map!</a>
-  <p>fine</p>
+  <div class="px-4"><a class="underline" href={shareLink}>go to the map!</a></div>
 </Modal>
 
 <Modal 
   name="Make a new map" 
   isOpenModal={openNewMapModal}
   on:closeModal={(e) => openNewMapModal = e.detail.isOpenModal}>
-  <p>Your current map will be saved to your reading list if you are logged in.</p>
-  <p>A new map will contain no read stories - tread carefully this time!</p>
-
-  <div class="flex justify-evenly">
-    <button 
-      class="bg-primary text-black py-2 px-4"
-      on:click={saveCurrentMap}>
-      Yes
-    </button>
-    <button class="bg-primary text-black py-2 px-4">No</button>
+  <div class="px-4">
+    <p>Your current map will be saved to your reading list if you are logged in.</p>
+    <p>A new map will contain no read stories - tread carefully this time!</p>
+    <div class="flex justify-evenly">
+      <button
+        class="bg-primary text-black py-2 px-4"
+        on:click={saveCurrentMap}>
+        Yes
+      </button>
+      <button class="bg-primary text-black py-2 px-4">No</button>
+    </div>
   </div>
 </Modal>
 

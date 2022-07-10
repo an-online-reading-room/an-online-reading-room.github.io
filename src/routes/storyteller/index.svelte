@@ -105,12 +105,14 @@ import SearchIcon from "$components/icons/SearchIcon.svelte";
     {/if}
 </div>
 <Modal {isOpenModal} showCloseButton={false}>
-    <p class="font-bold"> Are you sure you want to delete your story?</p>
-    <p>We’ll miss it!</p>
-    <div class="flex justify-between mt-3">
-        <button class="btn-modal" on:click={() => deleteStory(deletingStory)}
-            >Yes</button>
-        <button class="btn-modal" on:click={closeDeleteModal}>No</button>
+    <div class="px-4">
+        <p class="font-bold"> Are you sure you want to delete your story?</p>
+        <p>We’ll miss it!</p>
+        <div class="flex justify-between mt-3">
+            <button class="btn-modal" on:click={() => deleteStory(deletingStory)}
+                >Yes</button>
+            <button class="btn-modal" on:click={closeDeleteModal}>No</button>
+        </div>
     </div>
 </Modal>
 
