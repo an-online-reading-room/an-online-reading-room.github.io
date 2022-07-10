@@ -13,7 +13,7 @@ let map
 let stories 
 let username 
 let openInfoModal = true
-let distanceTravelled 
+let distanceTravelled = 0
 
 onMount(async () => {
   const mapQuery = qs.stringify({

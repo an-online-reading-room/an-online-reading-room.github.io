@@ -93,7 +93,7 @@ import Modal from './Modal.svelte';
             <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/lite">
               Lite Version
             </a>
-            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/adventure">
+            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/adventure/read">
               Adventure Version
             </a>           
             <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/storyteller">
@@ -372,9 +372,11 @@ import Modal from './Modal.svelte';
 </header>
 
 <Modal isOpenModal={loginModal} on:closeModal={(e) => loginModal = e.detail.isOpenModal} name="loginModal">
-  <p class="font-bold mb-2">Tell us your story!</p>
-  <p>
-      Please <a class="font-bold underline" href="/auth/login"
-          >log in</a> to use this feature.
-  </p>
+  <div class="px-4">
+    <p class="font-bold mb-2">Tell us your story!</p>
+    <p>
+        Please <a class="font-bold underline" href="/auth/login"
+            >log in</a> to use this feature.
+    </p>
+  </div>
 </Modal>

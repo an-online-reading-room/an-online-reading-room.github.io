@@ -185,22 +185,28 @@ afterNavigate((navigation) => {
 </Footer>
 
 <Modal isOpenModal={infoModal} on:closeModal={() => infoModal = false} name="Welcome to the adventure version">
-    <p class="font-bold">Welcome to the adventure version!</p>
-    <p>Explore places through stories, navigate through hyperlinks, and create maps of your own. Read more about the version in the <a class="underline" href="/about/faq"><span class="font-bold">FAQ</span></a>.</p>
+    <div class="px-4">
+        <p class="font-bold">Welcome to the adventure version!</p>
+        <p>Explore places through stories, navigate through hyperlinks, and create maps of your own. Read more about the version in the <a class="underline" href="/about/faq"><span class="font-bold">FAQ</span></a>.</p>
+    </div>
 </Modal>
 
 <Modal isOpenModal={linkingModal} name="linkingModal" on:closeModal={() => linkingModal = false}>
-    <p class="font-bold">Link a story</p>
-    <p><span class="font-bold">Long press</span> to <span class="font-bold">highlight</span> and hyperlink text to another story. If the story doesn’t exist yet, head over to our storyteller section so you can add it in.</p>
+    <div class="px-4">
+        <p class="font-bold">Link a story</p>
+        <p><span class="font-bold">Long press</span> to <span class="font-bold">highlight</span> and hyperlink text to another story. If the story doesn’t exist yet, head over to our storyteller section so you can add it in.</p>
+    </div>
 </Modal>
 
 <Modal isOpenModal={loginModal} name="loginModal">
-    <p class="font-bold mb-2">Tell us your story!</p>
-    <p>
-        Please <a class="font-bold underline" href="/auth/login"
-            >log in</a> to use this feature.
-    </p>
-    <p>Worried about what story to share? Check out our <a href="/prompts" class="underline">prompts</a>.</p>
+    <div class="px-4">
+        <p class="font-bold mb-2">Tell us your story!</p>
+        <p>
+            Please <a class="font-bold underline" href="/auth/login"
+                >log in</a> to use this feature.
+        </p>
+        <p>Worried about what story to share? Check out our <a href="/prompts" class="underline">prompts</a>.</p>
+    </div>
 </Modal>
 
 <ShareCard title="Share this story" open={openShareCard} />

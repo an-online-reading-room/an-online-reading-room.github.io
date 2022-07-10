@@ -49,6 +49,7 @@ const initMap = async () => {
 }
 
 const markStories = async () => {
+  L = (await import('leaflet')).default
   let visitedLatLngs = await Promise.all(stories.map(async story => {
     const coords = await getCoordinates(story.location)
     if(coords != null) {
