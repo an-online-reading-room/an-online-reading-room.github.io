@@ -216,14 +216,13 @@ afterNavigate((navigation) => {
     </div>
 </Modal>
 
-<Modal isOpenModal={loginModal} name="loginModal">
+<Modal isOpenModal={loginModal} name="loginModal" on:closeModal={() => loginModal = false}>
     <div class="px-4">
-        <p class="font-bold mb-2">Tell us your story!</p>
+        <p class="font-bold mb-2">Link a story</p>
         <p>
             Please <a class="font-bold underline" href="/auth/login"
                 >log in</a> to use this feature.
         </p>
-        <p>Worried about what story to share? Check out our <a href="/prompts" class="underline">prompts</a>.</p>
     </div>
 </Modal>
 

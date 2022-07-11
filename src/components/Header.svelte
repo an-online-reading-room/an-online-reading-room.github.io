@@ -373,7 +373,6 @@ import Modal from './Modal.svelte';
 
 <Modal isOpenModal={loginModal} on:closeModal={(e) => loginModal = e.detail.isOpenModal} name="loginModal">
   <div class="px-4">
-    <p class="font-bold mb-2">Tell us your story!</p>
     <p>
         Please <a class="font-bold underline" href="/auth/login"
             >log in</a> to use this feature.
