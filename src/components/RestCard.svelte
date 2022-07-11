@@ -8,7 +8,7 @@ let dice = Math.floor(Math.random()*3)
 
 <main class="text-left text-primary pt-8">
 
-  <section class="px-8 py-3 font-display text-[28px] 
+  <section class="px-8 py-3 font-display text-3xl
   border-t border-b border-primary">
     <h1>Take a break.</h1>
     <h1>Head outdoors!</h1>
