@@ -33,7 +33,7 @@ const closeMenu = () => {
         <h1 class="font-medium text-2xl self-center">{name}</h1>
         {#if inHeader}
         <button
-            class="w-10 h-10 focus:outline-none stroke-menu-accent ml-auto"
+            class="flex-none w-10 h-10 focus:outline-none stroke-menu-accent ml-auto"
             on:click={closeMe}>
             <BackIcon />
         </button>
@@ -41,7 +41,7 @@ const closeMenu = () => {
 
         {#if inHeader}
         <button
-            class="w-10 h-10 focus:outline-none stroke-menu-accent"
+            class="flex-none w-10 h-10 focus:outline-none stroke-menu-accent"
             on:click={closeMenu}>
             <CloseIcon />
         </button>

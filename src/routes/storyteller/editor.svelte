@@ -290,7 +290,7 @@
                 {/if}
                 <p class="self-center  font-text text-contrast text-xs">
                     Read our
-                    <a class="underline" href="/about/terms-and-conditions">
+                    <a class="underline" href="/about/code-of-conduct">
                         code of conduct</a>. In short, be kind!
                     </p>
             </svelte:fragment>
