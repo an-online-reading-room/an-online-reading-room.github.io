@@ -107,7 +107,7 @@
                     autosave_newStoryCreated = true;
                     console.log("Autosaving newly created story");
                     currTime = Date.now();
-                    autosave_newStoryId = res.data.id;
+                    autosave_newStoryId = res.id;
                 } else {
                     console.log("Autosaving and updating newly created story");
 
