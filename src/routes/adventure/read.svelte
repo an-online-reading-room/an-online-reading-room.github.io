@@ -226,5 +226,5 @@ afterNavigate((navigation) => {
     </div>
 </Modal>
 
-<ShareCard title="Share this story" open={openShareCard} />
+<ShareCard title="Share this story" open={openShareCard} getShareText={() => "sharing a story"} />
 <InfoCard info={story} open={openInfoCard}/>

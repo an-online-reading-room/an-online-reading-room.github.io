@@ -5,7 +5,6 @@ export let open = false
 </script>
 
 <svg
-    on:click={() => open = !open}
     class={open ? 'fill-primary stroke-accent' : 'stroke-primary'}
     viewBox="0 0 20 20"
     fill="none"
