@@ -25,7 +25,7 @@ onMount(async () => {
           },
         },
       },
-      populate: ['target'] 
+      populate: ['target', 'user'] 
     }, {
       encodeValuesOnly: true,
     });
@@ -100,7 +100,7 @@ const showLinks = (links) => {
         restTimer.set(10)
       }
       else {
-        goto(`/travelling/${link.target.slug}`)
+        goto(`/travelling/${link.target.slug}?username=${link.user.username}`)
       }
     }
     mark.appendChild(range.extractContents())
