@@ -16,28 +16,46 @@
                 fields: ['username']
             }
         }
-      }, {
+    }, {
         encodeValuesOnly: true
-      })
+    })  
+
+    const story = await api.get(
+        `api/stories?${query}`,
+        get(user).jwt
+    )
+    data = story[0]
+    pointA = {
+        slug: url.searchParams.get('story'),
+        location: data.location
+    }
+
+    } else {
+      
+        const randomSlug = (await api.get(
+            'api/stories/random',
+            get(user).jwt
+        )).slug
+
+        const query = qs.stringify({
+            filters: {
+                slug: { $eq: randomSlug }
+            },
+            populate: {
+                user: {
+                    fields: ['username']
+                }
+            }
+        }, {
+            encodeValuesOnly: true
+        })
+      
       const story = await api.get(
         `api/stories?${query}`,
         get(user).jwt
       )
       data = story[0]
-      pointA = {
-            slug: url.searchParams.get('story'),
-            location: data.location
-        }
 
-    } else {
-      
-      const story = await api.get(
-        'api/stories/random',
-        get(user).jwt
-      ) 
-
-      console.log(story)
-      data = story
       pointA = {
         slug: story.slug,
         location: story.location
