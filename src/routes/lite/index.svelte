@@ -20,6 +20,8 @@ let isOpenModal = checkVisited()
 
 
 <Modal isOpenModal={!isOpenModal} name="lite" on:closeModal={() => {isOpenModal = false; markVisited()}}>
-	<p class="font-bold text-base mb-4">Welcome to the lite version!</p>
-	<p class="text-base leading-[18px]">Find stories in your location, and travel across states and countries. Find your map in the top right corner</p>
+	<div class="px-4">
+		<p class="font-bold text-base mb-4">Welcome to the lite version!</p>
+		<p class="text-base leading-[18px]">Find stories in your location, and travel across states and countries. Find your map in the top right corner</p>
+	</div>
 </Modal>

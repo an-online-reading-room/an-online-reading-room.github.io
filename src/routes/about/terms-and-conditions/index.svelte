@@ -6,7 +6,9 @@ let open = true
 let back
 
 afterNavigate((navigation) => {
-  back = navigation.from.pathname
+    if (navigation.from != null && back != null) {
+        back = navigation.from.pathname;
+    }
 })
 
 </script>
@@ -15,6 +17,7 @@ afterNavigate((navigation) => {
     name="Terms and Conditions"
     {open}
     openMenu={false}
+    inHeader={false}
     on:hide={() => goto(back)}
     on:hideMenu={() => goto(back)}>
     <section class="flex flex-col gap-y-2">

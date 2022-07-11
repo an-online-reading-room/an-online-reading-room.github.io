@@ -6,7 +6,7 @@
 <div class="flex flex-col align-items-center 
             w-screen bg-primary h-full overflow-y-scroll">
   <Header></Header>
-  <TopNav back="/storyteller" next={null}></TopNav>
+  <TopNav back='' next={null}></TopNav>
 
   <main class="h-full overflow-y-scroll font-display text-base text-contrast pl-8 pr-10 py-4
                 leading-5

@@ -5,20 +5,108 @@ import MailIcon from "./icons/MailIcon.svelte";
 import SmsIcon from "./icons/SmsIcon.svelte";
 import CopyLinkIcon from "./icons/CopyLinkIcon.svelte";
 import { createEventDispatcher } from "svelte";
+import { goto } from "$app/navigation";
+import InfoBubble from "./InfoBubble.svelte";
 
 export let open
 export let title
+export let shareText = "username has shared with you a map they created at The Reading Room. Click the link to view and follow their trail: https://thereadingroom.online/"
+export let getShareText 
+const intro = "When was the last time you left your house to explore? The Reading Room is a collaborative placemaking platform to experience your neighbourhood or a stranger’s through other’s eyes."
 
-const dispatch = createEventDispatcher()
+let openInfoBubble = false
 
-const share = (type) => {
+const share = async (type) => {
     open = false
     console.log("sharing through ", type)
-    dispatch('share', {
-        type
-    })
+    
+    // shareText = await getShareText()
+    console.log(shareText)
+
+    switch(type) {
+        case 'whatsapp':
+            shareWhatsApp()
+            break
+        case 'instagram':
+            shareInstagram()
+            break
+        case 'email':
+            shareEmail()
+            break
+        case 'sms':
+            shareSms()
+            break
+        case 'copy-link':
+            shareCopyLink()
+            break
+        default:
+            break
+    }
 }
 
+const shareWhatsApp = () => {
+
+    const urlEncodedText = encodeURIComponent([shareText, intro].join('\n\n'))
+    const a = document.createElement('a')
+    a.href = `https://api.whatsapp.com/send?text=${urlEncodedText}`
+    a.target = '_blank'
+    a.click()
+}
+
+const shareInstagram = () => {
+
+}
+
+const shareEmail = () => {
+ 
+    const urlEncodedText = encodeURIComponent([shareText, intro].join('\n\n'))
+    const emailSubject = "You've got a story!"
+
+    const a = document.createElement('a')
+    a.href = `mailto:?subject=${emailSubject}&body=${urlEncodedText}`
+    a.target = '_blank'
+    a.click()
+
+}
+
+const shareSms = () => {
+    
+    const urlEncodedText = encodeURIComponent([shareText, intro].join('\n\n'))
+
+    const a = document.createElement('a')
+    a.href = `sms:?body=${urlEncodedText}`
+    a.target = '_blank'
+    a.click()
+
+}
+
+const shareCopyLink = () => {
+    if(!navigator.clipboard) {
+        const tempInput = document.createElement('input')
+        document.body.appendChild(tempInput)
+      
+        tempInput.value = window.location.href
+        tempInput.focus()
+        tempInput.select()
+
+        try {
+            document.execCommand('copy')
+        } catch(err) {
+            console.log(err)
+        }
+        document.body.removeChild(tempInput)
+        return
+    } 
+    
+    navigator.clipboard.writeText(window.location.href)
+    .then(() => {
+        openInfoBubble = true
+        setTimeout(() => openInfoBubble = false, 500)
+
+    })
+
+    
+}
 
 </script>
 
@@ -66,3 +154,5 @@ const share = (type) => {
     </div>
 </div>
 {/if}
+
+<InfoBubble open={openInfoBubble}/>

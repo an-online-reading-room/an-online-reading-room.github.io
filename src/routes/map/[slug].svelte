@@ -13,7 +13,7 @@ let map
 let stories 
 let username 
 let openInfoModal = true
-let distanceTravelled 
+let distanceTravelled = 0
 
 onMount(async () => {
   const mapQuery = qs.stringify({
@@ -25,7 +25,7 @@ onMount(async () => {
         populate: {
           story: {
             populate: {
-              users_permissions_user: {
+              user: {
                 fields: ['username']
               }
             },
@@ -47,19 +47,19 @@ onMount(async () => {
   )
   console.log(res)
 
-  username = res.data[0].attributes.user.data.attributes.username
-  map = res.data[0]
-  stories = res.data[0].attributes.visits.data.map(visit => {
-    let story = visit.attributes.story.data.attributes
+  username = res[0].user.username
+  map = res[0]
+  stories = res[0].visits.map(visit => {
+    let story = visit.story
     console.log(story)
-    console.log(story.users_permissions_user)
+    console.log(story.user)
 
     return {
       title: story.title,
       slug: story.slug, 
       location: story.location,
-      users_permissions_user: {
-        username: story.users_permissions_user.data.attributes.username
+      user: {
+        username: story.user.username
       }
     }
   })

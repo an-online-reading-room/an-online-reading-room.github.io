@@ -3,7 +3,7 @@
     import { dev } from "$app/env";
     import { getSuggestions } from "$lib/services/geocode";
     import { user } from "$stores/user.js";
-    import { Clear, Discard, Republish, AddTitle } from "./_modals/modals.js";
+    import { Clear, Discard, AddTitle } from "./_modals/modals.js";
     import { goto, beforeNavigate } from "$app/navigation";
 
     import TopNav from "$components/navigation/TopNav.svelte";
@@ -107,7 +107,7 @@
                     autosave_newStoryCreated = true;
                     console.log("Autosaving newly created story");
                     currTime = Date.now();
-                    autosave_newStoryId = res.data.id;
+                    autosave_newStoryId = res.id;
                 } else {
                     console.log("Autosaving and updating newly created story");
 
@@ -128,7 +128,7 @@
                 title: form.title,
                 location: locationInput,
                 description: form.description,
-                users_permissions_user: $user.id,
+                user: $user.id,
             },
         };
         return storyData;
@@ -152,10 +152,10 @@
     }
 
     async function discardDraft() {
-        editor.render(prevStoryData.attributes.submission);
-        form.title = prevStoryData.attributes.title;
-        form.location = prevStoryData.attributes.location;
-        form.description = prevStoryData.attributes.description;
+        editor.render(prevStoryData.submission);
+        form.title = prevStoryData.title;
+        form.location = prevStoryData.location;
+        form.description = prevStoryData.description;
         let storyData = {
             data: {
                 hasDraft: false,
@@ -184,8 +184,8 @@
             minHeight: 120,
             placeholder: "Add your story",
             data: prevStoryData
-                ? prevStoryData.attributes.draft ??
-                  prevStoryData.attributes.submission
+                ? prevStoryData.draft ??
+                  prevStoryData.submission
                 : {},
             onChange: (api, event) => {
                 //console.log("Now I know that Editor's content changed!", event);
@@ -290,12 +290,12 @@
                 {/if}
                 <p class="self-center  font-text text-contrast text-xs">
                     Read our
-                    <a class="underline" href="/about/terms-and-conditions">
+                    <a class="underline" href="/about/code-of-conduct">
                         code of conduct</a>. In short, be kind!
                     </p>
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
-                {#if prevStoryData?.attributes.publishedAt}
+                {#if prevStoryData?.publishedAt}
                     <button class="w-1/2" type="submit" form="story">
                         Republish
                     </button>

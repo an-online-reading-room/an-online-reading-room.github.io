@@ -1,5 +1,6 @@
 <script>
   import Header from "$components/Header.svelte";  
+import version from "$stores/version";
 </script>
 
 
@@ -22,7 +23,11 @@
               Storyteller
             </button>
           </a>
-          <a href="/lite">
+          <a href={
+            $version === 'lite' 
+            ? '/lite'
+            : '/adventure/read'
+          }>
             <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
               Listener
             </button>
@@ -33,15 +38,6 @@
     </div>
   </div>
 
- <!-- <Modal {isOpenModal} showCloseButton={true} on:close={closeModal}>
-    <p class="font-bold mb-2">Tell us your story!</p>
-    <p>
-        Please <a class="font-bold underline" href="/auth/login"
-            >log in</a> to use this feature.
-    </p>
-    <p>Worried about what story to share? Check out our prompts.</p>
-  </Modal>
-  -->
 </section>
 
 <style>
