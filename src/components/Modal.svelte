@@ -27,7 +27,7 @@ import CloseIcon from "./icons/CloseIcon.svelte";
       id="modal"
       class="fixed w-full px-6 top-1/2 left-1/2 z-20 "
       >
-      <div class="font-text text-left text-sm bg-accent text-primary py-4 pl-4 pr-12 rounded shadow-xl">
+      <div class="font-text text-left text-sm bg-accent text-primary py-4 rounded shadow-xl">
           <slot></slot>
       </div>
 

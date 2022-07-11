@@ -1,32 +1,40 @@
 <script>
-import qs from 'qs'
 import { onMount } from 'svelte';
-import * as api from "$lib/api"
-import user from '$stores/user';
-import { flattenStrapiResponse } from '$lib/utils/api';
 import { goto } from '$app/navigation';
+import qs from 'qs'
+import * as api from '$lib/api'
+import user from '$stores/user';
+import Modal from './Modal.svelte';
+import RestCard from './RestCard.svelte';
+import { restTimer } from '$stores/restTimer';
 
 export let story
+export let isLite
 let links
 
+let openRestCard = false
+
 onMount(async () => {
-  const query = qs.stringify({
-    filters: {
-      source: {
-        id: {
-          $eq: story.id,
+  if(!isLite) {
+    
+    const query = qs.stringify({
+      filters: {
+        source: {
+          id: {
+            $eq: story.id,
+          },
         },
       },
-    },
-    populate: ['target'] 
-  }, {
-    encodeValuesOnly: true,
-  });
+      populate: ['target', 'user'] 
+    }, {
+      encodeValuesOnly: true,
+    });
+    const res = await api.get(`api/links?${query}`, $user.jwt)
 
-  const res = await api.get(`api/links?${query}`, $user.jwt)
-  links = flattenStrapiResponse(res)
-  // console.log(links)
-  showLinks(links)
+    links = res
+    showLinks(links)
+    
+  }
 })
 
 function getRangeFromInt(root, start, end){
@@ -74,6 +82,7 @@ function getRangeFromInt(root, start, end){
 
 const showLinks = (links) => {
   links.forEach(link => {
+    console.log(link)
     const block = document.querySelector(`[data-blockid="${link.blockID}"]`)
 
     let range = getRangeFromInt(block, link.startOffset, link.endOffset)
@@ -83,7 +92,17 @@ const showLinks = (links) => {
     mark.classList.add('soft-highlight')
     mark.classList.add('bg-opacity-25')
     mark.style.cursor = 'pointer'
-    mark.onclick = () => goto(`/travelling/${link.target.data.attributes.slug}`)
+    mark.onclick = () => {
+      $restTimer -= 1
+      console.log($restTimer)
+      if($restTimer === 0) {
+        openRestCard = true
+        restTimer.set(10)
+      }
+      else {
+        goto(`/travelling/${link.target.slug}?username=${link.user.username}`)
+      }
+    }
     mark.appendChild(range.extractContents())
 
     range.insertNode(mark)
@@ -92,7 +111,7 @@ const showLinks = (links) => {
 
 </script>
 
-<main>
+<main class="text-left font-display text-base">
   {#each story.submission.blocks as block}
     {#if block.type == "paragraph"}
         <p data-blockid={block.id}>
@@ -103,3 +122,7 @@ const showLinks = (links) => {
     {/if}
   {/each}
 </main>
+
+<Modal name="share card" isOpenModal={openRestCard} on:closeModal={() => openRestCard = false}>
+  <RestCard />
+</Modal>

@@ -79,7 +79,7 @@ import mapStore from '$stores/mapStore';
                                 <h1>{story.title}</h1>
                             </div>
                             <div class="text-sm">
-                                <p>{story.username}</p>
+                                <p>{story.user.username}</p>
                             </div>
                             <div class="text-sm">
                                 <p>{story.location}</p>

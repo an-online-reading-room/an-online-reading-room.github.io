@@ -5,14 +5,15 @@ export let back;
 export let next;
 
 afterNavigate((navigation) => {
-    if(navigation.from != null) {
+    if(navigation.from != null && back === '') {
+        console.log("navigating")
         back = navigation.from.pathname
     }
 })
 </script>
 
 <div class="flex h-9 border-y border-contrast text-contrast px-6 justify-between">
-    {#if back}
+    {#if back != null}
     <button on:click={() => goto(back)} class="navBtn">
         <svg
             width="7"
