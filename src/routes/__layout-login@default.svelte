@@ -29,12 +29,10 @@
     {:else}
     <div class="background h-full bg-top bg-cover">
         <Modal isOpenModal={true} showCloseButton={false}>
-            <p class="font-bold mb-2">Tell us your story!</p>
             <p>
                 Please <a class="font-bold underline" href="/auth/login"
                     >log in</a> to use this feature.
             </p>
-            <p>Worried about what story to share? Check out our prompts.</p>
         </Modal>
     </div>
     {/if}
