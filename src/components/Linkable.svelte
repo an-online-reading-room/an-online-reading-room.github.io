@@ -1,10 +1,46 @@
 <script>
-import Linker from "$components/Linker.svelte";
-import { createEventDispatcher } from "svelte";
+import { browser } from "$app/env";
+
+import { createEventDispatcher, onMount } from "svelte";
 
 export let story
 const dispatch = createEventDispatcher()
 
+const showTool = (event) => {
+
+  const pos = {
+    x: event.changedTouches[0].clientX,
+    y: event.changedTouches[0].clientY
+  }
+  const blockID = event.target.dataset.blockid
+
+  if(browser) {
+    document.addEventListener('selectionchange', moveTool)
+  }
+
+
+  setTimeout(() => {
+    dispatch("linktouchstart", { 
+      pos, 
+      blockID, 
+      selectionChangeListener: moveTool })
+
+  }, 1000)
+
+}
+
+const moveTool = (event) => {
+  console.log("moving toolbar")
+  console.log(window.getSelection())
+
+  const selection = window.getSelection()
+  const range = selection.getRangeAt(0)
+  const boundingRect = range.getBoundingClientRect()
+
+  dispatch("linkselectionchange", { y: boundingRect.y+boundingRect.height })
+}
+
+// NOTE : obsolete functions 
 const select = (event) => {
   // fires on every mouse click
   let pos 
@@ -55,11 +91,7 @@ const reset = () => {
     {#each story.submission.blocks as block}
     <p
     data-blockid={block.id}
-    on:mouseup|capture={select} 
-    on:mousedown|capture={reset}
-    on:touchend|capture={select}
-    on:touchstart|capture={reset}
-    >
+    on:touchstart={showTool}>
       {block.data.text}
     </p>
     {/each}
