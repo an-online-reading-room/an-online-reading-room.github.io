@@ -1,4 +1,12 @@
-<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<script>
+    export let open = false;
+</script>
+
+<svg
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={open ? "fill-primary stroke-accent" : "stroke-primary"}>
     <circle
         cx="10"
         cy="10"
