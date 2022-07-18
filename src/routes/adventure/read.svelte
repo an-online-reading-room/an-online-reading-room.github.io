@@ -167,7 +167,7 @@ afterNavigate((navigation) => {
 
 </script>
 
-<div class="px-8 overflow-y-scroll">
+<div class="px-8 overflow-y-scroll pb-20">
     <article class="flex flex-col gap-y-3 py-2 text-left">
         <hgroup class="flex flex-col gap-y-1">
             <h3 class="font-display font-bold text-xxs uppercase text-accent">{formatDate(story.publishedAt)}</h3>
@@ -195,7 +195,7 @@ afterNavigate((navigation) => {
     </button>
     
     <button class="stroke-current w-6 h-6" on:click={enableLinkingMode}>
-        <LinkIcon />
+        <LinkIcon open={linkingMode}/>
     </button>
     <button class="stroke-current w-6 h-6" on:click={() => {openShareCard = !openShareCard; openInfoCard = false}}>
         <ShareIcon open={openShareCard}/>
