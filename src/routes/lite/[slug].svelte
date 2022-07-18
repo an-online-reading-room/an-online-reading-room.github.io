@@ -98,6 +98,9 @@ import { afterNavigate } from '$app/navigation';
         console.log(`you just visited story ${story} with visit id ${newVisit.id}`)
     }
 
+    const bookmarkstory = () => {
+        console.log("Bookmarking : ", story.id)
+    }
     afterNavigate((navigation) => {
         addVisit(story.id)
     })
@@ -127,7 +130,7 @@ import { afterNavigate } from '$app/navigation';
 
 
 <Footer>
-    <button class="stroke-current w-6 h-6">
+    <button on:click={bookmarkstory} class="stroke-current w-6 h-6">
         <BookmarkIcon />
     </button>
     
