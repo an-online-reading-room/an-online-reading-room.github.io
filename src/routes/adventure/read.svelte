@@ -116,9 +116,9 @@ const formatDate = (dateString) => {
     return `${day}${suffix} ${month} ${year}`
 }
 
-const enableLinkingMode = () => {
+const toggleLinkingMode = () => {
     if($user.jwt) {
-        linkingMode = true
+        linkingMode = !linkingMode
         if($modalStore.linkingModal === false) {
             linkingModal = true
             modalStore.set('linkingModal')
@@ -194,7 +194,7 @@ afterNavigate((navigation) => {
         <InfoIcon open={openInfoCard}/>
     </button>
     
-    <button class="stroke-current w-6 h-6" on:click={enableLinkingMode}>
+    <button class="stroke-current w-6 h-6" on:click={toggleLinkingMode}>
         <LinkIcon open={linkingMode}/>
     </button>
     <button class="stroke-current w-6 h-6" on:click={() => {openShareCard = !openShareCard; openInfoCard = false}}>

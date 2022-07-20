@@ -7,11 +7,9 @@ export let story
 const dispatch = createEventDispatcher()
 
 const showTool = (event) => {
+  document.removeEventListener('selectionchange', moveTool)
 
-  const pos = {
-    x: event.changedTouches[0].clientX,
-    y: event.changedTouches[0].clientY
-  }
+
   const blockID = event.target.dataset.blockid
 
   if(browser) {
@@ -19,21 +17,27 @@ const showTool = (event) => {
   }
 
 
-  setTimeout(() => {
-    dispatch("linktouchstart", { 
-      pos, 
-      blockID, 
-      selectionChangeListener: moveTool })
+ 
+  dispatch("linktouchstart", { 
+    blockID, 
+    selectionChangeListener: moveTool 
+  })
 
-  }, 1000)
 
 }
 
 const moveTool = (event) => {
-  console.log("moving toolbar")
-  console.log(window.getSelection())
 
-  const selection = window.getSelection()
+  const selection = document.getSelection()
+  if(selection.isCollapsed === true) {
+    console.log("linker: selection range is collapsed.")
+    document.removeEventListener('selectionchange', moveTool)
+    dispatch("linkfalsestart")
+    return
+  } 
+
+
+
   const range = selection.getRangeAt(0)
   const boundingRect = range.getBoundingClientRect()
 
@@ -89,11 +93,15 @@ const reset = () => {
 <div>
   <main>
     {#each story.submission.blocks as block}
-    <p
-    data-blockid={block.id}
-    on:touchstart={showTool}>
-      {block.data.text}
-    </p>
+      {#if block.type == "paragraph"}
+          <p 
+          data-blockid={block.id}
+          on:touchstart={showTool}>
+          {block.data.text.replace("&nbsp;","")}
+          </p>
+      {:else if block.type == "image"}
+          <img class="w-full" src={block.data.file.url} alt={block.data.file.caption}/>
+      {/if}
     {/each}
   </main>
 </div>
