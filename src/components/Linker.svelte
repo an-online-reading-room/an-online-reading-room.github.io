@@ -8,12 +8,11 @@ import user from "$stores/user";
 import SearchIcon from "./icons/SearchIcon.svelte";
 
 export let story 
-let toolbar, searchInput
+let container, toolbar, searchInput
 let searchQuery = '', linksValue 
 let optionsContainer, filteredLinks = []
 let selectedRange
 let blockID, source = story.id
-let finished = false
 
 let startOffset, endOffset
 
@@ -30,11 +29,10 @@ onMount(() => {
 onDestroy(() => linksUnsubscribe)
 
 const showToolbar = (event) => {
+  console.log("linker: init")
 
-  const top = event.detail.pos.y
-  toolbar.style.top = `${top + 12}px`
-  toolbar.style.left = `${2}rem`
-  toolbar.classList.remove('hidden')
+
+  removeMark()
   
   blockID = event.detail.blockID
   selectionChangeListener = event.detail.selectionChangeListener
@@ -43,12 +41,17 @@ const showToolbar = (event) => {
 
 const moveToolbar = (event) => {
 
-  console.log("moving bar")
+  const toShow = Array.from(toolbar.classList).includes('hidden') ? true : false
+  if(toShow) toolbar.classList.remove('hidden')
+
+  toolbar.style.left = `${2}rem`
   toolbar.style.top = `${event.detail.y + 12}px`
 
 }
 
 const updateSelectedRange = () => {
+  console.log("linker: updating selection range")
+
   const selection = window.getSelection()
   const range = selection.getRangeAt(0)
 
@@ -56,7 +59,7 @@ const updateSelectedRange = () => {
   // selectedRange.setStart(selection.anchorNode, selection.anchorOffset)
   // selectedRange.setEnd(selection.focusNode, selection.focusOffset)
 
-  console.log(range)
+  // console.log(range)
   selectedRange = range 
   startOffset = range.startOffset
   endOffset = range.endOffset
@@ -92,21 +95,31 @@ const repositionToolbar = () => {
 }
 
 const createLink = (event) => {
+  removeMark()
+  
   const target = event.target.dataset.story
   highlight(target)
   
-  hide()
+  hideToolbar()
+}
+
+const removeMark = () => {
+  const mark = document.querySelector('span.soft-highlight.bg-opacity-25')
+  if (mark) {
+    // check if toolbar inside mark 
+    const toolbar = mark.querySelector("#toolbar")
+    if(toolbar) container.appendChild(toolbar)
+
+    mark.remove()
+    const textNode = document.createTextNode(mark.childNodes[0].textContent)
+    selectedRange.insertNode(textNode)
+  }
+
 }
 
 const highlight = (target) => {
-  console.log("highlighting")
+  console.log("linker: saving link")
   const mark = document.querySelector('span.soft-highlight.bg-opacity-25')
-  mark.remove()
-
-  // console.log("range :", range)
-
-  const textNode = document.createTextNode(mark.childNodes[0].textContent)
-  selectedRange.insertNode(textNode)
 
   console.log("during highlight")
   console.log(startOffset)
@@ -124,13 +137,15 @@ const highlight = (target) => {
     content: mark.childNodes[0].textContent
   })
 
-  finished = true
 }
 
-const hide = () => {
-  
+const hideToolbar = () => {
+  console.log("linker: hiding toolbar")
+
   const toHide = Array.from(toolbar.classList).includes('hidden') ? false : true
+  // console.log(toHide)
   if(toHide) toolbar.classList.add('hidden')
+
   searchQuery = null
   
  
@@ -208,9 +223,10 @@ const unwrap = () => {
 
 </script>
 
-<div>
+<div bind:this={container}>
   <main
   class="absolute hidden text-primary text-sm stroke-primary z-50" 
+  id="toolbar"
   bind:this={toolbar}>
     <div class="arrow-up"></div>
     <div class="bg-accent flex flex-row h-10 rounded">
@@ -248,8 +264,9 @@ const unwrap = () => {
   <Linkable 
   {story} 
   on:selected={show} 
-  on:reset={hide}
+  on:reset={hideToolbar}
   on:linktouchstart={showToolbar}
+  on:linkfalsestart={hideToolbar}
   on:linkselectionchange={moveToolbar}
   on:linkselectionchange={updateSelectedRange}
   >
