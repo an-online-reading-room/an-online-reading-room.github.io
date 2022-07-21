@@ -2,7 +2,7 @@
     import * as api from "$lib/api.js";
     import { onMount } from "svelte";
     import { user } from "$stores/user";
-    import Delete from "$components/icons/Delete.svelte";
+    import DeleteIcon from "$components/icons/DeleteIcon.svelte";
     import Modal from "$components/utils/Modal.svelte";
     import SearchIcon from "$components/icons/SearchIcon.svelte";
 
@@ -72,7 +72,7 @@
                     <button
                         on:click|preventDefault={() =>
                             deleteBookmark(story.id)}>
-                        <Delete />
+                        <DeleteIcon />
                     </button>
                 </div>
 
