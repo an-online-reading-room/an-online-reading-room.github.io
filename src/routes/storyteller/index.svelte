@@ -2,7 +2,7 @@
     import * as api from "$lib/api.js";
     import { onMount } from "svelte";
     import { user } from "$stores/user";
-    import Delete from "$components/icons/Delete.svelte";
+    import DeleteIcon from "$components/icons/DeleteIcon.svelte";
     import Modal from "$components/utils/Modal.svelte";
 import SearchIcon from "$components/icons/SearchIcon.svelte";
 
@@ -85,7 +85,7 @@ import SearchIcon from "$components/icons/SearchIcon.svelte";
                     <span class="italic text-xs px-2"
                         >{story.publishedAt ? (story.hasDraft ? "editing" : "published") : "draft"}</span>
                     <button on:click|preventDefault={() => openDeleteModal(story.id)}>
-                        <Delete />
+                        <DeleteIcon />
                     </button>
                 </div>
 
