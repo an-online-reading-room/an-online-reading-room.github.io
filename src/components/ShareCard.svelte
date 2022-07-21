@@ -129,11 +129,11 @@ const shareCopyLink = () => {
                     class="stroke-primary fill-primary">
                     <WhatsAppIcon />
                 </button>
-                <button
+                <!-- <button
                     on:click={() => share('instagram')}
                     class="stroke-primary fill-primary">
                     <InstagramIcon />
-                </button>
+                </button> -->
                 <button
                     on:click={() => share('email')}
                     class="stroke-primary fill-primary">

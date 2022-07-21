@@ -99,7 +99,7 @@ import Modal from './Modal.svelte';
             <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/storyteller">
               Storyteller
             </a>  
-            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/">
+            <a class="cursor-pointer text-center w-full py-4" on:click={() => openMenu = false} href="/profile">
               Reading List
             </a>
           </nav>
@@ -350,10 +350,10 @@ import Modal from './Modal.svelte';
         <h1 class="text-2xl text-contrast">The Reading Room</h1>
       </a>
       
-      <div class="w-10 h-10 focus:outline-none ml-auto text-accent">
+      <div class="w-10 h-10 focus:outline-none ml-auto text-black">
           <button 
             on:click={viewMap}>
-            <MapIcon active={openMap}/>
+            <MapIcon openHeader={openMap}/>
           </button>
       </div>
       <button class="w-10 h-10 focus:outline-none text-contrast"

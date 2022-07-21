@@ -7,6 +7,8 @@
     import { goto } from "$app/navigation";
     import { put } from "$lib/api.js";
     import { user } from "$stores/user.js";
+import MapIcon from "$components/icons/MapIcon.svelte";
+import ProfileIcon from "$components/icons/ProfileIcon.svelte";
 
     let showEditUsernameForm = false;
     let showEditEmailForm = false;
@@ -147,17 +149,22 @@
         <div class="btn">Logout</div>
     </button>
 </div>
+
 <Footer>
-    <button class="stroke-current w-6 h-6">
+    <a href="/profile/bookmarks" class="stroke-current w-6 h-6">
         <BookmarkIcon />
-    </button>
-    <button class="stroke-current w-6 h-6">
+    </a>
+    <a href="/profile/maps" class="stroke-current w-6 h-6">
+        <MapIcon />
+    </a>
+    <a href="/profile/links" class="stroke-current w-6 h-6">
         <LinkIcon />
-    </button>
-    <button class="stroke-current w-6 h-6">
-        <ShareIcon />
-    </button>
+    </a>
+    <a href="/profile" class="stroke-current w-6 h-6">
+        <ProfileIcon open={true}/>
+    </a>
 </Footer>
+
 
 <style lang="postcss">
     .btn {
