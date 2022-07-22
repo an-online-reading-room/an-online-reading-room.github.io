@@ -1,4 +1,6 @@
 <script>
+import { goto } from "$app/navigation";
+
 import Footer from "$components/Footer.svelte";
 import GenericList from "$components/GenericList.svelte";
 import BookmarkIcon from "$components/icons/BookmarkIcon.svelte";
@@ -6,6 +8,12 @@ import LinkIcon from "$components/icons/LinkIcon.svelte";
 import MapIcon from "$components/icons/MapIcon.svelte";
 import ProfileIcon from "$components/icons/ProfileIcon.svelte";
 import linkStore from "$stores/profile/linkStore";
+
+const visitLink = (ev) => {
+  const source = ev.detail.item.source
+  
+  goto(`/adventure/read?story=${source.slug}`)
+}
 
 const deleteLink = async (ev) => {
   const id = await linkStore.delete(ev.detail.id)
@@ -22,6 +30,7 @@ title="Hyperlinks"
 filters={['content']}
 searchPlaceholder="Search for a story/location/username"
 let:item={item}
+on:visit={visitLink}
 on:delete={deleteLink}
 >
 
