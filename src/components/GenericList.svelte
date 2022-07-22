@@ -87,9 +87,10 @@ h-full">
                   border border-contrast border-1
                   text-left font-text
                   inline-flex flex-col gap-y-2
-                  relative">
+                  relative"
+                  on:click={() => dispatch('visit', { item: item })}>
                   <div class="absolute top-0 right-0 pt-2 pr-2"
-                    on:click={() => confirmDeleteAction(item)}>
+                    on:click|stopPropagation={() => confirmDeleteAction(item)}>
                     <DeleteIcon />
                   </div>
                     <slot {item}></slot>

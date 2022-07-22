@@ -38,8 +38,12 @@ import user from '$stores/user';
     const newMap = await saveMap(true, title)
     console.log("updated ", newMap)
 
-    const shareText = `${$user.username} has shared with you a map they created at The Reading Room. Click the link to view and follow their trail: ${variables.site_url}/map/${newMap.slug}`
-    return shareText
+    const shareText = `${$user.username} has shared with you a map they created at The Reading Room. Click the link to view and follow their trail: ${variables.site_url}/map/${newMap.slug}?shared`
+    const shareLink = `${variables.site_url}/map/${newMap.slug}?shared`
+    return {
+      text: shareText,
+      link: shareLink
+    }
   }
 
   const checkMapFormValidity = () => {
@@ -113,7 +117,7 @@ import user from '$stores/user';
 <ShareCard 
   open={openShareCard} 
   title="Share this story map"
-  getShareText={saveMapToShare}
+  getShareInfo={saveMapToShare}
 />
 
 <Modal 

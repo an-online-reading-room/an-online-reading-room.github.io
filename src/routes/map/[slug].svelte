@@ -12,7 +12,7 @@ const slug = $page.params.slug
 let map 
 let stories 
 let username 
-let openInfoModal = true
+let openInfoModal = $page.url.searchParams.has('shared') ? true : false
 let distanceTravelled = 0
 
 onMount(async () => {

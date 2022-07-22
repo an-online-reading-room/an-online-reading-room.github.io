@@ -10,8 +10,12 @@ import InfoBubble from "./InfoBubble.svelte";
 
 export let open
 export let title
-export let shareText = "username has shared with you a map they created at The Reading Room. Click the link to view and follow their trail: https://thereadingroom.online/"
-export let getShareText 
+export let shareInfo = {
+    text: "username has shared with you a map they created at The Reading Room. Click the link to view and follow their trail: https://thereadingroom.online/",
+    link: "thereadingroom.online" 
+}
+
+export let getShareInfo 
 const intro = "When was the last time you left your house to explore? The Reading Room is a collaborative placemaking platform to experience your neighbourhood or a stranger’s through other’s eyes."
 
 let openInfoBubble = false
@@ -20,8 +24,9 @@ const share = async (type) => {
     open = false
     console.log("sharing through ", type)
     
-    // shareText = await getShareText()
-    console.log(shareText)
+    shareInfo = await getShareInfo()
+    console.log(shareInfo.text)
+    console.log(shareInfo.link)
 
     switch(type) {
         case 'whatsapp':
@@ -46,7 +51,7 @@ const share = async (type) => {
 
 const shareWhatsApp = () => {
 
-    const urlEncodedText = encodeURIComponent([shareText, intro].join('\n\n'))
+    const urlEncodedText = encodeURIComponent([shareInfo.text, intro].join('\n\n'))
     const a = document.createElement('a')
     a.href = `https://api.whatsapp.com/send?text=${urlEncodedText}`
     a.target = '_blank'
@@ -59,7 +64,7 @@ const shareInstagram = () => {
 
 const shareEmail = () => {
  
-    const urlEncodedText = encodeURIComponent([shareText, intro].join('\n\n'))
+    const urlEncodedText = encodeURIComponent([shareInfo.text, intro].join('\n\n'))
     const emailSubject = "You've got a story!"
 
     const a = document.createElement('a')
@@ -71,7 +76,7 @@ const shareEmail = () => {
 
 const shareSms = () => {
     
-    const urlEncodedText = encodeURIComponent([shareText, intro].join('\n\n'))
+    const urlEncodedText = encodeURIComponent([shareInfo.text, intro].join('\n\n'))
 
     const a = document.createElement('a')
     a.href = `sms:?body=${urlEncodedText}`
@@ -85,7 +90,7 @@ const shareCopyLink = () => {
         const tempInput = document.createElement('input')
         document.body.appendChild(tempInput)
       
-        tempInput.value = window.location.href
+        tempInput.value = shareInfo.link
         tempInput.focus()
         tempInput.select()
 
@@ -98,7 +103,7 @@ const shareCopyLink = () => {
         return
     } 
     
-    navigator.clipboard.writeText(window.location.href)
+    navigator.clipboard.writeText(shareInfo.link)
     .then(() => {
         openInfoBubble = true
         setTimeout(() => openInfoBubble = false, 500)

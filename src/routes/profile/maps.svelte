@@ -1,4 +1,6 @@
 <script>
+import { goto } from "$app/navigation";
+
 import Footer from "$components/Footer.svelte";
 import GenericList from "$components/GenericList.svelte";
 import BookmarkIcon from "$components/icons/BookmarkIcon.svelte";
@@ -7,6 +9,11 @@ import MapIcon from "$components/icons/MapIcon.svelte";
 import ProfileIcon from "$components/icons/ProfileIcon.svelte";
 import mapStore from "$stores/profile/mapStore";
 
+const visitMap = (ev) => {
+  const map = ev.detail.item
+
+  goto(`/map/${map.slug}`)
+}
 
 const deleteMap = async (e) => {
   const id = await mapStore.delete(e.detail.id)
@@ -27,7 +34,9 @@ title="Maps"
 filters={['title']}
 searchPlaceholder="Search for a map name"
 let:item={item}
+on:visit={visitMap}
 on:delete={deleteMap}
+
 >
   <div class="flex flex-col gap-y-2">
     <h1 class="text-base font-medium font-display">{item.title}</h1>
