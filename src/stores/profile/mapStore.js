@@ -22,6 +22,7 @@ export default {
 
     const query = qs.stringify({
       filters: {
+        title: { $notNull: true } ,
         user: {
           username: { $eq: get(user).username }
         }
