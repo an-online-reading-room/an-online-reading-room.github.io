@@ -3,7 +3,11 @@ import Header from "$components/Header.svelte";
 import version from "$stores/version";
 </script>
 
-<Header></Header>
+<section class="pt-6 flex flex-row justify-center text-2xl">
+  <a href="/">
+    <h1>The Reading Room</h1>
+  </a>
+</section>
 <section class="flex flex-col justify-center items-center 
             w-screen h-full bg-cover bg-center
             text-center">
@@ -31,14 +35,14 @@ import version from "$stores/version";
               Adventure
             </button>
           </a>
-          <a href="/">
+          <a href="/under-construction">
             <button class="font-display text-sm px-4 py-2 bg-accent text-white w-1/2">
               Outdoors
             </button>
           </a>
         </div>
       </div>
-      <p class="text-xxs">Turn on GPS for best experience.</p>
+      <!-- <p class="text-xxs">Turn on GPS for best experience.</p> -->
     </div>
   </div>
 </section>

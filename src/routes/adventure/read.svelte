@@ -212,7 +212,7 @@ afterNavigate((navigation) => {
 <Modal isOpenModal={linkingModal} name="linkingModal" on:closeModal={() => linkingModal = false}>
     <div class="px-4">
         <p class="font-bold">Link a story</p>
-        <p><span class="font-bold">Long press</span> to <span class="font-bold">highlight</span> and hyperlink text to another story. If the story doesn’t exist yet, head over to our storyteller section so you can add it in.</p>
+        <p><span class="font-bold">Long press</span> to <span class="font-bold">highlight</span> and hyperlink text to another story. They are saved in your reading list (menu > reading list > hyperlinks).</p>
     </div>
 </Modal>
 
@@ -226,5 +226,10 @@ afterNavigate((navigation) => {
     </div>
 </Modal>
 
-<ShareCard title="Share this story" open={openShareCard} getShareText={() => "sharing a story"} />
+<ShareCard title="Share this story" open={openShareCard} getShareInfo={() => {
+    return {
+        text: `${$user.username} has shared with you a story on The Reading Room. Click to read more: ${window.location.href}`,
+        link: `${window.location.href}`
+    }
+}} />
 <InfoCard info={story} open={openInfoCard}/>

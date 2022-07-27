@@ -17,6 +17,7 @@ import Modal from './Modal.svelte';
   let openMenu = false
   let openAboutMenu = false
   let openFAQMenu = false
+  let openInfographicMenu = false
   let openTermsMenu = false
   let openWorldbuildersMenu = false
   let openMap = $page.url.pathname === '/lite/map'
@@ -160,7 +161,9 @@ import Modal from './Modal.svelte';
           <p class="text-xxs">◆</p>
           <section>
             <h2 class="font-bold text-base">What is a Choose Your Own Adventure experience?</h2>
-            <p>As a listener, we have recreated the experience of navigating a new neighbourhood yourself. After you view a story, you can choose any hyperlink to read a new story. Thereafter, each story leads to a new set of stories. You know what they say, if you don't know where you're going, any road will get you there. Here is an <a href="/" class="underline font-bold">infographic</a> on how to use it.</p>
+            <p>As a listener, we have recreated the experience of navigating a new neighbourhood yourself. After you view a story, you can choose any hyperlink to read a new story. Thereafter, each story leads to a new set of stories. You know what they say, if you don't know where you're going, any road will get you there. Here is an 
+              <span class="underline font-bold" on:click={() => openInfographicMenu = !openInfographicMenu}>infographic</span> 
+            on how to use it.</p>
           </section>
           <p class="text-xxs">◆</p>
           <section>
@@ -193,6 +196,22 @@ import Modal from './Modal.svelte';
         {/if}
         <!-- FAQ Menu Card End -->
 
+        <!-- Infographic Menu Card Start -->
+        {#if openInfographicMenu}
+        <MenuItem name="How does it work?" open={openInfographicMenu} {openMenu} 
+        on:hide={() => openInfographicMenu = !openInfographicMenu}
+        on:hideMenu={() => openMenu = !openMenu}
+        >
+        <section>
+          <p>The Adventure Version mimics exploring the outdoors. You choose your own route by clicking on hyperlinks and find stories along the way.</p>   
+        </section>
+        <section class="w-screen mx-[-24px]">
+          <img class="w-full" src="/img/infographic.png" alt="infographic">
+        </section>
+        </MenuItem>
+        {/if}
+        <!-- Infographic Menu Card End -->
+
         <!-- Worldbuilders Menu Card Start -->
         {#if openWorldbuildersMenu}
         <MenuItem name="Worldbuilders" open={openWorldbuildersMenu} {openMenu}
@@ -210,13 +229,27 @@ import Modal from './Modal.svelte';
           <section>
             <h2 class="font-bold text-lg">Core Team</h2>
             <ul>
-              <li>Neeti Sivakumar</li>
-              <li>Anushka Trivedi</li>
-              <li>George Panicker</li>
-              <li>Ishwari Arambam</li>
-              <li>Shreya Pidikiti</li>
-              <li>Oshin Padhye</li>
-              <li>Himanshu Erande</li>
+              <a href="/team/neeti-sivakumar">
+                <li class="underline">Neeti Sivakumar</li>
+              </a>
+              <a href="/team/anushka-trivedi">
+                <li class="underline">Anushka Trivedi</li>
+              </a>
+              <a href="/team/george-panicker">
+                <li class="underline">George Panicker</li>
+              </a>
+              <a href="/team/ishwari-arambam">
+                <li class="underline">Ishwari Arambam</li>
+              </a>
+              <a href="/team/shreya-pidikiti">
+                <li class="underline">Shreya Pidikiti</li>
+              </a>
+              <a href="/team/oshin-padhye">
+                <li class="underline">Oshin Padhye</li>
+              </a>
+              <a href="/team/himanshu-erande">
+                <li class="underline">Himanshu Erande</li>
+              </a>
             </ul>
           </section>
           <section class="flex flex-col gap-y-3">
@@ -255,6 +288,13 @@ import Modal from './Modal.svelte';
         on:hide={() => openTermsMenu = !openTermsMenu}
         on:hideMenu={() => openMenu = !openMenu}
         >
+        <section>
+          <p>Read this document as a pdf 
+          <a class="underline" target="_blank" href="https://drive.google.com/file/d/134X2cvN52AQ0NEoTjuBjSvYdW0gM8gr8/view?usp=sharing">here</a>
+          and 
+          <a class="underline" target="_blank" href="https://drive.google.com/file/d/1LrSCkhWIQWbL4pP8mqPPdQ9qel1p-8on/view?usp=sharing">here</a></p>
+        </section>
+
           <section class="flex flex-col gap-y-2">
             <p>This Terms of Use govern your use of the website, materials, content and the services offered through thereadingroom.online (“Site”).  For the purpose of these Terms of Use, wherever the context so require ‘you’ or “your” or “user” shall mean any natural or legal person who has agreed to become a user of the Site by using the Site as a registered user or browses the Site. Your access or use of the Site is subject to the terms and conditions of use as set out here (“Terms of Use”).</p>
             <p>Please note that by accessing or using the Site you agree to be bound by the Terms of Use and the Terms of Use is a legally binding agreement between you and us, The Reading Room, the owner of the Site (“Company”). The Company may modify all or any part of these Terms of Use from time to time and may not provide notice to You. You are encouraged to check back often so You are aware of your current rights and responsibilities. Your continued use of this Website after changes to the Terms of Use have been published constitutes your binding acceptance of the updated Terms of Use. If at any time the Terms of Use are no longer acceptable to You, You should immediately cease all use of this Website.</p>
@@ -361,6 +401,7 @@ import Modal from './Modal.svelte';
                 openMenu = !openMenu; 
                 openAboutMenu = false; 
                 openFAQMenu = false;
+                openInfographicMenu = false;
                 openTermsMenu = false;
                 openWorldbuildersMenu = false; 
               }}>

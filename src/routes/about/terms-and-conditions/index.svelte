@@ -20,6 +20,14 @@ afterNavigate((navigation) => {
     inHeader={false}
     on:hide={() => goto(back)}
     on:hideMenu={() => goto(back)}>
+
+    <section>
+        <p>Read this document as a pdf 
+        <a class="underline" target="_blank" href="https://drive.google.com/file/d/134X2cvN52AQ0NEoTjuBjSvYdW0gM8gr8/view?usp=sharing">here</a>
+        and 
+        <a class="underline" target="_blank" href="https://drive.google.com/file/d/1LrSCkhWIQWbL4pP8mqPPdQ9qel1p-8on/view?usp=sharing">here</a></p>
+    </section>
+
     <section class="flex flex-col gap-y-2">
         <p>
             This Terms of Use govern your use of the website, materials, content
