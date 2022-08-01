@@ -81,17 +81,21 @@ import SearchIcon from "$components/icons/SearchIcon.svelte";
             <a
                 href="storyteller/editor?story={story.id}"
                 class="relative flex flex-col gap-y-3 border-2 border-contrast px-3.5 py-2 font-display text-contrast">
-                <div class="inline-flex items-center absolute top-2 right-2">
-                    <span class="italic text-xs px-2"
-                        >{story.publishedAt ? (story.hasDraft ? "editing" : "published") : "draft"}</span>
-                    <button on:click|preventDefault={() => openDeleteModal(story.id)}>
-                        <DeleteIcon />
-                    </button>
-                </div>
+                
 
-                <p class="text-base font-medium">
-                    {story.title !== "" ? story.title : "Untitled"}
-                </p>
+                <div class="flex flex-row justify-between items-start">
+                    <p class="text-base font-medium">
+                        {story.title !== "" ? story.title : "Untitled"}
+                    </p>
+
+                    <div class="inline-flex items-center">
+                        <span class="italic text-xs px-2"
+                            >{story.publishedAt ? (story.hasDraft ? "editing" : "published") : "draft"}</span>
+                        <button on:click|preventDefault={() => openDeleteModal(story.id)}>
+                            <DeleteIcon />
+                        </button>
+                    </div>
+                </div>
                 <p class="text-sm font-text">
                     {story.location !== "" ? story.location : "No location"}
                 </p>

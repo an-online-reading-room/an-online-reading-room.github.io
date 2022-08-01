@@ -4,7 +4,6 @@
 
 <div class="flex flex-col align-items-center
             w-screen h-full bg-primary
-            divide-y
             text-center">
   <Header></Header>
 

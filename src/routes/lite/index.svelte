@@ -5,6 +5,7 @@ import Modal from "$components/Modal.svelte";
 import modal from "$stores/modal";
 import { insertVisit } from '$lib/api/lite'
 import mapStore from "$stores/mapStore";
+import GenericList from "$components/GenericList.svelte";
 
 const checkVisited = () => {
 	return $modal.lite

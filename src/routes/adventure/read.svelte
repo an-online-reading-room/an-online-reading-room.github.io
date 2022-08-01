@@ -95,6 +95,7 @@ import * as api from '$lib/api'
 import qs from 'qs'
 import InfoIcon from "$components/icons/InfoIcon.svelte";
 import InfoCard from "$components/InfoCard.svelte";
+import { variables } from "$lib/variables";
 
 export let story
 let linkingMode = false
@@ -167,7 +168,7 @@ afterNavigate((navigation) => {
 
 </script>
 
-<div class="px-8 overflow-y-scroll pb-20">
+<div class="px-8 overflow-y-scroll pb-20 border-t border-black">
     <article class="flex flex-col gap-y-3 py-2 text-left">
         <hgroup class="flex flex-col gap-y-1">
             <h3 class="font-display font-bold text-xxs uppercase text-accent">{formatDate(story.publishedAt)}</h3>
@@ -226,10 +227,14 @@ afterNavigate((navigation) => {
     </div>
 </Modal>
 
-<ShareCard title="Share this story" open={openShareCard} getShareInfo={() => {
+<ShareCard 
+title="Share this story" 
+open={openShareCard} 
+on:shareend={() => openShareCard = false}
+getShareInfo={() => {
     return {
-        text: `${$user.username} has shared with you a story on The Reading Room. Click to read more: ${window.location.href}`,
-        link: `${window.location.href}`
+        text: `${$user.username} has shared with you a story on The Reading Room. Click to read more: ${variables.site_url}/adventure/read?story=${story.slug}`,
+        link: `${variables.site_url}/adventure/read?story=${story.slug}`
     }
 }} />
 <InfoCard info={story} open={openInfoCard}/>

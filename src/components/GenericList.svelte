@@ -11,6 +11,7 @@ export let listStore
 export let title
 export let filters
 export let searchPlaceholder
+export let showConfirmModal = true
 
 listStore.fetchNextPage()
 let listStoreReactive = $listStore
@@ -26,7 +27,7 @@ const dispatch = createEventDispatcher()
 const filter = () => {
   console.log("filtering..")
   listItems = listStoreReactive.data.filter(item => {
-    return filters.some(filter => item[filter] ? item[filter].includes(searchQuery) : false) 
+    return filters.some(filter => item[filter] ? item[filter].includes(searchQuery.toLowerCase()) : false) 
   })
 }
 
@@ -106,7 +107,7 @@ h-full">
   </main>
 </div>
 
-
+{#if showConfirmModal}
 <ConfirmModal 
 open={openConfirmModal}
 targetName={title.substring(0, title.length-1).toLowerCase()}
@@ -114,3 +115,4 @@ targetID={targetID}
 on:confirm={deleteItem}
 on:cancel={resetConfirmModal}
 />
+{/if}

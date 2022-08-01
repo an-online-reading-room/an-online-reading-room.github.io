@@ -135,8 +135,17 @@ import { afterNavigate } from '$app/navigation';
     </button>
     
     <button class="stroke-current w-6 h-6" on:click={() => openShareCard = !openShareCard}>
-        <ShareIcon />
+        <ShareIcon open={openShareCard}/>
     </button>
 </Footer>
 
-<ShareCard title="Share this story" open={openShareCard}></ShareCard>
+<ShareCard 
+title="Share this story" 
+open={openShareCard} 
+on:shareend={() => openShareCard = false}
+getShareInfo={() => {
+    return {
+        text: `${$user.username} has shared with you a story on The Reading Room. Click to read more: ${window.location.href}`,
+        link: `${window.location.href}`
+    }
+}} />

@@ -27,23 +27,24 @@ import mapStore from '$stores/mapStore';
     });
     onDestroy(() => listStoreUnsubscribe);
 
-    const search = (e) => {
-        query = query.toLowerCase();
+    const search = () => {
+        const param = query.toLowerCase();
         filteredListItems = listItems.filter((story) => {
             return (
-                story.title.toLowerCase().includes(query) ||
-                story.username.toLowerCase().includes(query) ||
-                story.location.toLowerCase().includes(query)
+                story.title.toLowerCase().includes(param) ||
+                story.user.username.toLowerCase().includes(param) ||
+                story.location.toLowerCase().includes(param)
             );
         });
-        query = "";
+       
     };
 </script>
 
-<main class="flex flex-col align-items-center gap-y-4 px-6 pt-6 pb-10 overflow-y-scroll text-contrast min-h-full pb-40">
+<main class="flex flex-col align-items-center gap-y-4 px-6 pt-6 pb-10 overflow-y-scroll text-contrast min-h-full pb-40
+border-t border-black">
 	<div
 		class="flex flex-row justify-between 
-	w-full gap-x-base divide-x
+	w-full gap-x-base divide-x divide-black
 	border border-contrast"
 	>
 		<input
@@ -52,6 +53,7 @@ import mapStore from '$stores/mapStore';
 			placeholder="Search for a story/location/username"
 			class="flex-1 py-1 bg-primary text-sm px-2 focus:outline-none placeholder:text-contrast"
 			bind:value={query}
+            on:input={search}
 		/>
 		<button class="w-8 h-8 bg-primary focus:outline-none stroke-contrast" on:click={search}>
 			<SearchIcon />
