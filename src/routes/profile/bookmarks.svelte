@@ -25,9 +25,18 @@
         }
     }
     async function deleteBookmark(id) {
-        await api.del(`api/users/bookmarks/${id}`, $user.jwt);
+        //console.log("deleting as bookmark", id);
+        const res = await api.put(
+            `api/users/bookmarks`,
+            {
+                operation: "remove",
+                data: {
+                    id: id,
+                },
+            },
+            $user.jwt
+        );
         getStories();
-        //closeDeleteModal();
     }
 
     const search = (e) => {
@@ -91,13 +100,3 @@
         {/each}
     {/if}
 </div>
-
-
-<style lang="postcss">
-    .btn {
-        @apply bg-accent text-primary text-sm px-4 py-3;
-    }
-    .btn-modal {
-        @apply bg-primary text-accent font-display font-bold text-sm h-fit px-8 py-2;
-    }
-</style>

@@ -1,48 +1,51 @@
 <script lang="ts" context="module">
-    import type { Load } from '@sveltejs/kit';
-    import qs from 'qs'
-  
+    import type { Load } from "@sveltejs/kit";
+    import qs from "qs";
+
     export const load: Load = async ({ params, fetch, session, stuff }) => {
-        const query = qs.stringify({
-            filters: {
-                slug: { $eq: params.slug },
+        const query = qs.stringify(
+            {
+                filters: {
+                    slug: { $eq: params.slug },
+                },
+                populate: ["targetLinks"],
             },
-            populate: ['targetLinks']
-            }, {
-            encodeValuesOnly: true,
-        });
+            {
+                encodeValuesOnly: true,
+            }
+        );
 
-      let res = await api.get(
-        `api/stories?${query}`,
-        get(user).jwt
-      )
-      const story = res[0]
+        let res = await api.get(`api/stories?${query}`, get(user).jwt);
+        const story = res[0];
 
-        const randomSlugQuery = qs.stringify({
-            fields: ['slug']
-        }, {
-            encodeValuesOnly: true,
-        })
+        const randomSlugQuery = qs.stringify(
+            {
+                fields: ["slug"],
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        );
         let res2 = await api.get(
             `api/stories?${randomSlugQuery}`,
             get(user).jwt
-        )
-        let nextData = res2
-       
-        let next = nextData[Math.floor(Math.random() * nextData.length)]
+        );
+        let nextData = res2;
+
+        let next = nextData[Math.floor(Math.random() * nextData.length)];
         // console.log(nextData)
         // console.log(story)
-        while(next.id === story.id) {
-            next = nextData[Math.floor(Math.random() * nextData.length)]
-            console.log(next)
+        while (next.id === story.id) {
+            next = nextData[Math.floor(Math.random() * nextData.length)];
+            console.log(next);
         }
 
-
-      return { props: { 
-        story: story,
-        next: next
-    }}
-        
+        return {
+            props: {
+                story: story,
+                next: next,
+            },
+        };
     };
 </script>
 
@@ -64,6 +67,7 @@ import { afterNavigate } from '$app/navigation';
     export let next
 
     let openShareCard = false
+    let isBookmarked = false;
 
     const formatDate = (dateString) => {
         const date = new Date(dateString)
@@ -98,45 +102,72 @@ import { afterNavigate } from '$app/navigation';
         console.log(`you just visited story ${story} with visit id ${newVisit.id}`)
     }
 
-    const bookmarkstory = () => {
-        console.log("Bookmarking : ", story.id)
+    const getBookmarks = async () => {
+        const res = await api.get(`api/users/bookmarks?id=${story.id}`,$user.jwt)
+        if (res.bookmarked)
+            isBookmarked = true;
+    }
+
+    const bookmarkstory = async () => {
+        if ($user.jwt) {
+            if (isBookmarked) {
+                const res = await api.put(`api/users/bookmarks`,
+                { 
+                    operation : "remove",
+                    data : { 
+                            "id" : story.id
+                    }
+                },$user.jwt)
+            } else {
+                const res = await api.put(`api/users/bookmarks`,
+                { 
+                    operation : "add",
+                    data : { 
+                            "id" : story.id
+                    }
+                },$user.jwt)
+
+            }
+            isBookmarked = !isBookmarked;
+        } else {
+
+        }
     }
     afterNavigate((navigation) => {
         addVisit(story.id)
     })
 
+    if($user.jwt) {
+        getBookmarks()
+    }
 </script>
 
-
-    
-<TopNav back="/lite" next='/lite/{next.slug}'></TopNav>
+<TopNav back="/lite" next="/lite/{next.slug}" />
 
 <div class="px-8 overflow-y-scroll">
     <article class="flex flex-col gap-y-3 py-2 text-left">
         <hgroup class="flex flex-col gap-y-1">
-            <h3 class="font-display font-bold text-xxs uppercase text-accent">{formatDate(story.publishedAt)}</h3>
+            <h3 class="font-display font-bold text-xxs uppercase text-accent">
+                {formatDate(story.publishedAt)}
+            </h3>
             <h1 class="font-display font-bold text-4xl">{story.title}</h1>
             <h2 class="font-display font-normal text-xs">{story.location}</h2>
         </hgroup>
-    
-       
-        <Story {story} isLite={true}>
 
-        </Story>
-   
-
+        <Story {story} isLite={true} />
     </article>
 </div>
 
-
 <Footer>
     <button on:click={bookmarkstory} class="stroke-current w-6 h-6">
-        <BookmarkIcon />
+        <BookmarkIcon filled={isBookmarked} />
     </button>
-    
-    <button class="stroke-current w-6 h-6" on:click={() => openShareCard = !openShareCard}>
+
+    <button
+        class="stroke-current w-6 h-6"
+        on:click={() => (openShareCard = !openShareCard)}>
         <ShareIcon />
     </button>
 </Footer>
 
-<ShareCard title="Share this story" open={openShareCard}></ShareCard>
+<ShareCard title="Share this story" open={openShareCard} />
