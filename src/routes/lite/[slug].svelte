@@ -82,6 +82,8 @@ import { afterNavigate } from '$app/navigation';
 
     const currentMap = $mapStore.id
     const addVisit = async (story) => {
+        console.log(currentMap)
+        console.log(story)
         const newVisit = await insertVisit(currentMap, story)
 
         // add visit to mapStore 
