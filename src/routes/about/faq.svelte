@@ -1,14 +1,15 @@
 <script>
 import MenuItem from "$components/MenuItem.svelte";
 import { goto, afterNavigate } from "$app/navigation";
+import { session } from "$app/stores";
 
 let open = true;
 let back;
+let currSession = $session
 
 afterNavigate((navigation) => {
-    if(navigation.from != null && back != null) {
-        back = navigation.from.pathname;
-    }
+    back = currSession.menuBack 
+    console.log(back)
 });
 </script>
 
@@ -16,8 +17,8 @@ afterNavigate((navigation) => {
     name="FAQ"
     {open}
     openMenu={false}
-    inHeader={false}
-    on:hide={() => goto(back)}
+    inHeader={true}
+    on:hide={() => history.back()}
     on:hideMenu={() => goto(back)}>
     <section>
         <h2 class="font-bold text-base">
@@ -44,7 +45,7 @@ afterNavigate((navigation) => {
             hyperlink to read a new story. Thereafter, each story leads to a new
             set of stories. You know what they say, if you don't know where
             you're going, any road will get you there. Here is an <a
-                href="/"
+                href="/about/infographic"
                 class="underline font-bold">infographic</a> on how to use it.
         </p>
     </section>
@@ -60,7 +61,7 @@ afterNavigate((navigation) => {
     <p class="text-xxs">◆</p>
     <section>
         <h2 class="font-bold text-base">How do I upload stories?</h2>
-        Our<a href="/" class="underline">story form</a> will ask you to share a story
+        Our <a href="/" class="underline">story form</a> will ask you to share a story
         title, summary, username(s), and location, along with your story. Please
         email us at anonlinereadingroom@gmail.com if you have any trouble.
     </section>

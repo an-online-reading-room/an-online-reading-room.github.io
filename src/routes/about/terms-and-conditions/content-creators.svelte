@@ -1,14 +1,15 @@
 <script>
     import MenuItem from "$components/MenuItem.svelte";
     import { goto, afterNavigate } from "$app/navigation";
+import { session } from "$app/stores";
 
     let open = true;
     let back;
+    let currSession = $session
 
     afterNavigate((navigation) => {
-      if (navigation.from != null && back != null) {
-          back = navigation.from.pathname;
-      }
+        back = currSession.menuBack 
+        console.log(back)
     });
 </script>
 
@@ -16,8 +17,8 @@
     name="Terms and Conditions for Content Creators"
     {open}
     openMenu={false}
-    inHeader={false}
-    on:hide={() => goto(back)}
+    inHeader={true}
+    on:hide={() => history.back()}
     on:hideMenu={() => goto(back)}>
     <ol class="list-decimal list-inside">
         <li>

@@ -39,7 +39,7 @@ import MailIcon from "$components/icons/MailIcon.svelte";
 
 export let member 
 let open = true
-let back
+let back = '/mode'
 
 afterNavigate((navigation) => {
   if(navigation.from != null && back != null) {
@@ -59,7 +59,7 @@ onMount(async () => {
   name={member.name}
   {open}
   openMenu={false}
-  inHeader={false}
+  inHeader={true}
   on:hide={() => goto(back)}
   on:hideMenu={() => goto(back)}>
 
