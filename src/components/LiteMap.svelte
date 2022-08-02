@@ -11,7 +11,7 @@ export let stories
 let L 
 let map = null
 let iconVisited, iconUnvisited
-let travelledDistance
+let travelledDistance = 0
 
 const initMap = async () => {
   L = (await import('leaflet')).default

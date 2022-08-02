@@ -82,6 +82,8 @@ import { afterNavigate } from '$app/navigation';
 
     const currentMap = $mapStore.id
     const addVisit = async (story) => {
+        console.log(currentMap)
+        console.log(story)
         const newVisit = await insertVisit(currentMap, story)
 
         // add visit to mapStore 
@@ -162,12 +164,19 @@ import { afterNavigate } from '$app/navigation';
     <button on:click={bookmarkstory} class="stroke-current w-6 h-6">
         <BookmarkIcon filled={isBookmarked} />
     </button>
-
-    <button
-        class="stroke-current w-6 h-6"
-        on:click={() => (openShareCard = !openShareCard)}>
-        <ShareIcon />
+    
+    <button class="stroke-current w-6 h-6" on:click={() => openShareCard = !openShareCard}>
+        <ShareIcon open={openShareCard}/>
     </button>
 </Footer>
 
-<ShareCard title="Share this story" open={openShareCard} />
+<ShareCard 
+title="Share this story" 
+open={openShareCard} 
+on:shareend={() => openShareCard = false}
+getShareInfo={() => {
+    return {
+        text: `${$user.username} has shared with you a story on The Reading Room. Click to read more: ${window.location.href}`,
+        link: `${window.location.href}`
+    }
+}} />

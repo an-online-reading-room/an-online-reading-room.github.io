@@ -8,6 +8,8 @@ import { createEventDispatcher } from "svelte";
 import { goto } from "$app/navigation";
 import InfoBubble from "./InfoBubble.svelte";
 
+const dispatch = createEventDispatcher()
+
 export let open
 export let title
 export let shareInfo = {
@@ -47,6 +49,8 @@ const share = async (type) => {
         default:
             break
     }
+
+    dispatch('shareend')
 }
 
 const shareWhatsApp = () => {
