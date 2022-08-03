@@ -12,7 +12,7 @@ import { variables } from '$lib/variables';
 import user from '$stores/user';
 
 
-  let travelledDistance
+  let travelledDistance = 0
   let openShareCard = false
   let openInfoModal = false, openTitleModal = true, openNewMapModal = false
   let mapForm 
@@ -65,6 +65,8 @@ import user from '$stores/user';
         stories: []
       }
     })
+
+    history.go(0)
   }
 
 </script>
@@ -118,6 +120,7 @@ import user from '$stores/user';
   open={openShareCard} 
   title="Share this story map"
   getShareInfo={saveMapToShare}
+  on:shareend={() => openShareCard = false}
 />
 
 <Modal 

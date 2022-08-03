@@ -41,7 +41,10 @@ const saveMap = async (isShared, title) => {
   return res
 } 
 
-const insertVisit = async (map, story) => {
+const insertVisit = async (currentMap, story) => {
+  const map = (await getMap()).id
+  console.log(map)
+
   const prevVisitQuery = qs.stringify({
     filters: {
       map: {

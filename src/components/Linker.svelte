@@ -95,11 +95,12 @@ const repositionToolbar = () => {
 }
 
 const createLink = (event) => {
-  removeMark()
-  
+  console.log("linker: creating link, finishing process")
   const target = event.target.dataset.story
   highlight(target)
   
+  removeMark()
+
   hideToolbar()
 }
 
@@ -120,6 +121,7 @@ const removeMark = () => {
 const highlight = (target) => {
   console.log("linker: saving link")
   const mark = document.querySelector('span.soft-highlight.bg-opacity-25')
+  // console.log(mark)
 
   console.log("during highlight")
   console.log(startOffset)
@@ -248,10 +250,10 @@ const unwrap = () => {
   
     {#if searchQuery != null && (filteredLinks.length) > 0}
     <ul id="options" bind:this={optionsContainer} 
-    class="flex flex-col gap-y-2 px-2 py-2 justify-evenly bg-[#F7F6F5] text-black">
+    class="flex flex-col justify-evenly bg-[#F7F6F5] text-black">
       
       {#each filteredLinks as link}
-        <li class="cursor-pointer" data-story={link.id} on:click|capture={createLink}>
+        <li class="cursor-pointer px-2 py-2" data-story={link.id} on:touchstart|stopPropagation={createLink}>
           { link.title }
         </li>
       {/each}
