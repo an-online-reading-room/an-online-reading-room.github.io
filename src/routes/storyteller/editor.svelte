@@ -46,7 +46,7 @@
         }
     }
     async function submitStory() {
-        const storyData = getStoryData();
+        const storyData = getStoryData(true);
 
         editor.save().then((data) => {
             storyData.data.submission = data;
@@ -76,7 +76,7 @@
     }
 
     async function autosaveDraft() {
-        let storyData = getStoryData();
+        let storyData = getStoryData(false);
 
         editor.save().then(async (data) => {
             if (prevStoryData) {
@@ -127,13 +127,14 @@
         });
     }
 
-    function getStoryData() {
+    function getStoryData(isPublish) {
         const storyData = {
             data: {
                 title: form.title,
                 location: locationInput,
                 description: form.description,
                 user: $user.id,
+                hasDraft: !isPublish
             },
         };
         return storyData;
