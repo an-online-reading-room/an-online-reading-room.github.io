@@ -5,6 +5,9 @@ on:
     branches: 
       - v2/staging
 
+env:
+  VITE_STRAPI_URL: https://admin.thereadingroom.online
+
 jobs:
   deploy:
     runs-on: self-hosted
