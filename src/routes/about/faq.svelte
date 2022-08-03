@@ -61,8 +61,7 @@ afterNavigate((navigation) => {
     <p class="text-xxs">◆</p>
     <section>
         <h2 class="font-bold text-base">How do I upload stories?</h2>
-        Our <a href="/" class="underline">story form</a> will ask you to share a story
-        title, summary, username(s), and location, along with your story. Please
+        Use our <a href="/storyteller">story editor</a>! Please
         email us at anonlinereadingroom@gmail.com if you have any trouble.
     </section>
     <p class="text-xxs">◆</p>
