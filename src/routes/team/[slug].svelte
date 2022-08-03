@@ -36,15 +36,16 @@ import { get } from "svelte/store";
 import { variables } from "$lib/variables";
 import InstagramIcon from "$components/icons/InstagramIcon.svelte";
 import MailIcon from "$components/icons/MailIcon.svelte";
+import { session } from "$app/stores";
 
 export let member 
 let open = true
-let back = '/mode'
+let back;
+let currSession = $session
 
 afterNavigate((navigation) => {
-  if(navigation.from != null && back != null) {
-      back = navigation.from.pathname;
-  }
+  back = currSession.menuBack
+  console.log(back)
 })
 
 onMount(async () => {
@@ -59,8 +60,7 @@ onMount(async () => {
   name={member.name}
   {open}
   openMenu={false}
-  inHeader={true}
-  on:hide={() => goto(back)}
+  on:hide={() => history.back()}
   on:hideMenu={() => goto(back)}>
 
   <section>
