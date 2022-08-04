@@ -82,7 +82,7 @@ const changeTheme = () => {
                 href="/storyteller">
                 Storyteller
             </a>
-            <a class="cursor-pointer text-center w-full py-4" href="/profile">
+            <a class="cursor-pointer text-center w-full py-4" href="/profile/bookmarks">
                 Reading List
             </a>
         </nav>

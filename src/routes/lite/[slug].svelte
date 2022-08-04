@@ -162,7 +162,7 @@ import { afterNavigate } from '$app/navigation';
 
 <Footer>
     <button on:click={bookmarkstory} class="stroke-current w-6 h-6">
-        <BookmarkIcon filled={isBookmarked} />
+        <BookmarkIcon open={isBookmarked} />
     </button>
     
     <button class="stroke-current w-6 h-6" on:click={() => openShareCard = !openShareCard}>

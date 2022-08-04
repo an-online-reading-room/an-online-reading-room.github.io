@@ -64,7 +64,7 @@ onMount(async () => {
   on:hideMenu={() => goto(back)}>
 
   <section>
-    <img src={`${variables.strapi_url}${member.profile.url}`} alt={member.profile.alternativeText}>
+    <img src={`${variables.strapi_url}${member.profile.formats.small.url}`} alt={member.profile.alternativeText}>
   </section>
 
   <section class="font-display font-primary text-sm">

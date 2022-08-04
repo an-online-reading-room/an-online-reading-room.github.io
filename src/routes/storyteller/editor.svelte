@@ -207,8 +207,8 @@
                                             success: 1,
                                             file: {
                                                 url: dev
-                                                    ? `http://localhost:1337${data[0].url}`
-                                                    : `${variables.strapi_url}${data[0].url}`,
+                                                    ? `http://localhost:1337${data[0].formats.small.url}`
+                                                    : `${variables.strapi_url}${data[0].formats.small.url}`,
                                                 // any other image data you want to store, such as width, height, color, extension, etc
                                             },
                                         };
@@ -279,7 +279,7 @@
                 class="focus:outline-none font-bold placeholder:font-bold placeholder:text-contrast resize-none"
                 on:input={resizeTextarea} />
         </form>
-        <section class="placeholder:text-contrast" id="editor" />
+        <section class="placeholder:text-contrast pb-4" id="editor" />
 
         <BottomNav>
             <svelte:fragment slot="editor-extras">
