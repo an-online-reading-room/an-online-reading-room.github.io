@@ -46,7 +46,7 @@
         }
     }
     async function submitStory() {
-        const storyData = getStoryData();
+        const storyData = getStoryData(true);
 
         editor.save().then((data) => {
             storyData.data.submission = data;
@@ -76,7 +76,7 @@
     }
 
     async function autosaveDraft() {
-        let storyData = getStoryData();
+        let storyData = getStoryData(false);
 
         editor.save().then(async (data) => {
             if (prevStoryData) {
@@ -108,6 +108,11 @@
                     console.log("Autosaving newly created story");
                     currTime = Date.now();
                     autosave_newStoryId = res.id;
+                    history.replaceState(
+                        null,
+                        null,
+                        `?story=${autosave_newStoryId}`
+                    );
                 } else {
                     console.log("Autosaving and updating newly created story");
 
@@ -122,13 +127,14 @@
         });
     }
 
-    function getStoryData() {
+    function getStoryData(isPublish) {
         const storyData = {
             data: {
                 title: form.title,
                 location: locationInput,
                 description: form.description,
                 user: $user.id,
+                hasDraft: !isPublish
             },
         };
         return storyData;
@@ -145,9 +151,6 @@
 
     async function clearStory() {
         editor.clear();
-        form.title = "";
-        form.location = "";
-        form.description = "";
         closeModal();
     }
 
@@ -184,8 +187,7 @@
             minHeight: 120,
             placeholder: "Add your story",
             data: prevStoryData
-                ? prevStoryData.draft ??
-                  prevStoryData.submission
+                ? prevStoryData.draft ?? prevStoryData.submission
                 : {},
             onChange: (api, event) => {
                 //console.log("Now I know that Editor's content changed!", event);
@@ -228,7 +230,6 @@
     });
 
     beforeNavigate(({ from, to, cancel }) => {
-
         if (!form.title && autosave_newStoryCreated) {
             cancel();
             openModal(AddTitle);
@@ -291,8 +292,9 @@
                 <p class="self-center  font-text text-contrast text-xs">
                     Read our
                     <a class="underline" href="/about/code-of-conduct">
-                        code of conduct</a>. In short, be kind!
-                    </p>
+                        code of conduct</a
+                    >. In short, be kind!
+                </p>
             </svelte:fragment>
             <svelte:fragment slot="bottom-bar">
                 {#if prevStoryData?.publishedAt}
