@@ -13,7 +13,6 @@ export let filters
 export let searchPlaceholder
 export let showConfirmModal = true
 
-listStore.fetchNextPage()
 let listStoreReactive = $listStore
 $: listItems = $listStore.data
 let loading = true
@@ -47,6 +46,8 @@ const resetConfirmModal = () => {
 }
 
 onMount(() => {
+  console.log("calling on mount")
+  listStore.fetchNextPage()
   loading = false
 })
 

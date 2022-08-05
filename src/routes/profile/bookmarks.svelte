@@ -1,102 +1,55 @@
 <script>
-    import * as api from "$lib/api.js";
-    import { onMount } from "svelte";
-    import { user } from "$stores/user";
-    import DeleteIcon from "$components/icons/DeleteIcon.svelte";
-    import Modal from "$components/utils/Modal.svelte";
-    import SearchIcon from "$components/icons/SearchIcon.svelte";
+import Footer from "$components/Footer.svelte";
+import BookmarkIcon from "$components/icons/BookmarkIcon.svelte";
+import MapIcon from "$components/icons/MapIcon.svelte";
+import LinkIcon from "$components/icons/LinkIcon.svelte";
+import ProfileIcon from "$components/icons/ProfileIcon.svelte";
+import GenericList from "$components/GenericList.svelte";
+import bookmarkStore from "$stores/profile/bookmarkStore";
+import { goto } from "$app/navigation";
+    
+const deleteBookmark = async (ev) => {
+    const id = await bookmarkStore.delete(ev.detail.id)
 
-    let stories = [];
+    console.log("deleted link of id: ", id)   
+}
 
-    $: searchStories = stories;
+const visitBookmark = (ev) => {
+    const slug = ev.detail.item.slug
 
-    let query = "";
-    let isOpenModal = false;
-    let deletingStory;
-    onMount(getStories);
-
-    async function getStories() {
-        //console.log($user.jwt)
-        try {
-            const userData = await api.get("api/users/bookmarks", $user.jwt);
-            stories = userData?.bookmarks.reverse();
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    async function deleteBookmark(id) {
-        //console.log("deleting as bookmark", id);
-        const res = await api.put(
-            `api/users/bookmarks`,
-            {
-                operation: "remove",
-                data: {
-                    id: id,
-                },
-            },
-            $user.jwt
-        );
-        getStories();
-    }
-
-    const search = (e) => {
-        query = query.toLowerCase();
-        searchStories = stories.filter((story) => {
-            return (
-                story.title.toLowerCase().includes(query) ||
-                story.location.toLowerCase().includes(query)
-            );
-        });
-        //query = "";
-    };
-    $: search(query);
+    goto(`/lite/${slug}`)
+}
 </script>
 
-<div
-    class="overflow-y-auto flex-column gap-y-2 px-8 py-3.5 pb-12 border-t border-contrast">
-    <p class="font-display font-bold text-4xl">Bookmarks</p>
+<GenericList
+listStore={bookmarkStore}
+title="Bookmarks"
+filters={['title', 'location']}
+searchPlaceholder="Search for a story/location"
+let:item={item}
+on:visit={visitBookmark}
+on:delete={deleteBookmark}
+>
 
-    <div
-        class="flex flex-row justify-between 
-    w-full gap-x-base divide-x
-    border-2 border-contrast">
-        <input
-            type="search"
-            name="search-query"
-            placeholder="Search for a story"
-            class="flex-1 py-1 bg-primary text-sm px-2 focus:outline-none placeholder:text-contrast"
-            bind:value={query} />
-        <button
-            class="w-8 h-8 bg-primary focus:outline-none stroke-contrast"
-            on:click={search}>
-            <SearchIcon />
-        </button>
-    </div>
-    {#if stories}
-        {#each searchStories as story}
-            <a
-                href="/lite/{story.slug}"
-                class="relative flex flex-col gap-y-3 border-2 border-contrast px-3.5 py-2 font-display text-contrast">
-                <div class="inline-flex items-center absolute top-2 right-2">
-                    <button
-                        on:click|preventDefault={() =>
-                            deleteBookmark(story.id)}>
-                        <DeleteIcon />
-                    </button>
-                </div>
+  <div class="flex flex-col gap-y-2">
+    <h1 class="font-display font-medium text-base">{item.title}</h1>
+    <p class="font-text text-sm">{item.location}</p>
+    <p class="font-text text-sm">{item.description}</p>
+  </div>
 
-                <p class="text-base font-medium">
-                    {story.title !== "" ? story.title : "Untitled"}
-                </p>
-                <p class="text-sm font-text">
-                    {story.location !== "" ? story.location : "No location"}
-                </p>
-                <p class="text-sm font-text">
-                    {story.description !== ""
-                        ? story.description
-                        : "No description"}
-                </p>
-            </a>
-        {/each}
-    {/if}
-</div>
+</GenericList>
+
+<Footer>
+    <a href="/profile/bookmarks" class="stroke-current w-6 h-6">
+        <BookmarkIcon open={true} />
+    </a>
+    <a href="/profile/maps" class="stroke-current w-6 h-6">
+        <MapIcon />
+    </a>
+    <a href="/profile/links" class="stroke-current w-6 h-6">
+        <LinkIcon />
+    </a>
+    <a href="/profile" class="stroke-current w-6 h-6">
+        <ProfileIcon />
+    </a>
+  </Footer>
