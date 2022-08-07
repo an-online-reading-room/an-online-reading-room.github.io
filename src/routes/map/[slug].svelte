@@ -45,16 +45,24 @@ onMount(async () => {
     `api/maps?${mapQuery}`,
     $user.jwt
   )
+  console.log("here")
   console.log(res)
 
   username = res[0].user.username
   map = res[0]
-  stories = res[0].visits.map(visit => {
+
+  console.log("sorted")
+  console.log(res[0].visits
+  .sort((a, b) => new Date(a.visitedAt) - new Date(b.visitedAt)))
+  
+
+  stories = res[0].visits
+  .sort((a, b) => new Date(a.visitedAt) - new Date(b.visitedAt))
+  .map(visit => {
     let story = visit.story
-    console.log(story)
-    console.log(story.user)
 
     return {
+      id: story.id,
       title: story.title,
       slug: story.slug, 
       location: story.location,
@@ -73,7 +81,7 @@ onMount(async () => {
 
 
 {#if stories}
-<LiteMap {stories} on:distcalcend={(event) => distanceTravelled = event.detail.value} />
+<LiteMap {stories} name={slug} isShared={true} on:distcalcend={(event) => distanceTravelled = event.detail.value} />
 {/if}
 
 {#if username}

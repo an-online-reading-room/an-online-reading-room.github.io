@@ -4,10 +4,13 @@ import { afterNavigate, beforeNavigate } from "$app/navigation";
 import { getCoordinates } from "$lib/services/geocode";
 import Popup from "./Popup.svelte";
 import "leaflet/dist/leaflet.css"
+import sharedMapProgressStore from "$stores/map/sharedMapProgressStore";
 
 const dispatch = createEventDispatcher()
 
 export let stories 
+export let name = null
+export let isShared = false
 let L 
 let map = null
 let iconVisited, iconUnvisited
@@ -50,17 +53,24 @@ const initMap = async () => {
 
 const markStories = async () => {
   L = (await import('leaflet')).default
-  let visitedLatLngs = await Promise.all(stories.map(async story => {
+  console.log(stories)
+  let leafletObjs = await Promise.all(stories.map(async (story, index) => {
     const coords = await getCoordinates(story.location)
     if(coords != null) {
-      let popupId = `#${story.slug}-popup-visited` 
+      let popupId = 
+        isShared === false ? `#${story.slug}-popup-visited` :
+        index <= $sharedMapProgressStore[name] ? `#${story.slug}-popup-visited` : '#popup-locked'
       let markerIcon = iconVisited
     
-      L.marker({lat: coords.y, lon: coords.x}, {icon: markerIcon})
-      .bindPopup(document.querySelector(popupId), {className: 'map-popup', closeButton: false})
+      const marker = L.marker({lat: coords.y, lon: coords.x}, {icon: markerIcon})
+
+      marker.bindPopup(document.querySelector(popupId), {className: 'map-popup', closeButton: false})
       .addTo(map)
     
-      return [coords.y, coords.x]
+      return {
+        marker: marker,
+        coords: [coords.y, coords.x]
+      }
       
         // popupId = `#popup-unvisited`
         // markerIcon = iconUnvisited 
@@ -70,7 +80,10 @@ const markStories = async () => {
         // .addTo(map)
     }
   }))
-  visitedLatLngs = visitedLatLngs.filter(e => e != null)
+  leafletObjs = leafletObjs.filter((item) => item.coords != null)
+
+  const visitedLatLngs = leafletObjs.map((item) => item.coords)
+
   console.log("visited lat long: ", visitedLatLngs)
 
   let travelledPath = L.polyline(visitedLatLngs, {color: 'black'}).addTo(map)
@@ -84,11 +97,19 @@ const markStories = async () => {
   dispatch('distcalcend', { value: travelledDistance })
 }
 
+const updateMapProgress = (ev) => {
+  if(isShared === false) return 
+  sharedMapProgressStore.update(name)
+}
+
 afterUpdate(async () => {
   markStories()
 })
 
 onMount(async () => {
+  if(isShared && $sharedMapProgressStore[name] == null) {
+    updateMapProgress(name)
+  }
   initMap()
   markStories()
 })
@@ -100,7 +121,11 @@ onDestroy(() => map = null)
 <div class="hidden">
   {#each stories as story} 
     <div id="{story.slug}-popup-visited">
-      <Popup url="/lite/{story.slug}" story={story} popupElement={this} />
+      <Popup 
+        url="/lite/{story.slug}" 
+        story={story} 
+        popupElement={this}
+        on:visited={updateMapProgress} />
     </div>
     
   {:else}
@@ -112,6 +137,10 @@ onDestroy(() => map = null)
   <div id="popup-unvisited" class="font-text text-sm text-primary text-center leading-4">
     <p>You have not viewed this story</p>
     <p>We hope you find it soon!</p>
+  </div>
+
+  <div id="popup-locked" class="font-text text-sm text-primary text-center leading-4">
+    <p>Read the previous story before you move on!</p>
   </div>
 </div>
 
