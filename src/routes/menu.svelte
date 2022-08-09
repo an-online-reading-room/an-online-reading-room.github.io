@@ -8,21 +8,33 @@ import theme from "$stores/theme";
 
 let back;
 let pathPrefix;
-let currSession = $session
 
 afterNavigate((navigation) => {
-    console.log("navigated ")
-    if (navigation.from != null && 
-    navigation.from.pathname.includes('about') === false && 
-    navigation.from.pathname.includes('menu') === false) {
-        back = navigation.from.pathname;
+    if(navigation.from == null) {
+        console.log("null!!!!!!!!!!")
+        session.update(session => {
+            return {
+                ...session,
+                menuBack: '/'
+            }
+        })
+        console.log($session)
+    }
+    else if(navigation.from.pathname.includes('about') || navigation.from.pathname.includes('menu')) {
+        console.log("navigated without setting session")
+        console.log(navigation.from.pathname)
+        console.log($session)
+    }
+    else {
+        back = navigation.from.pathname
         session.update(session => {
             return {
                 ...session,
                 menuBack: back
             }
-        }) 
-        console.log("main page ", back)
+        })
+        console.log("setting session")
+        console.log($session)
     }
 });
 
@@ -42,7 +54,7 @@ const changeTheme = () => {
     <div class="flex flex-row justify-end gap-x-2">
         <button
             class="w-10 h-10 focus:outline-none stroke-menu-accent"
-            on:click={() => goto(back)}>
+            on:click={() => goto($session.menuBack)}>
             <CloseIcon />
         </button>
     </div>
