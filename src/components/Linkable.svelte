@@ -97,7 +97,7 @@ const reset = () => {
           <p 
           data-blockid={block.id}
           on:touchstart={showTool}>
-          {block.data.text.replace("&nbsp;","")}
+          {@html block.data.text}
           </p>
       {:else if block.type == "image"}
           <img class="w-full" src={block.data.file.url} alt={block.data.file.caption}/>

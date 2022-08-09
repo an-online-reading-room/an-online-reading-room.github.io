@@ -4,7 +4,7 @@
 
 @layer components {
     .highlight {
-        @apply underline 
+        @apply bg-accent text-primary; 
     }
 
     .flex-column {
@@ -12,7 +12,7 @@
     }
 
     .soft-highlight {
-        @apply bg-opacity-25 bg-accent text-contrast;
+        @apply bg-accent/25  text-black;
     }
 
     ::selection {

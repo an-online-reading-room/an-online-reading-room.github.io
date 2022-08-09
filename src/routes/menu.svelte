@@ -89,8 +89,7 @@ const changeTheme = () => {
 
         <div class="w-full h-16 pb-6 pt-4">
             <button
-                class="w-10 h-10 mx-auto stroke-menu-accent"
-                on:click={changeTheme}>
+                class="w-10 h-10 mx-auto stroke-menu-accent">
                 <ThemeSwitcherIcon />
             </button>
         </div>

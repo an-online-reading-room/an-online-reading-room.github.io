@@ -1,0 +1,90 @@
+
+  <html>
+    <head>
+      <title></title>
+      <style>
+  * {
+    box-sizing: border-box;
+  }
+</style>
+    </head>
+    <body>
+    
+    
+
+<main style="text-align: center; background-color: #eee2d2; color: #6a735a; padding: 1rem;">
+
+  <h1 style="font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: 400;">The Reading Room</h1>
+
+  <hr>
+
+  <section style="font-family: 'Courier New', Courier, monospace; font-size: 14px;">
+    <p>The Reading Room is a platform for location-based stories.</p>
+    <p>Travel far and wide through mountains and rivers.</p>
+  </section>
+
+  <hr>
+  
+  <section style="text-align: left;">
+    <p style="font-family: Montserrat, sans-serif; font-size: 1rem;"><span style="font-weight: bold;">{{{username}}}</span> has shared with you a story</p>
+
+    <div>
+      <div>
+      <a href={{{link}}} style="text-decoration: underline; color: #6a735a;">
+        <p style="font-weight: bold; font-size: 2rem; font-family: 'Courier New', Courier, monospace;">{{{story-name}}}</p>
+      </a>
+      <p style="font-weight: normal; font-size: 0.8rem; font-family: Montserrat, sans-serif;">{{{story-description}}}</p>
+    </div>
+      <p style="font-weight: normal; font-size: 0.8rem; font-family: Montserrat, sans-serif;">{{{story-description}}}</p>
+    </div>
+  </section>
+
+  <section style="font-family: Montserrat, sans-serif; font-size: 12px;">
+    <div>
+      <a href="http://thereadingroom.online/" target="_blank">
+        <img align="center" border="0" src="https://thereadingroom.online/mail/illustration-small.png" alt=""
+          title=""
+          style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 430px;"
+          width="430" />
+      </a>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <div style="display: flex; flex-direction: row; justify-content: center; gap: 1rem; padding: 0.5rem;">
+      <a href="https://instagram.com/thereadingroom.online" title="Instagram" target="_blank">
+        <img src="https://thereadingroom.online/mail/instagram.png" alt="Instagram" title="Instagram" width="32"
+          style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+      </a>
+      <a href="mailto:anonlinereadingroom@gmail.com" title="Email" target="_blank">
+        <img src="https://thereadingroom.online/mail/mail.png" alt="Email" title="Email" width="32"
+          style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+      </a>
+    </div>
+
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 12px; width: 100%; padding: 4rem; background-color: #6a735a;">
+      <a style="color: #eee2d2; text-decoration: none;" href="thereadingroom.online">www.thereadingroom.online</a>
+    </div>
+  </section>
+
+
+
+</main>
+    
+    
+      <div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#444444; font-size:12px; line-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5">
+        
+        <p style="font-size:12px; line-height:20px;">
+          <a class="Unsubscribe--unsubscribeLink" href="{{{unsubscribe}}}" target="_blank" style="font-family:sans-serif;text-decoration:none;">
+            Unsubscribe
+          </a>
+          -
+          <a href="{{{unsubscribe_preferences}}}" target="_blank" class="Unsubscribe--unsubscribePreferences" style="font-family:sans-serif;text-decoration:none;">
+            Unsubscribe Preferences
+          </a>
+        </p>
+      </div>
+    </body>
+  </html>

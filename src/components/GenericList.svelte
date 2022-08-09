@@ -26,7 +26,7 @@ const dispatch = createEventDispatcher()
 const filter = () => {
   console.log("filtering..")
   listItems = listStoreReactive.data.filter(item => {
-    return filters.some(filter => item[filter] ? item[filter].includes(searchQuery.toLowerCase()) : false) 
+    return filters.some(filter => item[filter] ? item[filter].toLowerCase().includes(searchQuery.toLowerCase()) : false) 
   })
 }
 

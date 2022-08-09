@@ -115,7 +115,7 @@ const showLinks = (links) => {
   {#each story.submission.blocks as block}
     {#if block.type == "paragraph"}
         <p data-blockid={block.id}>
-        {block.data.text.replace("&nbsp;","")}
+        {@html block.data.text}
         </p>
     {:else if block.type == "image"}
         <img class="w-full" src={block.data.file.url} alt={block.data.file.caption}/>
